@@ -1,0 +1,34 @@
+package com.putable.tilenet.factory;
+
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.ElemType;
+import com.putable.tilenet.matrixelement.MatrixElement;
+import com.putable.tilenet.settag.SetTag;
+
+
+/**To be a matrix element, it must contain these parts...
+ * @author ClassCastExceptions
+ *
+ */
+public interface MatrixElementFactory {	
+	
+	/**Adds the SetTag for this {@link MatrixElement}
+	 * @return
+	 *  The {@link SetTag}
+	 */
+	public SetTag addSetTag();	
+	
+	/**Adds an ElemType of type for this {@link MatrixElement}
+	 * @return
+	 *  The {@link ElemType}
+	 */
+	public ElemType addElemType();
+	
+	/**Adds a connection for this {@link MatrixElement}. Or null if not an {@link Agent}
+	 * @return
+	 *  The {@link Connection}
+	 */
+	public Connection addConnection();
+
+}

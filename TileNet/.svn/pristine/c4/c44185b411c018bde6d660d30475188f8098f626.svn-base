@@ -1,0 +1,99 @@
+package com.putable.tilenet.matrix;
+
+import java.awt.Point;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.ImageIcon;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+
+/**
+ * @author ClassCastExeptions
+ * Recieve log-in tag
+ */
+public class Matrix extends TileNetElement{
+	
+	public ConcurrentHashMap<Point,MatrixElement> layout = new ConcurrentHashMap<Point,MatrixElement>();
+	
+	private int tileWidth, tileHeight, tileRow, tileCol;
+	
+	public Matrix(){
+		
+	}
+	
+	public int getTileWidth() {
+		return tileWidth;
+	}
+
+	public void setTileWidth(int tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	public int getTileHeight() {
+		return tileHeight;
+	}
+
+	public void setTileHeight(int tileHeight) {
+		this.tileHeight = tileHeight;
+	}
+
+	public Matrix(int tileWidth,int tileHeight,int tileRow,int tileCol) {
+		this.tileWidth = tileWidth;
+		this.tileHeight = tileHeight;
+		this.tileRow = tileRow;
+		this.tileCol = tileCol;		
+	}
+	
+	
+	public int getTileRow() {
+		return tileRow;
+	}
+
+
+	public void setTileRow(int tileRow) {
+		this.tileRow = tileRow;
+	}
+
+
+	public int getTileCol() {
+		return tileCol;
+	}
+
+
+	public void setTileCol(int tileCol) {
+		this.tileCol = tileCol;
+	}
+
+
+	public ConcurrentHashMap<Point,MatrixElement> getLayout(){
+		return layout;
+	}
+	
+	public void addMatrixElement(Point point, MatrixElement me){
+		layout.put(point, me);
+	}
+	
+	
+	//TODO process an XmlElement to determine if changes were made to the matrix
+	 	   
+	public void processXmlElement(XMLTag xe){
+		switch (xe.getTagType()){
+		case LOGGEDIN: ;
+			break;
+		case SET: processXmlSetTag((SetTag) xe);
+			break;
+		}
+		
+	}
+	
+	public void processXmlSetTag(SetTag st){
+		//TODO change the setAttributes method to accept colors as a String or
+		//change the way the the getBgColor() and getFgColor in the SetTag class
+		//setAttributes((st.getBgColor()), st.getFgColor(), st.getX(), st.getY(), st.getName(),
+		//		st.getText(), st.getImage());
+	}
+	
+}

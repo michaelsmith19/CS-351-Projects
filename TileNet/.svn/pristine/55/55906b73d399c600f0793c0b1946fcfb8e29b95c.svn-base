@@ -1,0 +1,11 @@
+package com.putable.tilenet.Server;
+
+import com.putable.tilenet.Server.ElementFactory.ElemType;
+
+public class Key extends Element {
+
+	public Key() {
+		super(ElemType.KEY);
+	}
+
+}

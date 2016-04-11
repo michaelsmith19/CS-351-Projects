@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE server SYSTEM "http://putable.com/TileNet/TileNet1.0.dtd">
+<server version="1.0" group="Class Cast Exceptions" name="wizz" status="open">
+  <logged-in objid="a1" message=""/>
+  <set objid="t1" name="Welcome" x="0" y="0"/>
+  <set objid="t2" name="to" x="0" y="1"/>
+  <set objid="t3" name="Tile" x="1" y="0"/>
+  <set objid="t4" name="Net" x="1" y="1"/>
+  <logged-out message=""/>
+</server>

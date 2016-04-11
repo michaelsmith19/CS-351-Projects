@@ -1,0 +1,42 @@
+package com.putable.tilenet.matrix;
+
+
+public interface Matrixable {
+
+	public Matrix sendInitialState();
+	
+	public void updateState();
+	
+	public void sendStateUpdates();
+	
+}
+
+class SimpleMatrix implements Matrixable {
+	
+	Matrix matrix;
+	Token homeKey;
+	
+	@Override
+	public Matrix sendInitialState() {
+		// TODO send the InitialState() of the most basic matrix
+		// may depend on the client(?)
+		Matrix matrix = new Matrix();
+		this.matrix = matrix;
+		return new Matrix();
+	}
+
+	@Override
+	public void updateState() {
+		// TODO Depending on the action received from Controller
+		// Updates the state according to that (standard simple matrix
+		// may have nothing done to update the state)
+		
+	}
+
+	@Override
+	public void sendStateUpdates() {
+		// TODO Send the updated states to the client for processing
+		
+	}
+	
+}

@@ -1,0 +1,53 @@
+package com.putable.tilenet.Controller;
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+
+import com.putable.tilenet.Server.ServerModel;
+import com.putable.tilenet.Util.Common;
+
+
+/**Runs in the ThreadPool of {@link ServerModel}. Each instance of {@link Controller} represents a singular connection to 
+ * the Server.
+ * @author ClassCastExceptions
+ */
+public class Controller implements Callable<Void>{
+	private final ServerModel serverModel;
+	private final int controllNumber;
+	private final Socket sock;
+
+	/** The individual instance of an agent
+	 * @param serverModel
+	 * 		The Model it will manipulate 
+	 * @param agentNumber
+	 * 		Unique agent number that identifies this agent
+	 * @param sock
+	 * 		The socket used for sending-receiving for this particular agent
+	 */
+	public Controller(ServerModel serverModel, int agentNumber, Socket sock){
+		this.serverModel = serverModel;
+		this.controllNumber = agentNumber;
+		this.sock = sock;
+	}
+
+	@Override
+	public Void call() throws Exception {
+		BufferedReader agentIn = Common.getReaderFromSock(sock);
+		
+		//TODO handle the client input here or whatever we decide to do
+		String message;
+		while((message = agentIn.readLine()) != null){
+			System.out.println("\nI am a Controller. I can receive messages from Agents. This is one of them;\n" + message);
+		}
+		
+		
+		//Cleanup
+		agentIn.close();
+		sock.close();
+		return null;
+	}
+	
+}

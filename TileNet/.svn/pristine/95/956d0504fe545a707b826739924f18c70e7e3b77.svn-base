@@ -1,0 +1,26 @@
+package com.putable.tilenet.factory;
+
+
+/**Every part of a HomeMatrix should be defined here
+ * 
+ * @author ClassCastException
+ *
+ */
+public class HomeMatrixFactory implements MatrixFactory {
+
+	@Override
+	public KeyBindSet addKeyBindSet() {
+		// TODO Auto-generated method stub
+		return new HomeKeyBindSet();
+	}
+
+	@Override
+	public Grid addGrid() {
+		// TODO Auto-generated method stub
+		return new HomeGrid();
+	}
+
+	
+
+	
+}

@@ -1,0 +1,29 @@
+package com.putable.tilenet.factory;
+
+import java.awt.Point;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import com.putable.tilenet.Client.Agent;
+
+/**A grid contains the connection list, and the mapping of location to a {@link Token}
+ * @author ClassCastExcetions
+ *
+ */
+public interface Grid {
+	
+	public String toString();
+	
+	/**The mapping from {@link Point} to {@link Token}
+	 * @return
+	 * the {@link ConcurrentHashMap}
+	 */
+	public ConcurrentHashMap<Point, Token> getLayout();
+	
+	/**
+	 * @return
+	 *  The {@link ConcurrentLinkedQueue} of Connected {@link com.putable.tilenet.factory.Agent}
+	 */
+	public ConcurrentLinkedQueue<Agent> getConnected();
+
+}

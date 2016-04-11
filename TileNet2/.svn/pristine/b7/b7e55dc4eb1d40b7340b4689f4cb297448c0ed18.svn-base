@@ -1,0 +1,89 @@
+package com.putable.tilenet.blueprints;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Element.ElemType;
+import com.putable.tilenet.layout.HomeLayout;
+import com.putable.tilenet.matrixelement.Key;
+
+public class HomeKeyBindSet implements KeyBindSet{
+
+	private final ConcurrentHashMap<String, Key> objidToKey;
+	private final ConcurrentHashMap<R2Vect, SetTag> tags;
+	
+	public HomeKeyBindSet(HomeLayout layout){
+		this.objidToKey = new ConcurrentHashMap<String, Key>();
+		this.tags = new ConcurrentHashMap<R2Vect, SetTag>();
+		for (SetTag s : layout.toSetTags()){
+			tags.put(new R2Vect(s.getX(), s.getY()), s);
+		}
+	}
+	
+	@Override
+	public List<SetTag> toSetTags() {
+		List<SetTag> st = new ArrayList<SetTag>();
+		for (Key k : objidToKey.values()){
+			st.add(k.getSetTag());
+		}
+		return st;
+	}
+
+	@Override
+	public boolean containsKey(String keyObjid) {
+		return objidToKey.contains(keyObjid);
+	}
+	
+	@Override
+	public Key getKeyFromID(String objid){
+		return objidToKey.get(objid);
+	}
+	
+	@Override
+	public void update(HomeLayout layout){
+		for (SetTag s : layout.toSetTags()){
+			tags.remove(new R2Vect(s.getX(), s.getY()));
+			tags.put(new R2Vect(s.getX(), s.getY()), s);
+		}
+	}
+	
+	private void populateKeys(){
+		ElementBuilder kb = new TileNetElementBuilder();
+		Key keyM = (Key)kb.makeElement(ElemType.KEY);
+		keyM.setName("m");
+		
+		//An example of a keyOp that simply is supposed to make the Token's
+		//background color in the (1,1) position brighter when the "m" key
+		//is pressed
+		keyM.setOp(new ElementOp(){
+			@Override
+			public ArrayList<XMLTag> doOp(){
+				ArrayList<XMLTag> beingSent = new ArrayList<XMLTag>();
+				SetTag tag =  tags.get(new R2Vect(1,1));
+				tag.setBgColor(tag.getBgColor().brighter());
+				beingSent.add(tag);
+				return beingSent;
+			}
+		});
+		objidToKey.put(keyM.getObjid(), keyM);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

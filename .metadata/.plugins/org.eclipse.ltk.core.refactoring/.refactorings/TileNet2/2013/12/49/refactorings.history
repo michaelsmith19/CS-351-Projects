@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;com.putable.tilenet.layout.TripleTiradLayout.java&apos; to &apos;TripleTriadLayout.java&apos;&#x0A;- Original project: &apos;TileNet2&apos;&#x0A;- Original element: &apos;com.putable.tilenet.layout.TripleTiradLayout.java&apos;&#x0A;- Renamed element: &apos;com.putable.tilenet.layout.TripleTriadLayout.java&apos;" description="Rename compilation unit &apos;TripleTiradLayout.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;com.putable.tilenet.layout{TripleTiradLayout.java" name="TripleTriadLayout.java" references="false" stamp="1386214429786" version="1.0"/>
+</session>

@@ -1,0 +1,27 @@
+package com.putable.tilenet.factory;
+
+import com.putable.tilenet.connection.AgentConnection;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.ElemType;
+import com.putable.tilenet.settag.AutoBotSetTag;
+import com.putable.tilenet.settag.SetTag;
+
+public class AutoBotFactory implements MatrixElementFactory {
+
+	@Override
+	public SetTag addSetTag() {
+		return new AutoBotSetTag();
+	}
+
+	@Override
+	public ElemType addElemType() {
+		return ElemType.AUTOAGENT;
+	}
+
+	@Override
+	public Connection addConnection() {
+		//XXX using same as agent. might not want to?
+		return new AgentConnection();
+	}
+
+}

@@ -1,0 +1,17 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import org.xml.sax.Attributes;
+
+public class LogoutTag extends XMLTag {
+    private String message;
+
+    public LogoutTag(Attributes atts) {
+	super(TagType.LOGOUT);
+	this.message = atts.getValue("message");
+    }
+
+    public String getMessage() {
+	return message;
+    }
+
+}

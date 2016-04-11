@@ -1,0 +1,242 @@
+page = head body credits tail;
+head = "<head><style>" css "</style><title>"title"</title></head><html><body>";
+
+body = normalbody | normalbody | normalbody | normalbody | 
+	   normalbody | normalbody | normalbody | constructionbody;
+
+normalbody = titleLine stories;
+
+tail = "</body></html>";
+
+makeColor = '#' hex hex hex hex hex hex;
+
+makeUint = '0x' hex hex hex hex hex hex hex hex;
+
+makeInteger = firstdec makerestinteger;
+
+makerestinteger = | makerestinteger dec;
+
+dec = '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9';
+
+firstdec = '1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9';
+
+hex = '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'a'|'b'|'c'|'d'|'e'|'f';
+
+twodigit = firstDec dec;
+threedigit = twodigit dec;
+
+dancingbaby = "<img src='http://31.media.tumblr.com/tumblr_ls3ip5yJGj1qla8k3o1_250.gif'height=200>";
+
+butterchurn = "<img src='http://d.wapday.com/animation/ccontennt/5813-f/lena_churning_butter.gif'height=200>";
+
+homergif = "<img src='http://fc06.deviantart.net/fs49/f/2009/159/7/a/Old_Homer_animation_by_flamberhamber.gif'height=200>";
+
+uglydragon = "<img src='http://www.netanimations.net/Moving-picture-ugly-green-dragon-animated-gif.gif'height=200>";
+
+davegrohl = "<img src='http://media.tumblr.com/tumblr_lopag1bpn81qg1no5.gif'height=200>";
+
+fullofquack = "<img src='http://i260.photobucket.com/albums/ii32/unglamorouslife/GRAPHICS%20MAIN/cute%20animated%20comments/full-of-quack.gif'height=200>";
+
+jimbogif = "<img src='http://fc05.deviantart.net/fs71/i/2012/037/f/2/south_park_ned_gerblansky_and_jimbo_kern_gif_by_dimabig-d4ouo7z.gif'height=200>";
+
+fangif = "<img src='http://d.wapday.com/animation/ccontennt/6263-f/ceiling_fan.gif?__sid=1T7E159B8810543V3M449WNN&lang=en' height=200>";
+
+randomCeleb = "Samuel L. Jackson"|"Ben Stiller"|"Jim Carrey"|"Arthur Conan Doyle"|"Cleopatra"|
+			  "Queen Elizabeth II"|"James Bond"|"Sean Connery"|"Jesus Christ"|"Kim Kardashian"|
+			  "Kanye West"|"Ron Bell"|"Mike Tyson"|"Steve Stucker"|"Mary, Queen of Scots"|
+			  "Stephen Colbert"|"Neil DeGrasse Tyson"|"Steve Jobs"|"Barack Obama"|"George Washington"|
+			  "George W. Bush"|"Mike Judge"|"Larry Johnson"|"Abraham Lincoln"|"Jon Stewart"|"H. Jon Benjamin"|
+			  "Benjamin Franklin"|"Benjamin Button"|"Tyler Durden";
+
+font = "Comic Sans MS"|
+       "Impact"|
+       "Georgia"|
+       "Lucidia Console"|
+       "Courier New";
+
+css = "h1 {font-size:300%;text-align:center;font-family:'"font"';background-color:"makeColor";color:"makeColor";}
+	   h2 {font-size:200%;text-align:center;font-family:'"font"';background-color:"makeColor";color:"makeColor";}
+	   h3 {text-align:center;font-family:'"font"';background-color:"makeColor";color:"makeColor";}
+	   h4 {text-align:center;font-family:'"font"';background-color:"makeColor";color:"makeColor";}
+	   h5 {font-family:'"font"';background-color:"makeColor";color:"makeColor";}
+	   h6 {font-size:100%;text-align:center;}
+	   IMG.displayed{display: block; margin-left: auto; margin-right: auto;
+					 background-color:"makeColor";color:"makeColor";}
+	   hr {color:"makeColor";background-color:"makeColor";height:"twoDigit"px;}
+       p {margin-left:20px;}
+	   body {background-color:"makeColor";}";
+
+title:title = "Foo" | "Jimbo's" | "Quack" | "Ugly" | "No Way" | "I Can't Believe It's Not"|"Dancing Baby"|"Ceiling Fan";
+
+titleimage:title = davegrohl|jimbogif|fullofquack|uglydragon|homergif|butterchurn|dancingbaby|fangif;
+
+titleLine = "<h1>"titleimage"<a href='"makeLink"'>" title " News</a>"titleimage"</h1>" review;
+
+quote = 'All the ' allthenoun " you'll ever " alltheverb|
+		'The ' greatestadj ' ' greatestnoun ' ' greatestmod ' ever ' greatestverb '.'|
+		'My ' mynoun ' were ' myverb ' after ' myverb2 ' this ' mynoun2;
+		
+mynoun2 = "fantastic news source" | "site" | "website" | "webpage" | "newspage"|
+          "newspaper" | "news machine" | "news box" | "place" | "horrendously designed website"|
+		  "news feed" | "news feed machine";
+		
+myverb2 = "viewing" | "visiting" | "looking at" | "reading" | "coming to";
+		
+myverb = "hurting" | "splitting" | "numb" | "dying" | "at risk" | "killing me" | "overheating";
+		
+mynoun = "sides" | "cheeks" | "brains" | "insides" | "lungs" | "eyes";
+		
+greatestverb = "seen" | "heard of" | "created" | "devised" | "though about" | "though up"|
+                "made" | "wanted" | "imagined" | "talked about";
+		
+greatestmod = | "this country has" | "the world has" | "I have";
+		
+greatestadj = "greatest" | "most incredible" | "best" | "most fulfilling" | "most worrisome";
+		
+greatestnoun = "news source" | "website" | "waste of time" | "newspaper";
+
+review = '<h6><i>"'quote'"   --' randomCeleb '</i></h6>';
+
+allthenoun = 'stories' | 'news' | 'goods' | 'words' | 'sentences';
+
+alltheverb = 'stomach' | 'want' | 'need' | 'have' | 'enjoy' | 'care about' | 'get' | 'see';
+
+stories = story | story stories;
+
+artname = 'APPLE1'|'APPLE2'|'BANDAGE'|'BASEBALL'|'BLOOD_PRESSURE_CUFF'|'BOOK1'|
+		  'BOOK2'|'BOOKS1'|'BOOKS2'|'BOOKSHELF'|'BREAD'|'BUS_DRIVER1'|'BUS_DRIVER2'|
+		  'BUS_TICKET'|'BUTTER'|'CAMERA'|'CANDY'|'CAN_OPENER'|'CARROTS'|'CASH_REGISTER'|'CHEF'|
+		  'CLIPBOARD'|'COACH'|'COMMUNITY_HEADER'|'COMPUTER'|'CONSTRUCTION_WORKER1'|'CONSTRUCTION_WORKER2'|
+		  'COOKIE'|'DALMATIAN'|'DENTAL_CHAIR'|'DENTAL_HYGIENIST'|'DENTIST'|'DOCTOR2'|'DOCTOR2'|
+		  'DOG1'|'DOG2'|'DRILL'|'EGG'|'ENVELOPE'|'FIREFIGHTER1'|'FIREFIGHTER2'|'FIRE_AX'|
+		  'FIRE_STATION'|'FIRST_AID_KIT'|'FLOSS'|'FOOTBALL'|'FRYING_PAN'|'GAVEL'|'GLOBE'|'GROCER'|'GROCERY_BAG'|
+		  'GROCERY_SHOPPER'|'HAIRBRUSH'|'HAIRSTYLIST'|'HAIR_DRYER'|'HAMMER'|'HANDCUFFS'|
+		  'HARD_HAT'|'HOSPITAL'|'HYDRANT1'|'HYDRANT2'|'JUDGE'|'JUDGE_BENCH'|'JURY_BOX'|
+		  'KIDS_WITH_PETS'|'LADDER'|'LADLE'|'LETTER_DOG'|'LEVEL'|'LIBRARIAN1'|'LIBRARIAN2'|
+		  'MAILBAG'|'MAILBOX1'|'MAILBOX2'|'MAILBOX3'|'MAIL_CARRIER'|'MEDICAL_MASK'|'MICROPHONE'|
+		  'NEWSPAPER'|'NOTEPAD'|'NUTS_AND_BEANS'|'OTOSCOPE'|'PACKAGE'|'PARAMEDIC1'|'PARAMEDIC2'|
+		  'PATIENT'|'PENCIL'|'POLICE_BADGE1'|'POLICE_BADGE2'|'POLICE_DOG'|'POLICE_HAT'|
+		  'POLICE_OFFICER1'|'POLICE_OFFICER2'|'POLICE_RADIO'|'POSTCARD'|'POT'|'POT_HOLDER'|'RABBIT3'|
+		  'RADIO'|'SAW'|'SCALE'|'SCHOOL'|'SCISSORS'|'SCREWDRIVER'|'SOCCER_BALL'|'SPORTS_CONE'|'STAMP1'|
+		  'STAMP2'|'STEAK'|'STETHOSCOPE'|'STRETCHER'|'TAPE_MEASURE'|'TEACHER1'|'TEACHER2'|'TEACHER_DESK'|
+		  'TEETH_FLOSSING'|'TELEVISION'|'TENNIS_BALL'|'THERMOMETER'|'TOOL_KIT'|'TOOTHBRUSH'|'TOOTHPASTE'|
+		  'TOOTH_BRUSHING'|'TOOTH_TOOTHBRUSH'|'TROWEL'|'TV_CAMERA'|'TV_CAMERAPERSON'|'TV_REPORTER'|
+		  'VETERINARIAN1'|'VETERINARIAN2'|'VET_TECHNICIAN'|'WHEELCHAIR'|'WRENCH_CRESCENT'|'WRENCH_PIPE'|
+		  'X-RAY1'|'X-RAY2';
+		  
+
+artsource = 'http://www.qacps.k12.md.us/ces/clipart/Carson%20Dellosa%20Clipart/Carson%20Dellosa%20Learning%20Themes/Images/Color%20Images/Community%20Helpers/'
+			 artname '.jpg';
+			 
+art = '<img class="displayed" src ="' artsource'" width="128">';
+
+story = '<hr><br><br><h3>'art'</h3><h2>'storyheadline'</h2><h4><u>'storylink'</u></h4><br><br>';
+
+makeLink = makeInteger | makeUint;
+
+storylink = '<a href="/' makeLink '">'storylinktext'</a>';
+
+storylinktext = "Read more..."|"Look closer..."|"Click here...";
+
+constructionbody = "<h1><a href='/"makeLink"'>This page is currently under construction.</a></h1>" constructionimage '<br>' constructionimage;
+
+constructionimage = "<img class='displayed' src='http://textfiles.com/underconstruction/" constructionsrc "' height='150'>";
+
+constructionsrc = "jajasch2000construction.gif"|"NaNapaValleyVineyard9035construction.gif"|
+				  "AtAthensRhodes1319bookconstruction.gif"|"HoHotSpringsChalet3349constructionbarrier.gif"|
+				  "HoHollywoodHills5836under_construction.gif"|"ththe300exhavenunderconstruction.gif"|
+				  "AtAthensOlympus7403constructionman.gif"|"ayaylc82underconstruction.gif"|
+				  "MoMotorCity4109construct.gif"|"CoColosseumField5989Construction.gif"|
+				  "ipn_filemanagerimageneswebanimUnderConstruction_001.gif"|
+				  "MoMotorCityPit9161construct16.gif"|"ArArea51Shadowlands2297ST-underconstruction_anm.gif"|
+				  "HeHeartlandLane6362personalconstructionConst010.gif"|
+				  "Nova1466underconstruction.gif"|"bababyangel23_2000imagesUnderConstruction.gif"|
+				  "CaCapeCanaveral8167brunounderconstruction.gif"|
+				  "Heartland7870construction_major.gif"|"Nebula5275_underconstructionsmall1.gif"|
+				  "babajacliffs4200under_construction.gif"|
+				  "ParisCafe9362pikaconstruct.gif"|"SouthBeachCove7978construct.gif";
+
+storyheadline =
+	makeInteger " DEAD AS " deadobject' 'deadverb " INTO " deadadj' 'deadnoun|
+	vip " APPRAISES " allobjects ': RESULTS ARE ' appraiseresult|
+	vip " SAYS " presobj " IS IN STATE OF " presstate|
+	hooligan " GOES TO TRIAL: JUDGE ORDERS " judgeorder|
+	"COUNTRY RESTLESS: PLANS TO " planverb ' ' plansub|
+	"RESEARCH SHOWS " resverb ' ' incdec ' RISK OF ' ressub |
+	"RESEARCHERS SAY "obsoletesub " ARE OBSOLETE; USE " obsoletereplace " INSTEAD"|
+	"CONSTRUCTION OF NEW " consbuilding " ALLOWS " conspeople " TO " consverb |
+	questionsub " WILL QUESTION YOUR " questionq |
+	killeradj ' ' killer " OBSESSED WITH " killerobs;
+	
+killerobs = "VIOLENT VIDEO GAMES" | "BRUSHING TEETH" | "READING BOOKS" | "KILLING" |
+			"USING THE TOILET" | "TOILET PAPER" | "RASTA MUSIC" | "POP MUSIC" | "MARIJUANA" |
+			"BOB MARLEY" | "SELF";
+	
+killer = "SHOOTER" | "STABBER" | "BOMBER" | "MARINE" | "STUNNER" | "MAN" | "WOMAN" |
+		 "EMPLOYEE" | "SOCIAL WORKER" | "POLICEMAN" | "FIERMAN" | "DOCTOR";
+	
+killeradj = "VAGABOND" | "ELDERLY" | "CELEBRITY" | "NAVY" | "ARMY" | "MILITARY" | "DISGRUNTLED";
+	
+questionsub = "OBAMACARE" | "NEW LAW" | "NEW " consbuilding " POLICY" | "NEW STUDY" |
+              "CONGRESS";
+			  
+questionq = "SEX LIFE" | "IQ" | "KNOWLEDGE OF " obsoletesub | "OWNERSHIP RIGHTS OF " obsoletereplace;
+	
+consbuilding = "GYM" | "MALL" | "POOL" | "DRESSING ROOM" | "MARKET" | "TOILET" | "COFFEE HOUSE" |
+               "DANCE HALL" | "COMPUTER LAB" | "ZOO" | "SCHOOL" | "PORT-O-POTTY";
+			   
+conspeople = "HIPSTERS" | "ELDERLY" | "CHILDREN" | "POLICEMEN" | "ANIMALS" | vip;
+
+consverb = "SURF THE WEB" | "EAT AT MCDONALDS" | "PURCHASE OBSOLETE SOFTWARE" | "EAT IN PEACE" |
+           "REST EASILY" | consbuilding " IN PEACE" | "DEFECATE" | "LIE" | "CHEAT" | "VANDALIZE";
+	
+obsoletesub = "CARDBOARD BOXES" | "FEET" | "TEETH" | "KEYBOARDS" | "CARS" | "PLAYING CARDS" |
+              "TRAINS" | "BOATS" | "COINS" | "CREDIT CARDS" | "COMPUTERS" | "FORKS";
+			  
+obsoletereplace = "ABACUSES" | "CLOGS" | "LOGS" | "FINGERS" | "TOOTHPASTE" | "HAMMERS" |
+                  "CACTI" | "HAMSTERS" | "THE MONORAIL" | "DIGIAL CAMERAS";
+	
+resverb = "WALKING" | "DRIVING" | "FLOSSING" | "WIPING" | "RESEARCH" | "IGNORANCE"|
+          "FISHING" | "PIRACY"  | "DOCTOR VISITS" | "WATCHING CERTAIN FILMS" | "OWNING A CELL PHONE";
+
+	
+ressub = "DEATH" | "FLATULENCE" | "GINGIVITIS" | "SWAMP ASS" | "BAD TASTE" | "CANCER" | "BEING BORN";
+	
+incdec = "INCREASES" | "DECREASES";
+	
+planverb = "ATTACK" | "INVADE" | "SEND TROOPS TO" | "CLOBBER" | "DISEMBOWL";
+
+plansub = "THE MOON" | "MARS" | "MARTIAN TERRITORY" | "MOLE-PEOPLE COLONY" | "NARNIA";
+	
+judgeorder = "THE CHAIR" | "LIFE" | "COMMUNITY SERVICE" | "THE SNAKE PIT" |
+             "MEDICATION" | "DRUGS";
+	
+hooligan = "HOOLIGAN" | "BURGLAR" | "MOLESTOR" | "VENDOR" | "STREET RAT" |
+           "DRUGGIE";
+	
+vip = "MAYOR" | "PRESIDENT" | "AMBASSADOR";
+	
+presobj = "ECONOMY" | "COUNTRY" | "WAR" | "HE" | "WIFE" | "EARTH";
+
+presstate = "PANIC" | "WITHDRAWAL" | "SERENITY" | "SERENDIPITY" | "DESPAIR" | "UNREST";
+	
+appraiseresult = "HORRIFYING" | "SURPRISING" | "AS EXPECTED" | "NOT SURPRISING";
+	
+appraiseobject = "CREDENZA" | "OTTOMAN" | "POODLE" | "HORNY TOAD";
+	
+allobjects = deadobject | appraiseobject;
+	
+deadobject = "BUS" | "CLOWN CAR" | "LOTTERY WINNER" | "SPACESHIP" | "FERRIS WHEEL" | "SUPERMAN" | vip | "UFO";
+
+deadverb = "PLUMMETS" | "COLLIDES" | "FALLS";
+
+deadadj = "COMBUSTIBLE" | "WORLD'S BIGGEST" | "HUGE" | "GASOLINE-SOAKED";
+
+deadnoun = "FIREWORKS STORE" | "LIQUOR STORE" | "TOILET" | "POTHOLE" | "ABYSS";
+
+credits:title = "<br><u><i>© 2013 <a href='/"makeLink"'>"title" industries</a></i></u>";
+
+ROBOTS_TXT = 
+"#Robots.txt for Foo News
+User-agent: *
+Disallow: / #You'll only lose sanity poking through here.";

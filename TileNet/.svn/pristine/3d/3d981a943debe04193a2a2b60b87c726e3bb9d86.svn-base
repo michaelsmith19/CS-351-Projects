@@ -1,0 +1,150 @@
+package com.putable.tilenet.tests;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import com.putable.tilenet.Util.XMLParser;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.ElementFactory;
+import com.putable.tilenet.connection.AgentConnection;
+import com.putable.tilenet.connection.Connection;
+
+/**A Stand Alone Testing Robot
+ * @author ClassCastExceptions
+ *
+ */
+public class AutoBot implements Callable<Boolean>{
+	private boolean success = false;
+	private final List<String> instructions;
+	private final LinkedBlockingQueue<XMLTag> queue = new LinkedBlockingQueue<XMLTag>();
+	private final Connection conn;
+	private XMLTag tag;
+	private XMLParser parse;
+
+	/**Constructs an AutoBot that runs the commands upon submission into a thread pool
+	 * @param hostname
+	 * @param port
+	 * @param instructions
+	 */
+	public AutoBot(String hostname, int port, List<String> instructions){		
+		this.instructions = instructions;
+		this.conn = new AgentConnection();
+		conn.setDestination(hostname, port);				
+	}
+
+	@Override
+	public Boolean call() throws Exception {
+		conn.connect();		
+
+		parse = new XMLParser(queue);
+		parse.setInputSource(conn.getIn2());
+		Thread botparser = new Thread(parse, this + "AutoBot Parse");
+		botparser.start();
+
+		System.out.println(this + " Starting commands");
+		executecommands();			
+
+		return success;
+	}
+
+	/**Making an EXTREAMLY simple AutoBot language....Not java 1.7 so no switch on strings <br><br>
+	 * Command: <br><br>
+	 * 		WAIT_RESPONCE     ---Waits for a server response <br>
+	 * 		SEND:{COMMAND}    ---Sends this command String<br>
+	 * 		EXPECTED:[option]:{RESPONCE} ---Checks against the last received response<br>
+	 * 			Options include <br>
+	 * 					T		---TagType
+	 *      DISCONNECT		  ---Closes connection 
+	 * @throws IllegalStateException 
+	 *  When attempting to modify a closed {@link Socket}
+	 * @throws IOException 
+	 *  Error reading from {@link Socket}
+	 * @throws IllegalArgumentException
+	 * 	When no commands are present
+	 * @throws InterruptedException 
+	 */
+	private void executecommands() throws IllegalArgumentException, IllegalStateException, IOException, InterruptedException {
+		if(instructions == null || instructions.size() == 0){
+			throw new IllegalStateException("An AutoBot must have commands to execute");
+		}
+		List<XMLTag> history = new ArrayList<XMLTag>();
+		for(int i = 0; i < instructions.size(); i++){
+			String instruction = instructions.get(i);
+			System.out.println("Performing: " + instruction);
+			switch(instruction.charAt(0)){
+			case 'W':
+				tag = queue.take();
+				history.add(tag);				
+				break;
+			case 'S':				
+				conn.sendMessage(instruction.substring(5));				
+				break;
+			case 'E':
+				String expected = instruction.substring(11);
+				switch(history.get(history.size() - 1).getTagType()){
+				case CLIENT:
+					if(expected.compareTo("CLIENT") != 0)						
+						return;
+					break;
+				case CMD:
+					if(expected.compareTo("CMD") != 0)						
+						return;
+					break;
+				case HEAR:
+					if(expected.compareTo("HEAR") != 0)						
+						return;
+					break;
+				case LOGGEDIN:
+					if(expected.compareTo("LOGGEDIN") != 0)						
+						return;
+					break;
+				case LOGGEDOUT:
+					if(expected.compareTo("LOGGEDOUT") != 0)						
+						return;
+					break;
+				case LOGIN:
+					if(expected.compareTo("LOGIN") != 0)						
+						return;
+					break;
+				case LOGOUT:
+					if(expected.compareTo("LOGOUT") != 0)						
+						return;
+					break;
+				case SERVER:
+					if(expected.compareTo("SERVER") != 0)						
+						return;
+					break;
+				case SET:
+					if(expected.compareTo("SET") != 0)						
+						return;
+					break;
+				case XREQUEST:
+					if(expected.compareTo("XREQUEST") != 0)						
+						return;
+					break;
+				case XRESPONSE:
+					if(expected.compareTo("XRESPONSE") != 0)						
+						return;
+					break;
+				default:
+					return;									
+				}
+				break;
+			case 'D':				
+				conn.disconnect();
+				break;
+			default:
+				break;
+			}
+		}
+		success = true;
+	}	
+}

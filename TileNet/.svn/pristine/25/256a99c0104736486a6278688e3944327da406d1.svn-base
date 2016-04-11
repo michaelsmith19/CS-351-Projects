@@ -1,0 +1,29 @@
+package com.putable.tilenet.matrix;
+
+import java.awt.Color;
+import java.awt.Point;
+
+public class HomeMatrix extends Matrix{
+
+	private final int MATRIX_VIEW_WIDTH = 500, MATRIX_VIEW_HEIGHT = 500;
+	//private Matrix hm;
+	
+	public HomeMatrix(){
+		Token tok = new Token();
+		Token tok2 = new Token();
+		Token tok3 = new Token();
+		Token tok4 = new Token();
+		this.setTileWidth(MATRIX_VIEW_WIDTH);
+		this.setTileHeight(MATRIX_VIEW_HEIGHT);
+		tok.setAttributes(Color.gray, Color.BLACK, 200, 200, "Welcome", "whatever", null);
+		tok2.setAttributes(Color.BLACK, Color.gray, 200, 200, "to", "stuff", null);
+		tok3.setAttributes(Color.BLACK, Color.gray, 200, 200, "Tile", "stuff", null);
+		tok4.setAttributes(Color.gray, Color.BLACK, 200, 200, "Net", "stuff", null);
+		this.setTileNumber(4);
+		this.addMatrixElement(new Point(0,0), tok);
+		this.addMatrixElement(new Point(0,1), tok2);
+		this.addMatrixElement(new Point(1,0), tok3);
+		this.addMatrixElement(new Point(1,1), tok4);
+	}
+	
+}

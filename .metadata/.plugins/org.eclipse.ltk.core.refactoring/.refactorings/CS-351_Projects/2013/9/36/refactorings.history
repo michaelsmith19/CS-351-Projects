@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;SDLParserImplTest.java&apos; to &apos;com.putable.siteriter.msmith19.Token.java&apos;&#x0A;- Original project: &apos;CS-351_Projects&apos;&#x0A;- Destination element: &apos;com.putable.siteriter.msmith19.Token.java&apos;&#x0A;- Original element: &apos;com.putable.siteriter.test.SDLParserImplTest.java&apos;" description="Copy compilation unit" destination="/src&lt;com.putable.siteriter.msmith19{Token.java" element1="/src&lt;com.putable.siteriter.test{SDLParserImplTest.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1378576133177" units="1" version="1.0"/>
+</session>

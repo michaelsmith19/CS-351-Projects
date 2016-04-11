@@ -1,0 +1,169 @@
+package com.putable.tilenet.server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.LoggedIn;
+import com.putable.tilenet.Util.XMLTags.LoggedOut;
+import com.putable.tilenet.Util.XMLTags.ServerTag;
+import com.putable.tilenet.controller.Controller;
+
+/**
+ * The model for a TileNet implementation
+ * 
+ * @author ClassCastExceptions
+ */
+public class ServerModel implements Callable<Void> {
+	private boolean isRunning;
+	private final int port;
+	private final int maxConnections;
+	private final ExecutorService ex;
+	private final ConcurrentMap<Socket, Controller> connections;
+	private final static String serverHeader = "<?xml version='1.0' encoding='utf-8'?><!DOCTYPE server SYSTEM \"http://putable.com/TileNet/TileNet1.0.dtd\">";
+
+	// TODO these Strings need to be sent to the translator then sent
+	// through the dtd validator, then again sent to the client so that
+	// it may parse the information and set attributes that need to be set
+	private final String version = "<server version=\"1.1\">";
+	private final String group = "<server group = \"The Class Cast Exceptions\">";
+
+	// This is supposed to be able to be changed, see ((c8.8.6.3)) for details
+	private final String name = "<server name = \"TileNet World\">";
+
+	/**
+	 * A singular server constructor
+	 * 
+	 * @param port
+	 *            The port to listen for connections on
+	 * @param maxConnections
+	 *            Maximum number of concurrent connections to accept, after
+	 *            which the server will reply it is busy
+	 */
+	public ServerModel(int port, int maxConnections) {
+		this.isRunning = false;
+		this.port = port;
+		this.maxConnections = maxConnections;
+		this.connections = new ConcurrentHashMap<Socket, Controller>();
+		this.ex = Executors.newCachedThreadPool();
+	}
+
+	@Override
+	public Void call() throws Exception {
+		// Give this Thread a name
+		Thread.currentThread().setName("SERVERMODEL");
+
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(port);
+			isRunning = true;
+		} catch (Exception e) {
+			System.err.println("Failed to bind port: " + port + "\n");
+			throw e;
+		}
+
+		// Runs until told to stop
+		int agentNumber = 0;
+		// This needs to be in the outgoing print method
+		// -----> "<server status = \"open\">"
+		while (isRunning) {
+			ex.submit(new Controller(this, ++agentNumber, serverSocket.accept()));
+		}
+
+		ex.shutdownNow();
+		while (!ex.isTerminated()) {
+		}
+		serverSocket.close();
+		return null;
+	}
+
+	/**
+	 * Sends login information to a client, or a busy signal when it is full
+	 * 
+	 * @param controller
+	 *            The connection attempting login
+	 * @throws IOException
+	 */
+	public void sendLoginFor(Controller controller) throws IOException {
+		PrintWriter outgoing = Common.getWriterFromSock(controller.getSock());
+		if (connections.size() >= maxConnections) {
+			outgoing.println(new ServerTag("busy").toString());
+		} else {
+			if (connections.get(controller.getSock()) != null) {
+				throw new IllegalStateException("Multiple login attempt from: "
+						+ controller);
+			}
+			connections.put(controller.getSock(), controller);
+			outgoing.println(serverHeader);
+			outgoing.println(new ServerTag("open").toString());
+			// TODO create logged-in attributes for objid
+			// outgoing.println("<logged-in objid = \"" + controller.getid?)
+			outgoing.println(new LoggedIn("a1",
+					"You have connect to class cast exception tileNet")
+					.toString());
+
+			outgoing.println(new LoggedOut("byebye").toString());
+			outgoing.close();
+
+		}
+	}
+
+	/**
+	 * Ask the client to terminate itself
+	 * 
+	 * @param controller
+	 *            The connection handler for the client
+	 * @throws IOException
+	 *             When writing to the socket
+	 */
+	public void sendTerminationXML(Controller controller) throws IOException {
+		connections.remove(controller.getSock());
+		PrintWriter outgoing = Common.getWriterFromSock(controller.getSock());
+		outgoing.println("<logged-out message=\"you logged out\">");
+		// XXX Should kill socket after??
+	}
+
+	/**
+	 * Tells the Server to kill and remove the connection immediately
+	 * 
+	 * @param controller
+	 *            The connection handler for the client
+	 * @throws IOException
+	 */
+	public void terminateConnection(Controller controller) throws IOException {
+		connections.remove(controller.getSock());
+		controller.getSock().close();
+	}
+
+	/**
+	 * Removes every connection, sets the server like it was just started
+	 * 
+	 * @throws IOException
+	 */
+	public void terminateAllConnections() throws IOException {
+		for (Socket sock : connections.keySet()) {
+			sock.close();
+		}
+		connections.clear();
+	}
+
+	public void terminateServer() {
+		System.out.println("Server received shutdown request");
+		this.isRunning = false;
+	}
+
+	public ConcurrentMap<Socket, Controller> getConnections() {
+		return connections;
+	}
+
+	public boolean isRunning() {
+		return isRunning;
+	}
+}

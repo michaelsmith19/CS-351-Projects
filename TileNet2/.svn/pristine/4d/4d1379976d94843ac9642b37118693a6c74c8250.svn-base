@@ -1,0 +1,30 @@
+package com.putable.tilenet.grid;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class TripleTriadGrid extends Grid {
+	GridFactory factory;
+
+	public TripleTriadGrid(GridFactory thisSpecificfactory) {
+		this.factory = thisSpecificfactory;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		// TODO Auto-generated method stub
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Home Matrix");
+		matrix.setX(5);
+		matrix.setY(5);
+		layout.update(matrix);
+	}
+
+}

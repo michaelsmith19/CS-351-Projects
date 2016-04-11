@@ -1,0 +1,65 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import org.xml.sax.Attributes;
+
+public class SetTag extends XMLTag {
+    private int x;
+    private int y;
+    private int energy;
+    private String name;
+    private String text;
+    private String bgColor;
+    private String fgColor;
+    private String objid;
+    private String image;
+
+    public SetTag(Attributes atts) {
+	super(TagType.SET);
+	this.x = Integer.parseInt(atts.getType("x"));
+	this.y = Integer.parseInt(atts.getType("y"));
+	this.energy = Integer.parseInt(atts.getType("energy"));
+	this.name = atts.getType("name");
+	this.text = atts.getType("text");
+	this.bgColor = atts.getType("bgColor");
+	this.fgColor = atts.getType("fgColor");
+	this.objid = atts.getType("objid");
+	this.image = atts.getType("image");
+    }
+
+    public int getX() {
+	return x;
+    }
+
+    public int getY() {
+	return y;
+    }
+
+    public int getEnergy() {
+	return energy;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public String getText() {
+	return text;
+    }
+
+    public String getBgColor() {
+	return bgColor;
+    }
+
+    public String getFgColor() {
+	return fgColor;
+    }
+
+    public String getObjid() {
+	return objid;
+    }
+
+    public String getImage() {
+	return image;
+    }
+
+}

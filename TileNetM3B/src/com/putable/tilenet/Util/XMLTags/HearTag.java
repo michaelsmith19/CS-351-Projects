@@ -1,0 +1,51 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import org.xml.sax.Attributes;
+
+public class HearTag extends XMLTag {
+	private String to;
+	private String from;
+	private String message;
+
+	/**
+	 * Constructor for HearTag creation inside server.
+	 * 
+	 * @param to
+	 *            - the agent objid being sent the message
+	 * @param from
+	 *            - the agent objid sending the message
+	 * @param message
+	 */
+	public HearTag(String to, String from, String message) {
+		super(TagType.HEAR);
+		this.to = to;
+		this.from = from;
+		this.message = message;
+	}
+
+	public HearTag(Attributes atts) {
+		super(TagType.HEAR);
+		this.to = atts.getValue("to");
+		this.from = atts.getValue("from");
+		this.message = atts.getValue("message");
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	@Override
+	public String toString() {
+		return "<hear from=\"" + from + "\" to=\"" + to + "\" message =\""
+				+ message + "\"/>";
+
+	}
+}

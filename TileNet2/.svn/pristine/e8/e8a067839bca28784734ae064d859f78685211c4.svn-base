@@ -1,0 +1,14 @@
+package com.putable.tilenet.Util;
+
+import com.putable.tilenet.client.TileNetClient;
+
+public class GuiDriver {
+	private static final int PORT = 44457;
+	private static final int MAX_CONNECTIONS = 5;
+
+	@SuppressWarnings("unused")
+	public static void main(String[] args) throws Exception {
+		TileNetClient gui = new TileNetClient();
+	}
+
+}

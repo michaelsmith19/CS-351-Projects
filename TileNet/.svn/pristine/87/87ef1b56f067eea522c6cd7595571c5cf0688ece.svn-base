@@ -1,0 +1,30 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import org.xml.sax.Attributes;
+
+public class LoggedOut extends XMLTag {
+	private String message;
+
+	public LoggedOut(Attributes atts) {
+		super(TagType.LOGGEDOUT);
+		this.message = atts.getValue("message");
+
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<logged-out ");
+
+		if (message != null)
+			sb.append("message=\"" + this.message + "\"");
+
+		sb.append("/> \n</server>");
+
+		return sb.toString();
+
+	}
+}

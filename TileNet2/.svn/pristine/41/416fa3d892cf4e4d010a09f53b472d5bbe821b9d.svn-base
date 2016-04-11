@@ -1,0 +1,42 @@
+package com.putable.tilenet.blueprints;
+
+import java.util.List;
+
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.matrixelement.Matrix;
+import com.putable.tilenet.matrixelement.Token;
+
+/**Controls the interior of this matrix
+ * @author ClassCastExceptions
+ *
+ */
+public interface Layout {		
+	
+	/**Assumes this matrix for its dimensions
+	 * @param m
+	 */
+	public void setMatrix(Matrix m);
+	
+	/**Get this {@link Grid} represented as a JPanel. The values of the height and width are determined by
+	 * the values of the {@link Matrix} associated with this Grids Matrix
+	 * @param m 
+	 * 	Should be a reference to the encapsulating Matrix
+	 * @return
+	 * 	The JPanel
+	 */
+	public JPanel toJPanel(int height, int width, Matrix m);
+	
+	/**Gets this {@link Layout} represented as a {@link List}
+	 * @return
+	 * the {@link List}
+	 */
+	public List<SetTag> toSetTags();	
+	
+	/**Will update, and should --repaint-- the area sent
+	 * @param tag
+	 */
+	public void update(SetTag tag);	
+
+}

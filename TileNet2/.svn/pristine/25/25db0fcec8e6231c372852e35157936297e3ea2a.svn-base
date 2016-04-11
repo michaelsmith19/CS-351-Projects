@@ -1,0 +1,46 @@
+package com.putable.tilenet.matrix;
+
+import java.awt.Color;
+import java.awt.Point;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.factory.MatrixFactory;
+import com.putable.tilenet.matrixelement.MatrixElementBuilder;
+import com.putable.tilenet.matrixelement.TileNetMatrixElementBuilder;
+import com.putable.tilenet.matrixelement.Token;
+
+public class SplashMatrix extends Matrix {
+MatrixFactory thisMatrixUses;
+	
+	public SplashMatrix(MatrixFactory thisSpecificfactory){
+		
+		this.thisMatrixUses = thisSpecificfactory;
+		
+	}
+
+	@Override
+	void makeMatrix() {
+		setX(1);
+		setY(3);
+		keyBindSet = thisMatrixUses.addKeyBindSet();
+		grid = thisMatrixUses.addGrid();
+		
+	}
+	
+	private void makeAToken(int x, int y, Color fg, Color bg,
+			String text, String name){
+		MatrixElementBuilder makeTokens = new TileNetMatrixElementBuilder();	
+		com.putable.tilenet.matrixelement.MatrixElement token1 = makeTokens.orderElement("TOKEN");
+		SetTag tok1 = new SetTag(token1.getObjid());
+		tok1.setBgColor(bg);
+		tok1.setFgColor(fg);
+		tok1.setX(x);
+		tok1.setY(y);
+		tok1.setText(text);
+		tok1.setName(name);
+		token1.setSetTag(tok1);
+		grid.getLayout().put(new Point(x, y), (Token) token1);
+	}
+	
+	
+}

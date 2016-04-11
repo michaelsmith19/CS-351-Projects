@@ -1,0 +1,153 @@
+package com.putable.tilenet.layout;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.Layout;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public class HomeLayout implements Layout {
+	private int matrixWidth = 10;
+	private int matrixHeight = 10;
+	private int defaultTileWidth;
+	private int defaultTileHeight;
+	private Matrix m;
+	private final Color defaultFgColor = Color.GREEN;
+	private final Color defaultBgColor = Color.RED;
+	private final JPanel panel;
+	private ConcurrentHashMap<String, BufferedImage> images;
+	private ConcurrentHashMap<R2Vect, JButton> buttons;
+	private ConcurrentHashMap<R2Vect, SetTag> tags;
+	private JButton loadingButton;
+	
+	public HomeLayout(){
+		this.loadingButton = new JButton();
+		this.panel = new JPanel();
+		this.images = new ConcurrentHashMap<String, BufferedImage>();
+		this.buttons = new ConcurrentHashMap<R2Vect, JButton>();
+		this.tags = new ConcurrentHashMap<R2Vect, SetTag>();
+	}
+	
+	@Override
+	public JPanel toJPanel(int height, int width, Matrix m) {
+		if(tags == null || m == null)
+			System.err.println(m + "-NOTHING TO SHOW / NOT INITILIZED");						
+		if(height < matrixWidth || width < matrixHeight)
+			System.err.println("Not large enough for a panel");	
+
+		//Panel stuff				
+		panel.setSize(width, height);
+		panel.setLayout(new GridLayout(matrixHeight, matrixWidth));		
+		
+		//Get all Elements
+		for(int x = 0; x < matrixWidth; x++){
+			for(int y = 0; y < matrixHeight; y++){
+				
+				JButton but = buttons.get(new R2Vect(x, y));
+				if (but == null)
+					panel.add(loadingButton);
+				else
+					panel.add(but);
+			}
+		}		
+		
+		return panel;
+	}
+
+	@Override
+	public List<SetTag> toSetTags() {
+		List<SetTag> list = new ArrayList<SetTag>();		
+		for(SetTag tag : tags.values())			
+			list.add(tag);
+		return list;
+	}
+
+	@Override
+	public void update(SetTag tag) {		
+		System.out.println("layout parsing: " + tag);
+		System.out.println("For the matrix called: " + m.getName());		
+		tags.put(new R2Vect(tag.getX(), tag.getY()), tag);
+		switch (tag.getObjid().charAt(0)){
+		case 't':
+			updateToken(tag);			
+			break;
+		default:
+			System.err.println("Layout cannot handle tags like this yet: " + tag);
+			tags.remove(new R2Vect(tag.getX(), tag.getY()));
+			break;				
+		}		
+	}
+
+
+	private void updateToken(SetTag tag) {
+		JButton button = buttons.get(new R2Vect(tag.getX(), tag.getY()));
+		if(button == null)
+			button = new JButton(tag.getName());		
+		
+		Color fg = tag.getFgColor();
+		Color bg = tag.getBgColor();
+		if(fg == null)
+			fg = defaultFgColor;
+		if(bg == null)
+			bg = defaultBgColor;
+		
+		button.setForeground(fg);
+		button.setBackground(bg);
+		button.setOpaque(true);		
+		button.setText(tag.getName());
+		
+		if(tag.getImage() != null )
+			try {
+				//TODO check for validity
+				button = tokenWithImage(tag, button);
+			} catch (IOException e) {
+				System.err.println("Error reading rainbow dash!");
+			}
+		
+		JButton tmp = buttons.put(new R2Vect(tag.getX(), tag.getY()), button);
+		
+		//Show differential change
+		button.repaint();
+		
+		System.out.println(((tmp == null) ? "Added " : "Updated ") +  "the token " + tag.getObjid());
+				
+	}
+
+	private JButton tokenWithImage(SetTag tag, JButton button) throws IOException {
+		//TODO this doesn't go by the rules exactly		
+		BufferedImage bi = images.get(tag.getImage());
+		if(bi == null){
+			bi = ImageIO.read(getClass().getResource("Rainbow-Dash.png"));
+		}		
+		button.setIcon(new ImageIcon(bi));
+		return button;		
+	}
+
+	@Override
+	public void setMatrix(Matrix m) {
+		this.m = m;
+		matrixWidth = m.tag.getX();
+		matrixHeight = m.tag.getY();
+		//TODO change tile width depending on matrix better 
+		defaultTileHeight = 600/matrixHeight;
+		defaultTileWidth = 600/matrixWidth;
+	}	
+}

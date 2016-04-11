@@ -1,0 +1,76 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import java.awt.Color;
+
+import org.xml.sax.Attributes;
+
+public class SetTag extends XMLTag {
+	private int x;
+	private int y;
+	private int energy;
+	private String name;
+	private String text;
+	private Color bgColor;
+	private Color fgColor;
+	private String objid;
+	private String image;
+
+	public SetTag(Attributes atts) {
+		super(TagType.SET);
+		this.x = Integer.parseInt(atts.getType("x"));
+		this.y = Integer.parseInt(atts.getType("y"));
+		this.energy = Integer.parseInt(atts.getType("energy"));
+		this.name = atts.getType("name");
+		this.text = atts.getType("text");
+		this.bgColor = hex2Color(atts.getType("bgColor"));
+		this.fgColor = hex2Color(atts.getType("fgColor"));
+		this.objid = atts.getType("objid");
+		this.image = atts.getType("image");
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public Color getBgColor() {
+		return bgColor;
+	}
+
+	public Color getFgColor() {
+		return fgColor;
+	}
+
+	public String getObjid() {
+		return objid;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	private Color hex2Color(String hexColor) {
+		int alpha = Integer.valueOf(hexColor.substring(0, 2), 16);
+		String colorHex = hexColor.substring(2);
+		Color noalpha = Color.decode("0x" + colorHex);
+		return new Color(noalpha.getRed(), noalpha.getGreen(),
+				noalpha.getBlue(), alpha);
+
+	}
+
+}

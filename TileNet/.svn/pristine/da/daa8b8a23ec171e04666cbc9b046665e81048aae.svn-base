@@ -1,0 +1,25 @@
+package com.putable.tilenet.blueprints;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.layout.Layout;
+
+/** Every grid will have these parts. And these parts only.
+ * 
+ * @author ClassCastExceptions 
+ *
+ */
+public interface GridFactory {
+	
+
+	/**
+	 * @return
+	 */
+	public Layout addLayout();
+	
+
+	/**
+	 * @return
+	 */
+	public AgentManager addAgentManager();	
+
+}

@@ -1,0 +1,19 @@
+package com.putable.tilenet.factory;
+
+public class AutoBot extends MatrixElement {
+	MatrixElementFactory thisUses;
+	
+	public AutoBot(MatrixElementFactory thisSpecificfactory){
+		
+		this.thisUses = thisSpecificfactory;
+		
+	}
+
+	@Override
+	void makeElement() {
+		
+		tag = thisUses.addSetTag();
+		
+		
+	}
+}

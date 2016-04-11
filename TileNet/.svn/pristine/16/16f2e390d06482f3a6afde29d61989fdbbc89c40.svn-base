@@ -1,0 +1,86 @@
+﻿!--
+    DTD for the TileNet protocol.  This file is found at:
+    http://putable.com/TileNet/TileNet1.0.dtd
+    so, to speak 'TileNet server', one could open with something like:
+
+    <?xml version='1.0' encoding='utf-8'?>
+    <!DOCTYPE server SYSTEM "http://putable.com/TileNet/TileNet1.0.dtd">
+    
+    and 'TileNet client'-ese could be:
+        
+    <?xml version='1.0' encoding='utf-8'?>
+    <!DOCTYPE client SYSTEM "http://putable.com/TileNet/TileNet1.0.dtd">
+    
+    although in both cases you might want to arrange to make a local copy
+    of the DTD available to reduce the delay of hitting putable.com every time
+    your parsing starts up.
+
+    DTD version history:
+
+    1.0 Ackley: First released version
+
+-->
+<!-- SERVER-to-CLIENT elements -->
+<!ELEMENT server (logged-in+, (set | hear | xresponse)*, logged-out)?>
+<!ATTLIST server
+          version    CDATA    #FIXED "1.0"
+          group      CDATA    #REQUIRED
+          name       CDATA    #REQUIRED
+          status     (open | closed | busy) #REQUIRED
+>
+<!ELEMENT logged-in EMPTY>
+<!ATTLIST logged-in
+          objid      CDATA    #IMPLIED
+          message    CDATA    ""
+>
+<!ELEMENT logged-out EMPTY>
+<!ATTLIST logged-out
+          message    CDATA    ""
+>
+<!ELEMENT set EMPTY>
+<!ATTLIST set
+	  objid      CDATA    #REQUIRED
+          energy     CDATA    #IMPLIED
+	  name       CDATA    #IMPLIED
+          text       CDATA    #IMPLIED
+          bgcolor    CDATA    #IMPLIED
+          fgcolor    CDATA    #IMPLIED
+          x          CDATA    #IMPLIED
+          y          CDATA    #IMPLIED
+	  image      CDATA    #IMPLIED
+>
+<!ELEMENT xresponse (#PCDATA)>
+<!ATTLIST xresponse
+          options    CDATA    #IMPLIED
+>
+<!ELEMENT hear EMPTY>
+<!ATTLIST hear
+          from       CDATA    #REQUIRED
+          to         CDATA    #REQUIRED
+          message    CDATA    ""
+>
+<!-- CLIENT-to-SERVER elements -->
+<!ELEMENT client (login+, (cmd | xrequest)*, logout)>
+<!ATTLIST client
+          version    CDATA    #REQUIRED
+>
+<!ELEMENT login EMPTY>
+<!ATTLIST login
+          user       CDATA    #REQUIRED
+          password   CDATA    #REQUIRED
+>
+<!ELEMENT cmd EMPTY>
+<!ATTLIST cmd
+	  type (click | say | press) #REQUIREDa
+	  objid      CDATA    #REQUIRED
+          modifiers  CDATA    #IMPLIED
+	  text       CDATA    #IMPLIED
+>
+<!ELEMENT xrequest (#PCDATA)>
+<!ATTLIST xrequest
+          options    CDATA    #IMPLIED
+>
+<!ELEMENT logout EMPTY>
+<!ATTLIST logout
+	  message    CDATA    #IMPLIED
+>

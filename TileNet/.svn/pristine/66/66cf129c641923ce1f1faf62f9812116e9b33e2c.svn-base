@@ -1,0 +1,63 @@
+package com.putable.tilenet.factory;
+
+import java.awt.Color;
+
+import com.putable.tilenet.matrix.Image;
+
+public class TokenSetTag implements SetTag {
+
+	@Override
+	public int getX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Color getBgcolor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getFgcolor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTileWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getTileHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getEnergy() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Image getImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

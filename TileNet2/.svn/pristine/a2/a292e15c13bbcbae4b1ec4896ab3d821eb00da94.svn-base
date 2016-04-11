@@ -1,0 +1,13 @@
+package com.putable.tilenet.client;
+
+import javax.swing.JPanel;
+
+public class AgentsConnectedPanel extends JPanel{
+	
+	
+	
+	
+	
+	
+
+}

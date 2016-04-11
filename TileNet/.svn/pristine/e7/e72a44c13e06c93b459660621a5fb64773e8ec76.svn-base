@@ -1,0 +1,32 @@
+package com.putable.tilenet.matrix;
+
+/**
+ * @author Aaron Harrington
+ * MatrixDecorator needs a Matrixable for a constructor and 
+ * will do each of the methods required of the Matrixable
+ *
+ */
+public abstract class MatrixDecorator implements Matrixable{
+	private Matrixable matrix;
+	
+	
+	public MatrixDecorator(Matrixable matrix){
+		this.matrix = matrix;
+	}
+	
+	@Override
+	public void updateState(){
+		matrix.updateState();
+	}
+	
+	@Override
+	public void sendInitialState(){
+		matrix.sendInitialState();
+	}
+	
+	@Override
+	public void sendStateUpdates(){
+		matrix.sendStateUpdates();
+	}
+
+}

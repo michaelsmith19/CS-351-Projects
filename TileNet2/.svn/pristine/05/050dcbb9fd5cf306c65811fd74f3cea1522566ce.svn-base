@@ -1,0 +1,43 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class TripleTriadGrid extends Grid {
+	GridFactory factory;
+
+	public TripleTriadGrid(GridFactory thisSpecificfactory) {
+		this.factory = thisSpecificfactory;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		// TODO Auto-generated method stub
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Triple Triad");
+		matrix.setX(5);
+		matrix.setY(5);
+		layout.update(matrix);
+		
+		SetTag toHome = new SetTag("t" + Common.getID());
+		toHome.setX(0);
+		toHome.setY(0);
+		toHome.setBgColor(Color.BLUE);
+		toHome.setFgColor(Color.BLACK);
+		toHome.setName("Home");
+		layout.update(toHome);
+		
+		
+		
+	}
+
+}

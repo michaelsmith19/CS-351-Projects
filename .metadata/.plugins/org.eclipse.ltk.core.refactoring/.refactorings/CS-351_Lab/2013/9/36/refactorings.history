@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;word&apos; in &apos;labs.lab2.TranslationaryImpl.readAndParseFile(...)&apos; to &apos;key&apos;&#x0A;- Original project: &apos;CS-351_Lab&apos;&#x0A;- Original element: &apos;labs.lab2.TranslationaryImpl.readAndParseFile(String).word&apos;&#x0A;- Renamed element: &apos;word&apos;&#x0A;- Update references to refactored element" description="Rename local variable &apos;word&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;labs.lab2{TranslationaryImpl.java[TranslationaryImpl~readAndParseFile~QString;@word!851!867!858!861!QString;!0!false" name="key" references="true" stamp="1378137394846" version="1.0"/>
+</session>

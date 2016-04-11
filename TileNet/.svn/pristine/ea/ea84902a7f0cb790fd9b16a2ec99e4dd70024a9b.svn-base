@@ -1,0 +1,42 @@
+package com.putable.tilenet.Util;
+
+/**
+ * Serves to translate strings into and out of proper TileNet protocol.
+ * 
+ * @author ClassCastExceptions
+ * 
+ */
+
+public class AttributeTransformer {
+
+/**
+     * Converts all instances of '&', '<', and '"' to proper TileNet form
+     * so that they may be transmitted as attribute values.
+     * 
+     * @param unformatted - the string requiring a transformation. 
+     * @return The 'transformed' string
+     */
+    public static String stringToAttribute(String unformatted) {
+	// First, all instance of the '&' character
+	// Then, all instance of '<' and '"'
+	String transformed = unformatted.replace("&", "&amp;")
+		.replace("<", "&lt;").replace("\"", "&quot;");
+
+	return transformed;
+    }
+
+    /**
+     * Converts all instances of "amp;", "&lt;", and "&quot;" to their
+     * respective English counterparts.
+     * 
+     * @param formatted
+     *            - the attribute value to be transformed.
+     * @return The transformed string
+     */
+    public static String attributeToString(String formatted) {
+	String transformed = formatted.replace("&amp;", "&")
+		.replace("&lt;", "<").replace("&quot;", "\"");
+
+	return transformed;
+    }
+}

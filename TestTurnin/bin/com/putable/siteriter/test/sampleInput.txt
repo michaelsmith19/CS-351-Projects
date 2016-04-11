@@ -1,0 +1,3 @@
+start = 'The ' character ' was right. ' genderverb ' said that this was a valid grammar!';
+character:g  = 'pumpkin' | 'geisha' | 'miner';
+genderverb:g = 'It'|'She'|'He';

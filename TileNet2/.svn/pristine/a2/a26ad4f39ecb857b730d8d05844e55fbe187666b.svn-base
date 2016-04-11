@@ -1,0 +1,24 @@
+package com.putable.tilenet.grid;
+
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class SplashGrid extends Grid {
+	GridFactory factory;
+
+	public SplashGrid(GridFactory thisSpecificfactory) {
+		this.factory = thisSpecificfactory;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+		this.m = factory.addMatrix();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		// TODO Auto-generated method stub
+
+	}
+}

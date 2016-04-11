@@ -1,0 +1,33 @@
+package com.putable.tilenet.tripleTriad;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+
+public class TTCard {
+	private int northValue, southValue, eastValue, westValue;
+	private String name;
+	private String imageName;
+	private String objid;
+	private boolean redTblueF;
+
+	public TTCard(String name, String imageName, int north, int south,
+			int east, int west, String objid) {
+		this.name = name;
+		this.northValue = north;
+		this.southValue = south;
+		this.eastValue = east;
+		this.westValue = west;
+		this.imageName = imageName;
+		this.objid = objid;
+	}
+
+	public SetTag getCardSetTag() {
+		SetTag newTag = new SetTag(objid);
+		newTag.setName(name);
+		newTag.setImage(imageName);
+		newTag.setBgColor(Color.CYAN);
+
+		return newTag;
+	}
+}

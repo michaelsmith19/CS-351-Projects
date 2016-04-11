@@ -1,0 +1,20 @@
+package com.putable.tilenet.factory;
+
+public class TokenFactory implements MatrixElementFactory {
+
+	@Override
+	public SetTag addSetTag() {		
+		return new TokenSetTag();
+	}
+ 
+	@Override
+	public ElemType addElemType() {
+		return ElemType.TOKEN;
+	}
+
+	@Override
+	public Connection addConnection() {
+		return null;
+	}
+
+}

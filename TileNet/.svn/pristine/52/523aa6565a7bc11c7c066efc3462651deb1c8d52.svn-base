@@ -1,0 +1,29 @@
+package com.putable.tilenet.settag;
+
+import java.awt.Color;
+
+import deprecated.XXXImage;
+
+
+public interface SetTag {
+	
+	public int getX();
+
+	public int getY();
+
+	public Color getBgcolor();
+
+	public Color getFgcolor();
+
+	public int getTileWidth();
+
+	public int getTileHeight();
+
+	public int getEnergy();
+
+	public String getText();
+
+	public XXXImage getImage();
+	
+	public String getName();
+}

@@ -1,0 +1,12 @@
+package com.putable.tilenet.matrix;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+
+public class Token extends MatrixElement {
+
+	public Token() {
+		super(ElemType.TOKEN);
+	}
+
+}

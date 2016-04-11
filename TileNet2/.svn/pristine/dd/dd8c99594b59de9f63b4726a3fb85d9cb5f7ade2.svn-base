@@ -1,0 +1,44 @@
+package com.putable.tilenet.client;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.matrixelement.Agent;
+
+public class AgentsConnectedPanel extends JPanel{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JList agentList;
+	DefaultListModel model;
+	
+	public AgentsConnectedPanel(){
+		this.setPreferredSize(new Dimension(200,500));
+		this.setLayout(new BorderLayout());
+		model = new DefaultListModel();
+		model.addElement("Agents Connected");
+		this.agentList = new JList(model);
+		this.add(agentList, BorderLayout.CENTER);
+		this.setVisible(true);
+	}
+	
+	public void addAgent(Agent a){
+		if (!(model.contains(a))){
+			model.addElement(a.getName());
+		}
+	}
+	
+	public void removeAgent(Agent a){
+		model.remove(model.indexOf(a.getName()));
+	}
+	
+	
+	
+
+}

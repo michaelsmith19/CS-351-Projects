@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommitComments>	<CommitComment>added all the generated javadoc to the repository</CommitComment>
+	<CommitComment>removed print statement</CommitComment>
+	<CommitComment>got the images to work but they look really bad...still needs more work.</CommitComment>
+	<CommitComment>attempted to get images working but failed. Added the card class and deckBuilder</CommitComment>
+	<CommitComment>Added the Cards that are currently made for TripleTriad</CommitComment>
+	<CommitComment>Added the place holder tokens to Triple Triad.  </CommitComment>
+	<CommitComment>I have added all the things we need for Triple Triad.  it still does not work with our system.</CommitComment>
+	<CommitComment>Got the server to add username password pairs the first time they are given.</CommitComment>
+	<CommitComment>made it so the characters &lt;, &amp;, and &quot; can be sent in chat.</CommitComment>
+	<CommitComment>made it so the text field resets when you send a message in chat.</CommitComment>
+</CommitComments>

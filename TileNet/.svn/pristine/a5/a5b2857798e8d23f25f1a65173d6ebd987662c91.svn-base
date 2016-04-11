@@ -1,0 +1,29 @@
+package com.putable.tilenet.factory;
+
+public class TileNetMatrixBuilder extends MatrixBuilder{	
+	
+	@Override
+	protected Matrix makeMatrix(String element) {
+		Matrix mat = null;
+		
+		
+		if(element.compareTo("HOME") == 0){
+			
+			MatrixFactory matrixFactory = new HomeMatrixFactory();
+			mat = new HomeMatrix(matrixFactory);
+			mat.setName("HOME MATRIX ABSTRACT FACTORY MADE!");
+			
+		} else if (element.compareTo("SPLASH") == 0){
+			
+			MatrixFactory matrixFactory = new SplashMatrixFactory();
+			mat = new SplashMatrix(matrixFactory);
+			mat.setName("SPLASH MATRIX ABSTRACT FACTORY MADE!");
+			
+			
+		}		
+		return mat;
+	}
+
+	
+
+}

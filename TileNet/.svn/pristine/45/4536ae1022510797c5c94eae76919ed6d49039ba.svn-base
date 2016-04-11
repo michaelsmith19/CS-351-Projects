@@ -1,0 +1,29 @@
+package com.putable.tilenet.server;
+
+import java.util.ArrayList;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+
+public interface WorldModel {
+
+	/**Receives the latest XMLTag and processes it to determine
+	 * what needs to be done based on the tag
+	 * @param tag the tag to be processed
+	 */
+	public void processTag(XMLTag tag);
+
+	/**Sends SetTags to the dispatch thread
+	 * @param g the Grid being sent
+	 * @return the list of SetTags being sent
+	 */
+	public ArrayList<SetTag> sendMatrix(Grid g);
+	
+	
+	
+	
+}
+
+
+

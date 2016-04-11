@@ -1,0 +1,58 @@
+package com.putable.tilenet.matrix;
+
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+
+public class Token extends MatrixElement{
+	
+	public Token() {
+		super(ElemType.TOKEN);
+	}
+
+	@Override
+	public ImageIcon getDisplay(int tileSize) {
+		ImageIcon ic = new ImageIcon(makeBufferedImage(tileSize),getText());
+		return ic;
+	};
+
+	public BufferedImage makeBufferedImage(int tileSize){
+		BufferedImage buffImage = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics g = buffImage.getGraphics();
+		g.setColor(getBgcolor());
+		g.fillRect(0, 0, tileSize, tileSize);
+		if (getImage() != null){
+			//g.drawImage(getImage(), 0, 0,);
+		}
+		g.setColor(getFgcolor());
+		g.drawString(getName(), (tileSize/2), (tileSize/2));
+	
+		
+		return buffImage;
+	}
+
+	
+	/*@Override
+	public void paintIcon(Component c, Graphics g, int x, int y){
+		g.setColor(getBgcolor());
+		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		if (getImage() != null){
+			g.drawImage(getImage(), 0, 0, c);
+		}
+		g.setColor(getFgcolor());
+		g.drawString(getName(), c.getWidth()/2, c.getHeight()/2);
+	
+
+	}*/
+	
+
+	
+	
+}

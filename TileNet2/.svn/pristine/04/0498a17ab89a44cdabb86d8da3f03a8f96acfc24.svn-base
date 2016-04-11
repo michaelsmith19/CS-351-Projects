@@ -1,0 +1,474 @@
+package com.putable.tilenet.client;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.rmi.UnknownHostException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import com.putable.tilenet.Util.XMLParser;
+import com.putable.tilenet.Util.XMLTags.CMDTag;
+import com.putable.tilenet.Util.XMLTags.ClientTag;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.LoggedIn;
+import com.putable.tilenet.Util.XMLTags.LoginTag;
+import com.putable.tilenet.Util.XMLTags.ServerTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag.TagType;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.Element.ElemType;
+import com.putable.tilenet.blueprints.ElementBuilder;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.Grid.GridType;
+import com.putable.tilenet.blueprints.GridBuilder;
+import com.putable.tilenet.blueprints.TileNetElementBuilder;
+import com.putable.tilenet.blueprints.TileNetGridBuilder;
+import com.putable.tilenet.connection.AgentConnection;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Matrix;
+import com.putable.tilenet.server.Pair;
+
+@SuppressWarnings("serial")
+public class TileNetClient extends JFrame {
+	private final String clientHeader = "<?xml version='1.0' encoding='utf-8'?><!DOCTYPE client SYSTEM \"http://putable.com/TileNet/TileNet1.0.dtd\">";
+	private Connection conn;
+	private BlockingQueue<Pair> bq;
+	private String port;
+	private String hostname;
+	private String name;
+	private final ChatPanel chat;
+	private Matrix currentMatrix;
+	private Agent thisAgent;
+	private ClientDispatch dispatch;
+	private ExecutorService ex;
+	private boolean isConnected = false;
+	private final Grid whereWeAre;
+
+	public TileNetClient() {
+		super("TileNet Client");
+		chat = new ChatPanel();
+		this.conn = new AgentConnection();
+		bq = new LinkedBlockingQueue<Pair>();
+
+		// Not initialized
+		GridBuilder makeGrid = new TileNetGridBuilder();
+		this.whereWeAre = makeGrid.orderGrid(GridType.HOME);
+
+		setPreferredSize(new Dimension(500, 200));
+		setLocationRelativeTo(null);
+
+		add(makeConnectPanel(this), BorderLayout.CENTER);
+
+		pack();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+
+	}
+
+	private JPanel makeConnectPanel(final JFrame frame) {
+		// This is a panel
+		final JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(400, 300));
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
+		// That has these components
+		final JLabel port = new JLabel("None");
+		final JLabel host = new JLabel("None");
+		final JTextField portTxt = new JTextField("Please enter port", 30);
+		final JTextField hostTxt = new JTextField("Please enter hostname", 30);
+		final JButton connect = new JButton("CONNECT");
+		portTxt.selectAll();
+		hostTxt.selectAll();
+
+		// Who do these things
+		portTxt.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				port.setText(portTxt.getText());
+				setPort(portTxt.getText());
+				connect.requestFocus();
+			}
+		});
+		hostTxt.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				host.setText(hostTxt.getText());
+				setHost(hostTxt.getText());
+				portTxt.requestFocus();
+
+			}
+		});
+		connect.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (isReadyToConnect()) {
+					// Remove this panel from this panels frame, add new screen
+					frame.remove(panel);
+					showLoginStatusPanel();
+					frame.add(makeWelcomePanel(), BorderLayout.CENTER);
+				} else
+					JOptionPane.showMessageDialog(null,
+							"Please select a hostname and port",
+							"Idiot Warning", JOptionPane.WARNING_MESSAGE);
+			}
+		});
+
+		c.gridx = 0;
+		c.gridy = 5;
+		panel.add(portTxt, c);
+		c.gridx = 0;
+		c.gridy = 4;
+		panel.add(hostTxt, c);
+		c.gridx = 1;
+		c.gridy = 5;
+		panel.add(port, c);
+		c.gridx = 1;
+		c.gridy = 4;
+		panel.add(host, c);
+		c.gridx = 2;
+		c.gridy = 4;
+		panel.add(connect, c);
+
+		return panel;
+	}
+
+	private void showLoginStatusPanel() {
+		// These components are added to parent (main) frame
+		JLabel status = new JLabel();
+		status.setText("Not Authenticated");
+		status.setBackground(Color.RED);
+		status.setOpaque(true);
+		add(status, BorderLayout.NORTH);
+		repaint();
+
+		// And changed when successful login happens
+		if (connect()) {
+			status.setBackground(Color.GREEN);
+			status.setText("Authenticated");
+			repaint();
+		}
+	}
+
+	private JPanel makeWelcomePanel() {
+		// This is a panel
+		final JPanel panel = new JPanel();
+		panel.add(whereWeAre.toJPanel(400, 400));
+		panel.setPreferredSize(new Dimension(800, 800 + chat.getHeight()));
+		panel.setLayout(new GridLayout());
+		panel.add(chat, BorderLayout.SOUTH);
+		chat.getTextField().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				CMDTag cmdTag = new CMDTag("say", thisAgent.getObjid());
+				cmdTag.setText(chat.getTextField().getText());
+				conn.sendMessage(cmdTag);
+				System.out.println("sending message...");
+			}
+
+		});
+
+		this.ex = Executors.newCachedThreadPool();
+		this.dispatch = new ClientDispatch();
+		ex.submit(dispatch);
+
+		// TODO what our working frame will look like
+
+		// /-------DEBUG
+
+		return panel;
+	}
+
+	private boolean connect() {
+		// TODO handle specific exceptions, we can't have the GUI shit out on us
+		boolean success = false;
+
+		conn.setDestination(hostname, Integer.parseInt(port));
+		try {
+			// Establish actual TCP connection
+			conn.connect();
+
+			// Start the parser thread
+			XMLParser xmlp = new XMLParser(bq, conn);
+			xmlp.setInputSource(conn.getIn2());
+			Thread parseThread = new Thread(xmlp, "parseThread");
+			parseThread.start();
+
+			// Expect to block until tag received, because it makes life
+			// simpler, and we are allowed to.
+			success = exchangeOpenTag() & exchangeLoggedin();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Server port was probably wrong");
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (success)
+			System.out.println("Debug. auth success");
+
+		else
+			System.out.println("Unable to login");
+		return success;
+	}
+
+	private boolean exchangeOpenTag() throws InterruptedException {
+		boolean success = false;
+		/*
+		 * Server
+		 * 
+		 * ((c8.8.4)) TAG PURPOSE: Announce a server's identifying information
+		 * and status to a (potential) client.
+		 * 
+		 * ((c8.8.5)) TAG SEQUENCING: Is the document root tag for the server
+		 * side of the communication, so obviously the server tag open must be
+		 * the first thing sent after the XML and DTD headers, and the server
+		 * tag close must be the last thing sent before the server output side
+		 * of the connection is closed.
+		 */
+		Pair p = bq.take();
+
+		if (p.getTag().getTagType() != TagType.SERVER) {
+			System.err
+					.println("Server is IN ERROR. Expected <server>, Received: "
+							+ p.getTag().getTagType());
+		}
+
+		else if (((ServerTag) p.getTag()).getStatus().compareTo("open") == 0) {
+			/*
+			 * Client
+			 * 
+			 * ((c8.1.4)) TAG PURPOSE: Announce a client's version to a server.
+			 * 
+			 * ((c8.1.5)) TAG SEQUENCING: client Is the document root tag for
+			 * the client side of the communication, so obviously the client
+			 * open must be the first thing sent after the XML and DTD headers,
+			 * and the client close must be the last thing sent before the
+			 * client output side of the connection is closed.
+			 * 
+			 * ((c8.1.5.1)) As discussed in (cXXX), in the TileNet protocol the
+			 * server is required to 'speak first', so the client tag (and the
+			 * XML and DTD headers before it) are not to be sent until the
+			 * server open tag has been successfully parsed.
+			 */
+			conn.sendMessage(clientHeader + new ClientTag());
+			success = true;
+		}
+
+		return success;
+	}
+
+	private boolean exchangeLoggedin() throws InterruptedException {
+		JPanel panel = new JPanel();
+		JTextField user = new JTextField(20);
+		JTextField passwd = new JPasswordField(20);
+
+		panel.add(new JLabel("Username"));
+		panel.add(user);
+		panel.add(Box.createHorizontalStrut(20));
+		panel.add(new JLabel("Password"));
+		panel.add(passwd);
+		user.requestFocus();
+
+		// TODO make it NOT use Option pane
+		JOptionPane.showMessageDialog(null, panel,
+				"Enter Username and password", JOptionPane.QUESTION_MESSAGE);
+		user.requestFocus();
+
+		/*
+		 * Login
+		 * 
+		 * ((c8.6.4)) TAG PURPOSE: Authenticate a client to a server and
+		 * associate a particular user name and connection information with a
+		 * particular agent instance in the world.
+		 * 
+		 * ((c8.6.5)) TAG SEQUENCING: Is sent at least once after the client tag
+		 * is opened. After sending, client MUST wait for a logged-in tag from
+		 * server before sending anything more. If the returned logged-in tag
+		 * indicates success, client MUST send no further login tags during that
+		 * session. If the returned logged-in tag indicates failure, client MAY
+		 * choose to modify the user and/or password information (presumably in
+		 * consultation with the client's user) and send another login tag.
+		 */
+		conn.sendMessage(new LoginTag(user.getText(), passwd.getText()));
+
+		/*
+		 * Logged-in
+		 * 
+		 * ((c8.4.4)) TAG PURPOSE: Allow a server to let a client know whether
+		 * the client's login attempt succeeded or failed. In addition, if the
+		 * login attempt succeeded, inform the client of the identity of the
+		 * agent associated with the client.
+		 * 
+		 * ((c8.4.5)) TAG SEQUENCING: A logged-in tag MUST be the first tag sent
+		 * after a server open tag, sent upon receipt of a login tag from the
+		 * client. Multiple logged-in tags may be sent in a single session but
+		 * only when all but the last one specific failure to login.
+		 */
+		Pair p = bq.take();
+
+		if (p.getTag().getTagType() != TagType.LOGGEDIN) {
+			// TODO loop somewhere
+			System.err
+					.println("Server is IN ERROR. Expected <logged-in>, Received: "
+							+ p.toString());
+		}
+
+		LoggedIn loggedin = (LoggedIn) p.getTag();
+		ElementBuilder makeElements = new TileNetElementBuilder();
+		thisAgent = (Agent) makeElements.orderElement(ElemType.AGENT);
+		thisAgent.setId(loggedin.getObjid());
+
+		// This message now prints to the chat.
+		HearTag hearTag = new HearTag(thisAgent.getName(), "server",
+				loggedin.getMessage());
+		chat.processHearTag(hearTag);
+
+		/*
+		 * Optional: objid : agent object identifier
+		 * 
+		 * ((c8.4.6.2.1)) PURPOSE: If omitted by the server, that indicates to
+		 * the client that the login attempt failed. If included by the server,
+		 * that indicates to the client that the login attempt succeeded and
+		 * provides the objid of the agent now associated with this client.
+		 */
+		// TODO: change this from name to objid. The name should be the
+		// String username given at login.
+		if (loggedin.getObjid() != null)
+			this.name = loggedin.getObjid();
+
+		return (name != null) ? true : false;
+	}
+
+	private void setPort(String port) {
+		this.port = port;
+	}
+
+	private void setHost(String host) {
+		this.hostname = host;
+	}
+
+	/**
+	 * Tells whether or not you have received a hostName and a port.
+	 * 
+	 * @return true only if both port and hostname are not null
+	 */
+	private boolean isReadyToConnect() {
+		return (port != null && hostname != null);
+	}
+
+	/**
+	 * This controls the flow of {@link XMLTags} coming from the server to the
+	 * client. It will use the {@link LinkedBlockingQueue} take() method to wait
+	 * for its next tag. Once take() returns a tag then it will execute that
+	 * tag.
+	 * 
+	 * @author Class Cast Exceptions
+	 */
+	private final class ClientDispatch implements Callable<Void> {
+		private final LinkedBlockingQueue<Pair> queue;
+
+		public ClientDispatch() {
+			this.queue = (LinkedBlockingQueue<Pair>) bq;
+		}
+
+		@Override
+		public Void call() throws Exception {
+
+			XMLTag tag = null;
+			while (true) {
+				tag = queue.take().getTag();
+				System.out.println("i got : " + tag.getTagType() + " : " + tag);
+				switch (tag.getTagType()) {
+				// The client should only ever receive HEAR, SERVER, SET,
+				// LOGGEDIN/OUT, or XRESPONSE. The rest are only sent to the
+				// server. If you get one of the other TagTypes the server that
+				// sent it is IN ERROR.
+				case HEAR:
+					HearTag ht = (HearTag) tag;
+					chat.processHearTag(ht);
+					break;
+				case LOGGEDIN:
+					break;
+				case LOGGEDOUT:
+					break;
+				case SERVER:
+					break;
+				case SET:
+					/*
+					 * This is SemiHacked and not to elegant solution
+					 */
+					Element ele = Element.toElement(tag);
+					switch (ele.type) {
+					case AGENT:
+						break;
+					case IMAGE:
+						break;
+					case KEY:
+						break;
+					case MATRIX:
+						whereWeAre.associate((Matrix) ele);
+						break;
+					case TOKEN:
+						whereWeAre.update((SetTag) tag);
+						break;
+					default:
+						System.err
+								.println("Unfortunatly we cant deal with SetTag of type "
+										+ ele);
+						break;
+					}
+
+					break;
+				case XRESPONSE:
+					break;
+				default:
+					System.err
+							.println("The server is IN ERROR since it sent a "
+									+ tag.getTagType() + " To the client");
+					break;
+				}
+			}
+
+		}
+	}
+
+}

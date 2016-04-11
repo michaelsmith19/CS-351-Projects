@@ -1,0 +1,17 @@
+package com.putable.tilenet.matrix;
+
+import javax.swing.ImageIcon;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+public abstract class MatrixElement extends TileNetElement{
+	private static long uniqueObjID = 0;
+	private String objid;
+	
+	public MatrixElement(ElemType type){
+		++uniqueObjID;
+		this.objid = ("" + type.getPrefix() + uniqueObjID);
+	}
+
+	public abstract ImageIcon getDisplay(int tileWidth, int tileHeight);
+}

@@ -1,0 +1,45 @@
+package com.putable.tilenet.Tests;
+
+import static org.junit.Assert.assertTrue;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.putable.tilenet.Server.ServerModel;
+import com.putable.tilenet.Util.Common;
+
+public class ServerModelTest {
+	private final ServerModel  serverModel = AllTests.serverModel;
+	
+	@Before
+	public void beforeEveryTest(){
+		assertTrue(serverModel.getConnections().size() == 0);
+		assertTrue(serverModel.isRunning());
+	}
+	
+	@After
+	public void afterEveryTest() throws Exception{
+		serverModel.terminateAllConnections();		
+	}
+	
+	@Test
+	public void testControllerCount() throws InterruptedException {
+		Common.sendTheBots(AllTests.TEST_PORT, AllTests.MAX_CONNECTIONS, Common.botcmd_Connect);
+		//Wait .05 seconds for each connection
+		Thread.sleep((long) (((AllTests.MAX_CONNECTIONS * 0.05 ) * 1000) + 100));
+		assertTrue(serverModel.getConnections().size() == AllTests.MAX_CONNECTIONS);
+	}
+
+	@Test(expected = Exception.class)
+	public void testPortBind() throws InterruptedException, ExecutionException  {
+		ExecutorService testEx = Executors.newSingleThreadExecutor();
+		
+		ServerModel redundantserver = new ServerModel(AllTests.TEST_PORT, AllTests.MAX_CONNECTIONS);
+		testEx.submit(redundantserver).get();		
+	}
+}

@@ -1,0 +1,80 @@
+package com.putable.tilenet.matrixelement;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import com.putable.tilenet.factory.MatrixElementFactory;
+
+public class AutoBot extends MatrixElement implements Callable<Void>{
+	MatrixElementFactory thisUses;
+	
+	private List<String> commands;
+	
+	public AutoBot(MatrixElementFactory thisSpecificfactory){		
+		this.thisUses = thisSpecificfactory;		
+	}
+
+	@Override
+	void makeElement() {		
+		//tag = thisUses.addSetTag();
+		type = thisUses.addElemType();
+		conn = thisUses.addConnection();
+	}
+
+	@Override
+	public Void call() throws Exception {
+		conn.connect();
+		System.out.println(this  + "connected");
+		while(!conn.getSock().isClosed()){
+			executecommands();						
+		}
+		
+		return null;
+	}
+	
+	/**Making an EXTREAMLY simple AutoBot language....Not java 1.7 so no switch on strings <br><br>
+	 * Command: <br><br>
+	 * 		WAIT_RESPONCE     ---Waits for a server response <br>
+	 * 		SEND:{COMMAND}    ---Sends this command String<br>
+	 * 		EXPECT:{RESPONCE] ---Waits until expected response<br>
+	 *      DISCONNECT		  ---Closes connection
+	 * @throws IllegalStateException 
+	 *  When attempting to modify a closed {@link Socket}
+	 * @throws IOException 
+	 *  Error reading from {@link Socket}
+	 * @throws IllegalArgumentException
+	 * 	When no commands are present
+	 */
+	private void executecommands() throws IllegalArgumentException, IllegalStateException, IOException {
+		if(commands == null || commands.size() == 0){
+			throw new IllegalStateException("An AutoBot must have commands to execute");
+		}
+		for(int i = 0; i < commands.size(); i++){
+			String instruction = commands.get(i);
+			switch(instruction.charAt(0)){
+			case 'W':
+				System.out.println(this + "-Received: " +conn.getServerResponce());
+				break;
+			case 'S':
+				System.out.println(this + "-Sent: " + instruction.substring(5));
+				conn.sendMessage(instruction.substring(5));				
+				break;
+			case 'E':
+				conn.expect(instruction.substring(7));
+				break;
+			case 'D':				
+				conn.disconnect();
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
+	
+	public void setCommands(List<String> commands){
+		this.commands = commands;
+	}
+}

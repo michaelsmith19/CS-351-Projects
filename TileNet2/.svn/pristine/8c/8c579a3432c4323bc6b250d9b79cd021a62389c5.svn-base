@@ -1,0 +1,243 @@
+package com.putable.tilenet.layout;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.TokenClickEvent;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.Layout;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Token;
+
+public class PairPanickLayout implements Layout {
+
+	private Integer matrixWidth = 1;
+	private Integer matrixHeight = 1;
+	private int defaultTileWidth;
+	private int defaultTileHeight;
+	private SetTag matrixTag;
+	private Connection conn;
+	private final Color defaultFgColor = Color.GREEN;
+	private final Color defaultBgColor = Color.RED;
+	private final JPanel panel;
+	private final ConcurrentHashMap<String, BufferedImage> images;
+	private final ConcurrentHashMap<R2Vect, JButton> buttons;
+	private final ConcurrentHashMap<R2Vect, SetTag> tags;	
+	private final ConcurrentHashMap<String, Token> tokens;
+	private final ConcurrentHashMap<String, ElementOp> moveOps;
+	
+	
+	public PairPanickLayout(){
+		this.panel = new JPanel();
+		this.images = new ConcurrentHashMap<String, BufferedImage>();
+		this.buttons = new ConcurrentHashMap<R2Vect, JButton>();
+		this.tags = new ConcurrentHashMap<R2Vect, SetTag>();
+		this.tokens = new ConcurrentHashMap<String, Token>();
+		this.moveOps = new ConcurrentHashMap<String, ElementOp>();
+	}
+	
+	
+	private R2Vect largetstSetTagSoFar() {
+		R2Vect tmp = new R2Vect();
+		for(R2Vect v : tags.keySet()){
+			tmp.x = (tmp.x > v.x) ? tmp.x : v.x;
+			tmp.y = (tmp.y > v.y) ? tmp.y : v.y;
+		}
+		return tmp;
+	}
+
+	private JButton tokenWithImage(SetTag tag, JButton button) throws IOException {
+		//TODO this doesn't go by the rules exactly		
+		BufferedImage bi = images.get(tag.getImage());
+		if(bi == null){
+			bi = ImageIO.read(getClass().getResource("Rainbow-Dash.png"));
+		}		
+		button.setIcon(new ImageIcon(bi));
+		return button;		
+	}
+
+	private void updateToken(SetTag tag) {
+		//See if we are changing or creating
+		Token tok = (Token) Element.toElement(tag);
+		//tok.setOp(sampleOp(tag.getObjid()));
+		tags.put(new R2Vect(tag.getX(), tag.getY()), tag);
+		tokens.put(tag.getObjid(), tok);
+		JButton button = buttons.get(new R2Vect(tag.getX(), tag.getY()));
+		
+		if(button == null)
+			button = new JButton(tag.getName());		
+		
+		//Get default color
+		Color fg = tag.getFgColor();
+		Color bg = tag.getBgColor();
+		if(fg == null)
+			fg = defaultFgColor;
+		if(bg == null)
+			bg = defaultBgColor;
+		
+		//Size the button
+		button.setPreferredSize(new Dimension(defaultTileWidth, defaultTileHeight));
+		button.setForeground(fg);
+		button.setBackground(bg);
+		button.setOpaque(true);		
+		button.setText(tag.getName());
+		button.addActionListener(new TokenClickEvent(tag, conn));
+		
+		//Do stuff with image if there is one
+		if(tag.getImage() != null )
+			try {
+				//TODO check for validity
+				button = tokenWithImage(tag, button);
+			} catch (IOException e) {
+				System.err.println("Error reading rainbow dash!");
+			}
+		
+		JButton tmp = buttons.put(new R2Vect(tag.getX(), tag.getY()), button);
+		
+		//Show differential change		
+		if(tmp == null){
+			//System.out.println("Added new button, repainted");
+			//Forces addition of button on view
+			toJPanel(panel.getHeight(), panel.getWidth());
+		} else {
+			//System.out.println("updated button, repainted");
+			button.repaint();
+		}				
+	}
+
+	private void updateMatrix(SetTag tag) {
+		if(matrixTag != null)
+			System.out.println("This Grid is now associated to: " + tag.getObjid() + " " + tag.getName());		
+		this.matrixTag = tag;
+		matrixWidth = tag.getX();
+		matrixHeight = tag.getY();		
+		
+		//Must resize if new
+		if(tags.size() != 0){
+			for(SetTag old: tags.values()){
+				updateToken(old);
+			}			
+		}
+		//Forces scaling of buttons to new size
+		toJPanel(panel.getHeight(), panel.getWidth());
+	}
+
+	@Override
+	public void update(SetTag tag) {
+		//System.out.println("For the matrix called: " + (matrixTag == null ? "No matrix yet" : matrixTag) + " Tokens so far: " + tags.size());
+		//System.out.println("layout parsing: " + tag);
+		switch (tag.getObjid().charAt(0)){
+		case 't':
+			updateToken(tag);			
+			break;
+		case 'm':
+			updateMatrix(tag);
+			break;
+		default:
+			System.err.println("Layout cannot handle tags like this yet: " + tag);
+			tags.remove(new R2Vect(tag.getX(), tag.getY()));
+			break;				
+		}		
+	}
+
+	@Override
+	public JPanel toJPanel(int height, int width) {
+		//Error checking
+		
+		for(Component c: panel.getComponents()){
+			panel.remove(c);
+		}
+		
+		//If haven't received the Matrix SetTag. try to get an estimated size		
+		if(matrixTag == null){
+			System.err.println("No matrix SetTag, guessing dimensions");			
+			if (tags.size() != 0){
+				R2Vect guess = largetstSetTagSoFar();
+				matrixWidth = guess.x;
+				matrixHeight = guess.y;								
+			}			
+		}
+		
+		
+		defaultTileHeight = height/matrixHeight;
+		defaultTileWidth = width/matrixWidth;
+	
+		//Panel stuff		
+		panel.setLayout(new GridBagLayout());
+		panel.setSize(width, height);
+		panel.setPreferredSize(new Dimension(width, height));
+		panel.setBackground(Color.BLACK);
+		GridBagConstraints c = new GridBagConstraints();		
+		
+		//Represent all Elements
+		for(int x = 0; x < matrixWidth; x++){
+			for(int y = 0; y < matrixHeight; y++){				
+				c.gridx = x;
+				c.gridy = y;
+				JButton but = buttons.get(new R2Vect(x, y));
+				if (but != null)
+					panel.add(but, c);
+				else{
+					panel.add(Box.createRigidArea(new Dimension(defaultTileHeight, defaultTileWidth)), c);
+				}
+			}
+		}
+		
+		panel.revalidate();
+		panel.repaint();		
+		return panel;
+	}
+	
+	@Override
+	public void setMoveOp(ElementOp moveOp, String description){
+		moveOps.put(description, moveOp);
+		for (SetTag s : tags.values()){
+			if (tokens.get(s.getObjid()).getOp() == null){
+				tokens.get(s.getObjid()).setOp(moveOp);
+				break;
+			}
+		}
+	}
+	
+
+	@Override
+	public SetTag getMatrixTag() {
+		return this.matrixTag;
+	}
+
+	@Override
+	public List<SetTag> toSetTags() {
+		List<SetTag> list = new ArrayList<SetTag>();		
+		for(SetTag tag : tags.values())			
+			list.add(tag);
+		return list;
+	}	
+	
+	@Override
+	public Token getTokenFromID(String id){
+		return tokens.get(id);
+	}
+	
+	@Override
+	public void setConnection(Connection conn){
+		this.conn = conn;
+	}
+
+}

@@ -1,0 +1,19 @@
+package com.putable.tilenet.factory;
+
+public class SplashMatrix extends Matrix {
+MatrixFactory thisMatrixUses;
+	
+	public SplashMatrix(MatrixFactory thisSpecificfactory){
+		
+		this.thisMatrixUses = thisSpecificfactory;
+		
+	}
+
+	@Override
+	void makeMatrix() {
+		
+		keyBindSet = thisMatrixUses.addKeyBindSet();
+		grid = thisMatrixUses.addGrid();
+		
+	}
+}

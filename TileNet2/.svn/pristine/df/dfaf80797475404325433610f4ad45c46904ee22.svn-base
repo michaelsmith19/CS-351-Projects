@@ -1,0 +1,187 @@
+package deprecated;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.Common;
+
+import deprecated.XXXMatrixElementFactory.ElemType;
+
+//TODO make this the base (abstract? interface?) class for all agent types.
+public class XXXAgent extends XXXMatrixElement implements Callable<Void> {
+	private final boolean isDebug = true;
+	// These must be specified by the human user.
+	private final String clientAddress = null;
+	private final String nameOfAgent;
+
+	// This will be the internal representation of the matrix this
+	// agent is currently inside. Its values will be initialized by
+	// the set command in XML.
+	private XXXMatrix m;
+
+	private final Socket sock;
+	private PrintWriter outgoing;
+	private BufferedReader incoming;
+
+	/**
+	 * Creates a connection to a TileNet Server
+	 * 
+	 * @param agentName
+	 *            String identification of this agent
+	 * @param port
+	 *            what port to connect to
+	 * @throws UnknownHostException
+	 *             When the IP can not be resolved
+	 * @throws IOException
+	 *             Upon failing to open a {@link Socket} for any other reason
+	 *             except {@link UnknownHostException}
+	 */
+	public XXXAgent(String agentName, int port) throws UnknownHostException,
+			IOException {
+		super(ElemType.AGENT);
+
+		// TODO: Have a GUI to ask for the agentName as well as the
+		// hostName and password which is the clientAddress in this case. Try to
+		// connect the socket with the clientAddress. The server should send
+		// a valid server tag and based on its contents the agent will continue
+		// to try to connect.
+		// TODO: The values need to be validated as userNames and passwords.
+		// Then it will send its client tag and the session will begin.
+
+		this.nameOfAgent = agentName;
+		this.sock = new Socket(clientAddress, port);
+		this.outgoing = Common.getWriterFromSock(sock);
+		this.incoming = Common.getReaderFromSock(sock);
+	}
+
+	@Override
+	public Void call() throws Exception {
+
+		while (!sock.isClosed()) {
+
+			/*
+			 * 
+			 * DO STUFF WITH XML HERE
+			 * 
+			 * There should be a server login XML in the incoming stream that
+			 * was requested on behalf of this client/agent via the Controller
+			 * class associated with this connection.
+			 */
+
+		}
+
+		return null;
+	}
+
+	public void show(XXXMatrix m) {
+		JFrame frame = new JFrame(this.nameOfAgent + " View");
+		JPanel matrix = new JPanel(new GridLayout(m.getTileRow(),
+				m.getTileCol()));
+		for (int y = 0; y < m.getTileCol(); y++) {
+			for (int x = 0; x < m.getTileRow(); x++) {
+				ImageIcon ic;
+				Point selection = new Point(y, x);
+				if (m.getLayout().get(selection) == null) {
+					ic = new ImageIcon((new BufferedImage(m.getTileWidth(),
+							m.getTileHeight(), BufferedImage.TYPE_4BYTE_ABGR)));
+				} else
+					ic = m.getLayout().get(selection)
+							.getDisplay(m.getTileWidth(), m.getTileHeight());
+				JLabel label = new JLabel();
+				label.setToolTipText(m.getLayout().get(selection).getText());
+				label.setIcon(ic);
+				matrix.add(label);
+			}
+		}
+		frame.add(matrix, BorderLayout.WEST);
+		// Make disconnectButton (ClientSide)
+		JButton terminate = new JButton("Disconnect");
+		terminate.setSize(50, 50);
+		terminate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					disconnect();
+				} catch (IOException e) {
+					System.out.println("Error DISCONNECTING! Forcing Close");
+					System.exit(-1);
+				}
+			}
+
+		});
+		frame.add(terminate, BorderLayout.SOUTH);
+		// Add more stuff as we like
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setAlwaysOnTop(true);
+		frame.setResizable(false);
+		frame.setVisible(true);
+
+	}
+
+	public String getServerResponce() throws IOException {
+		while (!incoming.ready()) {
+		}
+		String message = incoming.readLine();
+		if (isDebug)
+			System.out
+					.println("Server -> Received by " + this + ": " + message);
+		return message;
+	}
+
+	public void sendMessage(String s) {
+		outgoing.println(s);
+		if (isDebug)
+			System.out.println(this + " -> Server: " + s);
+	}
+
+	public void disconnect() throws IOException {
+		if (isDebug)
+			System.out.println(this + " Socket Closed "
+					+ (sock.isClosed() ? "AGAIN" : ""));
+		incoming.close();
+		outgoing.close();
+		sock.close();
+	}
+
+	public String getName() {
+		return this.nameOfAgent;
+	}
+
+	public String toString() {
+		return getName() + "@" + getid();
+
+	}
+
+	@Override
+	public ImageIcon getDisplay(int tileWidth, int tileHeight) {
+		ImageIcon ic = new ImageIcon(makeBufferedImage());
+		return ic;
+		// TODO Actual representation of an Agent
+	}
+
+	private BufferedImage makeBufferedImage() {
+		BufferedImage buffIm = new BufferedImage(10, 10,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		return buffIm;
+
+	}
+
+}

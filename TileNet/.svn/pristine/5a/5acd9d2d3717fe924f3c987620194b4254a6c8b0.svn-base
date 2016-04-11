@@ -1,0 +1,56 @@
+package com.putable.tilenet.Tests;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.putable.tilenet.Server.ServerModel;
+
+public class ControllerTest {
+	private static final int TEST_PORT = 9999;
+	private static final int MAX_CONNECTIONS = 100;
+	
+	//Where the Server lives
+	private static final ExecutorService servEx = Executors.newSingleThreadExecutor();
+	private static final ServerModel serverModel = new ServerModel(TEST_PORT, MAX_CONNECTIONS);
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		servEx.submit(serverModel);
+		//Wait 2 seconds
+		Thread.sleep(2000);
+		assertTrue(serverModel.isRunning());
+	}
+
+	@AfterClass
+	public static void tearDown() throws Exception {
+		serverModel.terminateServer();
+		servEx.shutdown();
+		//Wait 2
+		Thread.sleep(2000);
+		assertFalse(serverModel.isRunning());
+	}
+
+	@Test
+	public void testController() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testCall() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testToString() {
+		fail("Not yet implemented");
+	}
+
+}

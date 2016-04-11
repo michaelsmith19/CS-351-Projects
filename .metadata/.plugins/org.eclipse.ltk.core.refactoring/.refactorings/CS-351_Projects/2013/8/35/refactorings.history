@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;reader&apos; in &apos;com.putable.siteriter.test.SDLParserImplTest.testSDLParseException()&apos; to &apos;input&apos;&#x0A;- Original project: &apos;CS-351_Projects&apos;&#x0A;- Original element: &apos;com.putable.siteriter.test.SDLParserImplTest.testSDLParseException().reader&apos;&#x0A;- Renamed element: &apos;reader&apos;&#x0A;- Update references to refactored element" description="Rename local variable &apos;reader&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;com.putable.siteriter.test{SDLParserImplTest.java[SDLParserImplTest~testSDLParseException@reader!594!630!601!606!QReader;!0!false" name="input" references="true" stamp="1377899305385" version="1.0"/>
+</session>

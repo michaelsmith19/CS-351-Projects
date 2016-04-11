@@ -1,0 +1,868 @@
+<,zach0isgod@yahoo.com,zach0isgod@yahoo.com> <http://www.architexa.com/rdf/core#creator> "true" .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix atxa-jdt: <http://www.architexa.com/rdf/jdt#> .
+@prefix atxa-rse-eclipse: <http://www.architexa.com/rdf/rse-eclipse#> .
+@prefix atxa-core: <http://www.architexa.com/rdf/core#> .
+@prefix atxa: <http://www.architexa.com/rdf/> .
+@prefix atxa-jdt-wkspc: <http://www.architexa.com/rdf/jdt-wkspc#> .
+
+<http://www.architexa.com/rdf/rse-eclipse#Class.atxa> a atxa-core:reloFile .
+
+atxa:DetailNode atxa-core:detailLevel "1" .
+
+atxa-core:docRoot atxa-core:browseModel "com.architexa.diagrams.relo.jdt/com.architexa.diagrams.relo.jdt.browse.ClassStrucBrowseModel" ;
+	atxa-core:contains _:node189rifeqdx42867 .
+
+_:node189rifeqdx42867 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement> ;
+	atxa-core:posX "861" ;
+	atxa-core:posY "398" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$ElemType> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$TileNetMatrixElementBuilder> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElementBuilder> .
+
+_:node189rifeqdx42867 atxa-core:contains _:node189rifeqdx45110 .
+
+_:node189rifeqdx45110 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$ElemType> ;
+	atxa-core:posX "1481" ;
+	atxa-core:posY "423" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$ElemType> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$ElemType$5> .
+
+_:node189rifeqdx45110 atxa-core:contains _:node189rifeqdx45111 .
+
+_:node189rifeqdx45111 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$ElemType$5> ;
+	atxa-core:posX "1482" ;
+	atxa-core:posY "441" .
+
+_:node189rifeqdx43292 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45111 ;
+	rdf:object _:node189rifeqdx45110 ;
+	atxa-core:bendpoint _:node189rifeqdx46370 .
+
+_:node189rifeqdx46370 atxa-core:bpLocation "1551,486" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx43292 atxa-core:bendpoint _:node189rifeqdx46371 .
+
+_:node189rifeqdx46371 atxa-core:bpLocation "1554,486" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx42867 atxa-core:contains _:node189rifeqdx42868 .
+
+_:node189rifeqdx42868 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent> ;
+	atxa-core:posX "867" ;
+	atxa-core:posY "1033" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.call()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.makeElement()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.Agent(MatrixElementFactory,)> .
+
+_:node189rifeqdx42803 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx42868 ;
+	rdf:object _:node189rifeqdx42869 ;
+	atxa-core:bendpoint _:node189rifeqdx46372 .
+
+_:node189rifeqdx46372 atxa-core:bpLocation "984,798" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx42803 atxa-core:bendpoint _:node189rifeqdx46373 .
+
+_:node189rifeqdx46373 atxa-core:bpLocation "1954,798" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx42868 atxa-core:contains _:node189rifeqdx42872 .
+
+_:node189rifeqdx42872 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.call()> ;
+	atxa-core:posX "868" ;
+	atxa-core:posY "1051" .
+
+_:node189rifeqdx42868 atxa-core:contains _:node189rifeqdx42873 .
+
+_:node189rifeqdx42873 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.makeElement()> ;
+	atxa-core:posX "868" ;
+	atxa-core:posY "1067" .
+
+_:node189rifeqdx42868 atxa-core:contains _:node189rifeqdx45116 .
+
+_:node189rifeqdx45116 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$Agent.Agent(MatrixElementFactory,)> ;
+	atxa-core:posX "868" ;
+	atxa-core:posY "1083" .
+
+_:node189rifeqdx42867 atxa-core:contains _:node189rifeqdx42869 .
+
+_:node189rifeqdx42869 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement> ;
+	atxa-core:posX "1867" ;
+	atxa-core:posY "519" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getName()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.conn> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setId()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.name> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setName(String,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getObjid()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.tag> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.toString()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.makeElement()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setSetTag(SetTag,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getSetTag()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.attrib> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.value> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.values> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.type> .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx42876 .
+
+_:node189rifeqdx42876 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getName()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "649" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx42877 .
+
+_:node189rifeqdx42877 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.conn> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "537" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx42878 .
+
+_:node189rifeqdx42878 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setId()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "665" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43073 .
+
+_:node189rifeqdx43073 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.name> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "553" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43074 .
+
+_:node189rifeqdx43074 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setName(String,)> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "681" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43075 .
+
+_:node189rifeqdx43075 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getObjid()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "697" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43076 .
+
+_:node189rifeqdx43076 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.tag> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "569" .
+
+_:node189rifeqdx42914 a atxa-core:link ;
+	atxa-core:model atxa-jdt:refType ;
+	rdf:subject _:node189rifeqdx43076 ;
+	rdf:object _:node189rifeqdx42869 .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43077 .
+
+_:node189rifeqdx43077 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.toString()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "713" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43078 .
+
+_:node189rifeqdx43078 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.makeElement()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "729" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43079 .
+
+_:node189rifeqdx43079 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.setSetTag(SetTag,)> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "745" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx43080 .
+
+_:node189rifeqdx43080 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.getSetTag()> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "761" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx45117 .
+
+_:node189rifeqdx45117 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.attrib> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "585" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx45118 .
+
+_:node189rifeqdx45118 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.value> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "601" .
+
+_:node189rifeqdx43957 a atxa-core:link ;
+	atxa-core:model atxa-jdt:refType ;
+	rdf:subject _:node189rifeqdx45118 ;
+	rdf:object _:node189rifeqdx45119 .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx45119 .
+
+_:node189rifeqdx45119 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.values> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "617" .
+
+_:node189rifeqdx42869 atxa-core:contains _:node189rifeqdx45120 .
+
+_:node189rifeqdx45120 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.type> ;
+	atxa-core:posX "1868" ;
+	atxa-core:posY "633" .
+
+_:node189rifeqdx42867 atxa-core:contains _:node189rifeqdx43069 .
+
+_:node189rifeqdx43069 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$TileNetMatrixElementBuilder> ;
+	atxa-core:posX "1815" ;
+	atxa-core:posY "1093" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$TileNetMatrixElementBuilder> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$TileNetMatrixElementBuilder.makeElement(String,)> .
+
+_:node189rifeqdx42948 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx43069 ;
+	rdf:object _:node189rifeqdx42874 ;
+	atxa-core:bendpoint _:node189rifeqdx46374 .
+
+_:node189rifeqdx46374 atxa-core:bpLocation "1935,530" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx42948 atxa-core:bendpoint _:node189rifeqdx46375 .
+
+_:node189rifeqdx46375 atxa-core:bpLocation "1480,530" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx43069 atxa-core:contains _:node189rifeqdx43072 .
+
+_:node189rifeqdx43072 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$TileNetMatrixElementBuilder.makeElement(String,)> ;
+	atxa-core:posX "1816" ;
+	atxa-core:posY "1111" .
+
+_:node189rifeqdx42867 atxa-core:contains _:node189rifeqdx42874 .
+
+_:node189rifeqdx42874 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElementBuilder> ;
+	atxa-core:posX "1361" ;
+	atxa-core:posY "475" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElementBuilder> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElementBuilder.orderElement(String,)> .
+
+_:node189rifeqdx42874 atxa-core:contains _:node189rifeqdx42875 .
+
+_:node189rifeqdx42875 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElementBuilder.orderElement(String,)> ;
+	atxa-core:posX "1362" ;
+	atxa-core:posY "493" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx42879 .
+
+_:node189rifeqdx42879 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util> ;
+	atxa-core:posX "1348" ;
+	atxa-core:posY "963" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util$Driver> .
+
+_:node189rifeqdx42879 atxa-core:contains _:node189rifeqdx42880 .
+
+_:node189rifeqdx42880 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util$Driver> ;
+	atxa-core:posX "1354" ;
+	atxa-core:posY "988" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util$Driver> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util$Driver.main(String[],)> .
+
+_:node189rifeqdx42880 atxa-core:contains _:node189rifeqdx42881 .
+
+_:node189rifeqdx42881 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util$Driver.main(String[],)> ;
+	atxa-core:posX "1355" ;
+	atxa-core:posY "1006" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx43081 .
+
+_:node189rifeqdx43081 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix> ;
+	atxa-core:posX "1888" ;
+	atxa-core:posY "347" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix> .
+
+_:node189rifeqdx43081 atxa-core:contains _:node189rifeqdx43082 .
+
+_:node189rifeqdx43082 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix> ;
+	atxa-core:posX "1894" ;
+	atxa-core:posY "372" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.draw()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.x> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.toString()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.text> .
+
+_:node189rifeqdx43082 atxa-core:contains _:node189rifeqdx43083 .
+
+_:node189rifeqdx43083 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.draw()> ;
+	atxa-core:posX "1895" ;
+	atxa-core:posY "422" .
+
+_:node189rifeqdx43082 atxa-core:contains _:node189rifeqdx45123 .
+
+_:node189rifeqdx45123 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.x> ;
+	atxa-core:posX "1895" ;
+	atxa-core:posY "390" .
+
+_:node189rifeqdx43082 atxa-core:contains _:node189rifeqdx46376 .
+
+_:node189rifeqdx46376 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.toString()> ;
+	atxa-core:posX "1895" ;
+	atxa-core:posY "438" .
+
+_:node189rifeqdx43082 atxa-core:contains _:node189rifeqdx46377 .
+
+_:node189rifeqdx46377 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrix$Matrix.text> ;
+	atxa-core:posX "1895" ;
+	atxa-core:posY "406" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx43084 .
+
+_:node189rifeqdx43084 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller> ;
+	atxa-core:posX "1346" ;
+	atxa-core:posY "255" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller> .
+
+_:node189rifeqdx43084 atxa-core:contains _:node189rifeqdx43085 .
+
+_:node189rifeqdx43085 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller> ;
+	atxa-core:posX "1352" ;
+	atxa-core:posY "280" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.Controller(ServerDispatch,Socket,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.call()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.sock> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.dispatch> .
+
+_:node189rifeqdx43085 atxa-core:contains _:node189rifeqdx43086 .
+
+_:node189rifeqdx43086 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.Controller(ServerDispatch,Socket,)> ;
+	atxa-core:posX "1353" ;
+	atxa-core:posY "330" .
+
+_:node189rifeqdx43085 atxa-core:contains _:node189rifeqdx43087 .
+
+_:node189rifeqdx43087 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.call()> ;
+	atxa-core:posX "1353" ;
+	atxa-core:posY "346" .
+
+_:node189rifeqdx43085 atxa-core:contains _:node189rifeqdx45124 .
+
+_:node189rifeqdx45124 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.sock> ;
+	atxa-core:posX "1353" ;
+	atxa-core:posY "298" .
+
+_:node189rifeqdx43085 atxa-core:contains _:node189rifeqdx45125 .
+
+_:node189rifeqdx45125 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.controller$Controller.dispatch> ;
+	atxa-core:posX "1353" ;
+	atxa-core:posY "314" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx45126 .
+
+_:node189rifeqdx45126 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server> ;
+	atxa-core:posX "1456" ;
+	atxa-core:posY "90" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel> .
+
+_:node189rifeqdx45126 atxa-core:contains _:node189rifeqdx45127 .
+
+_:node189rifeqdx45127 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel> ;
+	atxa-core:posX "1462" ;
+	atxa-core:posY "115" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.terminateServer()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.getConnected()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.call()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.ex> .
+
+_:node189rifeqdx45127 atxa-core:contains _:node189rifeqdx45128 .
+
+_:node189rifeqdx45128 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch> ;
+	atxa-core:posX "1463" ;
+	atxa-core:posY "197" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.ServerDispatch(ServerModel,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.registerConnection(Controller,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.sendSetters(PrintWriter,)> .
+
+_:node189rifeqdx45128 atxa-core:contains _:node189rifeqdx45129 .
+
+_:node189rifeqdx45129 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.ServerDispatch(ServerModel,)> ;
+	atxa-core:posX "1464" ;
+	atxa-core:posY "215" .
+
+_:node189rifeqdx45128 atxa-core:contains _:node189rifeqdx45130 .
+
+_:node189rifeqdx45130 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.registerConnection(Controller,)> ;
+	atxa-core:posX "1464" ;
+	atxa-core:posY "231" .
+
+_:node189rifeqdx45128 atxa-core:contains _:node189rifeqdx45131 .
+
+_:node189rifeqdx45131 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel$ServerDispatch.sendSetters(PrintWriter,)> ;
+	atxa-core:posX "1464" ;
+	atxa-core:posY "247" .
+
+_:node189rifeqdx45127 atxa-core:contains _:node189rifeqdx46378 .
+
+_:node189rifeqdx46378 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.terminateServer()> ;
+	atxa-core:posX "1463" ;
+	atxa-core:posY "149" .
+
+_:node189rifeqdx45127 atxa-core:contains _:node189rifeqdx46379 .
+
+_:node189rifeqdx46379 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.getConnected()> ;
+	atxa-core:posX "1463" ;
+	atxa-core:posY "165" .
+
+_:node189rifeqdx45127 atxa-core:contains _:node189rifeqdx46380 .
+
+_:node189rifeqdx46380 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.call()> ;
+	atxa-core:posX "1463" ;
+	atxa-core:posY "181" .
+
+_:node189rifeqdx45127 atxa-core:contains _:node189rifeqdx46381 .
+
+_:node189rifeqdx46381 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.server$ServerModel.ex> ;
+	atxa-core:posX "1463" ;
+	atxa-core:posY "133" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx45132 .
+
+_:node189rifeqdx45132 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory> ;
+	atxa-core:posX "922" ;
+	atxa-core:posY "798" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory> .
+
+_:node189rifeqdx45132 atxa-core:contains _:node189rifeqdx45142 .
+
+_:node189rifeqdx45142 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory> ;
+	atxa-core:posX "963" ;
+	atxa-core:posY "1148" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory.addElemType()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory.addSetTag()> .
+
+_:node189rifeqdx44481 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45142 ;
+	rdf:object _:node189rifeqdx45133 ;
+	atxa-core:bendpoint _:node189rifeqdx46382 .
+
+_:node189rifeqdx46382 atxa-core:bpLocation "1055,910" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx44481 atxa-core:bendpoint _:node189rifeqdx46383 .
+
+_:node189rifeqdx46383 atxa-core:bpLocation "1031,910" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx45142 atxa-core:contains _:node189rifeqdx45145 .
+
+_:node189rifeqdx45145 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory.addElemType()> ;
+	atxa-core:posX "964" ;
+	atxa-core:posY "1166" .
+
+_:node189rifeqdx45142 atxa-core:contains _:node189rifeqdx45146 .
+
+_:node189rifeqdx45146 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$ImageFactory.addSetTag()> ;
+	atxa-core:posX "964" ;
+	atxa-core:posY "1182" .
+
+_:node189rifeqdx45132 atxa-core:contains _:node189rifeqdx45147 .
+
+_:node189rifeqdx45147 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory> ;
+	atxa-core:posX "998" ;
+	atxa-core:posY "1247" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory.addElemType()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory.addSetTag()> .
+
+_:node189rifeqdx44821 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45147 ;
+	rdf:object _:node189rifeqdx45133 ;
+	atxa-core:bendpoint _:node189rifeqdx46384 .
+
+_:node189rifeqdx46384 atxa-core:bpLocation "1090,910" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx44821 atxa-core:bendpoint _:node189rifeqdx46385 .
+
+_:node189rifeqdx46385 atxa-core:bpLocation "1031,910" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx45147 atxa-core:contains _:node189rifeqdx45150 .
+
+_:node189rifeqdx45150 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory.addElemType()> ;
+	atxa-core:posX "999" ;
+	atxa-core:posY "1265" .
+
+_:node189rifeqdx45147 atxa-core:contains _:node189rifeqdx45151 .
+
+_:node189rifeqdx45151 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$TokenFactory.addSetTag()> ;
+	atxa-core:posX "999" ;
+	atxa-core:posY "1281" .
+
+_:node189rifeqdx45132 atxa-core:contains _:node189rifeqdx45133 .
+
+_:node189rifeqdx45133 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory> ;
+	atxa-core:posX "939" ;
+	atxa-core:posY "823" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addAttributes> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addAttributes()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addElemType()> .
+
+_:node189rifeqdx45133 atxa-core:contains _:node189rifeqdx45134 .
+
+_:node189rifeqdx45134 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addAttributes> ;
+	atxa-core:posX "940" ;
+	atxa-core:posY "841" .
+
+_:node189rifeqdx43581 a atxa-core:link ;
+	atxa-core:model atxa-jdt:calls ;
+	rdf:subject _:node189rifeqdx45134 ;
+	rdf:object _:node189rifeqdx45135 .
+
+_:node189rifeqdx45133 atxa-core:contains _:node189rifeqdx45135 .
+
+_:node189rifeqdx45135 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addAttributes()> ;
+	atxa-core:posX "940" ;
+	atxa-core:posY "857" .
+
+_:node189rifeqdx45133 atxa-core:contains _:node189rifeqdx45136 .
+
+_:node189rifeqdx45136 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addElemType()> ;
+	atxa-core:posX "940" ;
+	atxa-core:posY "873" .
+
+_:node189rifeqdx45132 atxa-core:contains _:node189rifeqdx45137 .
+
+_:node189rifeqdx45137 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory> ;
+	atxa-core:posX "928" ;
+	atxa-core:posY "929" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory.addElemType()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory.addSetTag()> .
+
+_:node189rifeqdx43515 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45137 ;
+	rdf:object _:node189rifeqdx45133 ;
+	atxa-core:bendpoint _:node189rifeqdx46386 .
+
+_:node189rifeqdx46386 atxa-core:bpLocation "1020,910" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx43515 atxa-core:bendpoint _:node189rifeqdx46387 .
+
+_:node189rifeqdx46387 atxa-core:bpLocation "1031,910" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx45137 atxa-core:contains _:node189rifeqdx45140 .
+
+_:node189rifeqdx45140 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory.addElemType()> ;
+	atxa-core:posX "929" ;
+	atxa-core:posY "947" .
+
+_:node189rifeqdx45137 atxa-core:contains _:node189rifeqdx45141 .
+
+_:node189rifeqdx45141 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$AgentFactory.addSetTag()> ;
+	atxa-core:posX "929" ;
+	atxa-core:posY "963" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx45152 .
+
+_:node189rifeqdx45152 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.factory$MatrixElementFactory.addAttr> ;
+	atxa-core:posX "1319" ;
+	atxa-core:posY "801" .
+
+_:node189rifeqdx43548 a atxa-core:link ;
+	atxa-core:model atxa-jdt:refType ;
+	rdf:subject _:node189rifeqdx45152 ;
+	rdf:object _:node189rifeqdx45134 .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx45153 .
+
+_:node189rifeqdx45153 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags> ;
+	atxa-core:posX "1126" ;
+	atxa-core:posY "565" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$LogoutTag> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$ServerTag> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag> .
+
+_:node189rifeqdx45153 atxa-core:contains _:node189rifeqdx45154 .
+
+_:node189rifeqdx45154 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag> ;
+	atxa-core:posX "1132" ;
+	atxa-core:posY "715" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.makeTag(TagType,Attributes,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.cType> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.XMLTag(TagType,)> .
+
+_:node189rifeqdx45154 atxa-core:contains _:node189rifeqdx45155 .
+
+_:node189rifeqdx45155 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.makeTag(TagType,Attributes,)> ;
+	atxa-core:posX "1133" ;
+	atxa-core:posY "749" .
+
+_:node189rifeqdx45154 atxa-core:contains _:node189rifeqdx45156 .
+
+_:node189rifeqdx45156 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.cType> ;
+	atxa-core:posX "1133" ;
+	atxa-core:posY "733" .
+
+_:node189rifeqdx45154 atxa-core:contains _:node189rifeqdx45157 .
+
+_:node189rifeqdx45157 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$XMLTag.XMLTag(TagType,)> ;
+	atxa-core:posX "1133" ;
+	atxa-core:posY "765" .
+
+_:node189rifeqdx45153 atxa-core:contains _:node189rifeqdx45158 .
+
+_:node189rifeqdx45158 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$LogoutTag> ;
+	atxa-core:posX "1211" ;
+	atxa-core:posY "1007" .
+
+_:node189rifeqdx44117 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45158 ;
+	rdf:object _:node189rifeqdx45154 ;
+	atxa-core:bendpoint _:node189rifeqdx46388 .
+
+_:node189rifeqdx46388 atxa-core:bpLocation "1259,802" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx45153 atxa-core:contains _:node189rifeqdx45160 .
+
+_:node189rifeqdx45160 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$ServerTag> ;
+	atxa-core:posX "1211" ;
+	atxa-core:posY "857" .
+
+_:node189rifeqdx44073 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx45160 ;
+	rdf:object _:node189rifeqdx45154 ;
+	atxa-core:bendpoint _:node189rifeqdx46389 .
+
+_:node189rifeqdx46389 atxa-core:bpLocation "1259,802" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx45153 atxa-core:contains _:node189rifeqdx45162 .
+
+_:node189rifeqdx45162 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag> ;
+	atxa-core:posX "1172" ;
+	atxa-core:posY "590" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.SetTag(Attributes,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.SetTag(String,)> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.toString()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.getObjid()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.name> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.bgColor> .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45163 .
+
+_:node189rifeqdx45163 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.SetTag(Attributes,)> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "640" .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45164 .
+
+_:node189rifeqdx45164 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.SetTag(String,)> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "656" .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45165 .
+
+_:node189rifeqdx45165 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.toString()> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "672" .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45166 .
+
+_:node189rifeqdx45166 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.getObjid()> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "688" .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45167 .
+
+_:node189rifeqdx45167 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.name> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "608" .
+
+_:node189rifeqdx45162 atxa-core:contains _:node189rifeqdx45168 .
+
+_:node189rifeqdx45168 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.Util.XMLTags$SetTag.bgColor> ;
+	atxa-core:posX "1173" ;
+	atxa-core:posY "624" .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx45169 .
+
+_:node189rifeqdx45169 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.matrixelement$MatrixElement.valu> ;
+	atxa-core:posX "1939" ;
+	atxa-core:posY "490" .
+
+_:node189rifeqdx43924 a atxa-core:link ;
+	atxa-core:model atxa-jdt:refType ;
+	rdf:subject _:node189rifeqdx45169 ;
+	rdf:object _:node189rifeqdx45118 .
+
+atxa-core:docRoot atxa-core:contains _:node189rifeqdx46390 .
+
+_:node189rifeqdx46390 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid> ;
+	atxa-core:posX "1385" ;
+	atxa-core:posY "29" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$HomeGrid> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$Grid> .
+
+_:node189rifeqdx46390 atxa-core:contains _:node189rifeqdx46391 .
+
+_:node189rifeqdx46391 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$HomeGrid> ;
+	atxa-core:posX "1391" ;
+	atxa-core:posY "282" .
+
+_:node189rifeqdx45368 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx46391 ;
+	rdf:object _:node189rifeqdx46392 ;
+	atxa-core:bendpoint _:node189rifeqdx46393 .
+
+_:node189rifeqdx46393 atxa-core:bpLocation "1439,109" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx45368 atxa-core:bendpoint _:node189rifeqdx46394 .
+
+_:node189rifeqdx46394 atxa-core:bpLocation "1667,109" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx45445 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx46391 ;
+	rdf:object _:node189rifeqdx46395 ;
+	atxa-core:bendpoint _:node189rifeqdx46396 .
+
+_:node189rifeqdx46396 atxa-core:bpLocation "1439,126" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx45445 atxa-core:bendpoint _:node189rifeqdx46397 .
+
+_:node189rifeqdx46397 atxa-core:bpLocation "1463,126" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx46390 atxa-core:contains _:node189rifeqdx46395 .
+
+_:node189rifeqdx46395 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl> ;
+	atxa-core:posX "1396" ;
+	atxa-core:posY "55" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl.toString()> , <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl.GridImpl()> .
+
+_:node189rifeqdx45444 a atxa-core:link ;
+	atxa-core:model atxa-jdt:inherits ;
+	rdf:subject _:node189rifeqdx46395 ;
+	rdf:object _:node189rifeqdx46392 ;
+	atxa-core:bendpoint _:node189rifeqdx46398 .
+
+_:node189rifeqdx46398 atxa-core:bpLocation "1463,109" ;
+	atxa-core:bpIndex "0" .
+
+_:node189rifeqdx45444 atxa-core:bendpoint _:node189rifeqdx46399 .
+
+_:node189rifeqdx46399 atxa-core:bpLocation "1667,109" ;
+	atxa-core:bpIndex "1" .
+
+_:node189rifeqdx46395 atxa-core:contains _:node189rifeqdx46400 .
+
+_:node189rifeqdx46400 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl.toString()> ;
+	atxa-core:posX "1397" ;
+	atxa-core:posY "73" .
+
+_:node189rifeqdx46395 atxa-core:contains _:node189rifeqdx46401 .
+
+_:node189rifeqdx46401 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$GridImpl.GridImpl()> ;
+	atxa-core:posX "1397" ;
+	atxa-core:posY "89" .
+
+_:node189rifeqdx46390 atxa-core:contains _:node189rifeqdx46392 .
+
+_:node189rifeqdx46392 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$Grid> ;
+	atxa-core:posX "1555" ;
+	atxa-core:posY "54" .
+
+<http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$Grid> atxa-core:contains <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$Grid.getLayout()> .
+
+_:node189rifeqdx46392 atxa-core:contains _:node189rifeqdx46402 .
+
+_:node189rifeqdx46402 a atxa-core:node ;
+	atxa-core:model <http://www.architexa.com/rdf/jdt-wkspc#com.putable.tilenet.grid$Grid.getLayout()> ;
+	atxa-core:posX "1556" ;
+	atxa-core:posY "72" .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix atxa-jdt: <http://www.architexa.com/rdf/jdt#> .
+@prefix atxa-rse-eclipse: <http://www.architexa.com/rdf/rse-eclipse#> .
+@prefix atxa-core: <http://www.architexa.com/rdf/core#> .
+@prefix atxa: <http://www.architexa.com/rdf/> .
+@prefix atxa-jdt-wkspc: <http://www.architexa.com/rdf/jdt-wkspc#> .
+
+<http://www.architexa.com/rdf/rse-eclipse#Class.atxa> a atxa-core:reloFile ;
+	atxa-core:contains _:node189rifeqdx45111 , _:node189rifeqdx45110 , _:node189rifeqdx42872 , _:node189rifeqdx42873 , _:node189rifeqdx45116 , _:node189rifeqdx42868 , _:node189rifeqdx42876 , _:node189rifeqdx42877 , _:node189rifeqdx42878 , _:node189rifeqdx43073 , _:node189rifeqdx43074 , _:node189rifeqdx43075 , _:node189rifeqdx43076 , _:node189rifeqdx43077 , _:node189rifeqdx43078 , _:node189rifeqdx43079 , _:node189rifeqdx43080 , _:node189rifeqdx45117 , _:node189rifeqdx45118 , _:node189rifeqdx45119 , _:node189rifeqdx45120 , _:node189rifeqdx42869 , _:node189rifeqdx43072 , _:node189rifeqdx43069 , _:node189rifeqdx42875 , _:node189rifeqdx42874 , _:node189rifeqdx42867 , _:node189rifeqdx42881 , _:node189rifeqdx42880 , _:node189rifeqdx42879 , _:node189rifeqdx43083 , _:node189rifeqdx45123 , _:node189rifeqdx46376 , _:node189rifeqdx46377 , _:node189rifeqdx43082 , _:node189rifeqdx43081 , _:node189rifeqdx43086 , _:node189rifeqdx43087 , _:node189rifeqdx45124 , _:node189rifeqdx45125 , _:node189rifeqdx43085 , _:node189rifeqdx43084 , _:node189rifeqdx45129 , _:node189rifeqdx45130 , _:node189rifeqdx45131 , _:node189rifeqdx45128 , _:node189rifeqdx46378 , _:node189rifeqdx46379 , _:node189rifeqdx46380 , _:node189rifeqdx46381 , _:node189rifeqdx45127 , _:node189rifeqdx45126 , _:node189rifeqdx45145 , _:node189rifeqdx45146 , _:node189rifeqdx45142 , _:node189rifeqdx45150 , _:node189rifeqdx45151 , _:node189rifeqdx45147 , _:node189rifeqdx45134 , _:node189rifeqdx45135 , _:node189rifeqdx45136 , _:node189rifeqdx45133 , _:node189rifeqdx45140 , _:node189rifeqdx45141 , _:node189rifeqdx45137 , _:node189rifeqdx45132 , _:node189rifeqdx45152 , _:node189rifeqdx45155 , _:node189rifeqdx45156 , _:node189rifeqdx45157 , _:node189rifeqdx45154 , _:node189rifeqdx45158 , _:node189rifeqdx45160 , _:node189rifeqdx45163 , _:node189rifeqdx45164 , _:node189rifeqdx45165 , _:node189rifeqdx45166 , _:node189rifeqdx45167 , _:node189rifeqdx45168 , _:node189rifeqdx45162 , _:node189rifeqdx45153 , _:node189rifeqdx45169 , _:node189rifeqdx46391 , _:node189rifeqdx46400 , _:node189rifeqdx46401 , _:node189rifeqdx46395 , _:node189rifeqdx46402 , _:node189rifeqdx46392 , _:node189rifeqdx46390 , atxa-core:docRoot , _:node189rifeqdx45111 , _:node189rifeqdx45110 , _:node189rifeqdx42872 , _:node189rifeqdx42873 , _:node189rifeqdx45116 , _:node189rifeqdx42868 , _:node189rifeqdx42876 , _:node189rifeqdx42877 , _:node189rifeqdx42878 , _:node189rifeqdx43073 , _:node189rifeqdx43074 , _:node189rifeqdx43075 , _:node189rifeqdx43076 , _:node189rifeqdx43077 , _:node189rifeqdx43078 , _:node189rifeqdx43079 , _:node189rifeqdx43080 , _:node189rifeqdx45117 , _:node189rifeqdx45118 , _:node189rifeqdx45119 , _:node189rifeqdx45120 , _:node189rifeqdx42869 , _:node189rifeqdx43072 , _:node189rifeqdx43069 , _:node189rifeqdx42875 , _:node189rifeqdx42874 , _:node189rifeqdx42867 , _:node189rifeqdx42881 , _:node189rifeqdx42880 , _:node189rifeqdx42879 , _:node189rifeqdx43083 , _:node189rifeqdx45123 , _:node189rifeqdx46376 , _:node189rifeqdx46377 , _:node189rifeqdx43082 , _:node189rifeqdx43081 , _:node189rifeqdx43086 , _:node189rifeqdx43087 , _:node189rifeqdx45124 , _:node189rifeqdx45125 , _:node189rifeqdx43085 , _:node189rifeqdx43084 , _:node189rifeqdx45129 , _:node189rifeqdx45130 , _:node189rifeqdx45131 , _:node189rifeqdx45128 , _:node189rifeqdx46378 , _:node189rifeqdx46379 , _:node189rifeqdx46380 , _:node189rifeqdx46381 , _:node189rifeqdx45127 , _:node189rifeqdx45126 , _:node189rifeqdx45145 , _:node189rifeqdx45146 , _:node189rifeqdx45142 , _:node189rifeqdx45150 , _:node189rifeqdx45151 , _:node189rifeqdx45147 , _:node189rifeqdx45134 , _:node189rifeqdx45135 , _:node189rifeqdx45136 , _:node189rifeqdx45133 , _:node189rifeqdx45140 , _:node189rifeqdx45141 , _:node189rifeqdx45137 , _:node189rifeqdx45132 , _:node189rifeqdx45152 , _:node189rifeqdx45155 , _:node189rifeqdx45156 , _:node189rifeqdx45157 , _:node189rifeqdx45154 , _:node189rifeqdx45158 , _:node189rifeqdx45160 , _:node189rifeqdx45163 , _:node189rifeqdx45164 , _:node189rifeqdx45165 , _:node189rifeqdx45166 , _:node189rifeqdx45167 , _:node189rifeqdx45168 , _:node189rifeqdx45162 , _:node189rifeqdx45153 , _:node189rifeqdx45169 , _:node189rifeqdx46391 , _:node189rifeqdx46400 , _:node189rifeqdx46401 , _:node189rifeqdx46395 , _:node189rifeqdx46402 , _:node189rifeqdx46392 , _:node189rifeqdx46390 , atxa-core:docRoot , _:node189rifeqdx43292 , _:node189rifeqdx42803 , _:node189rifeqdx42914 , _:node189rifeqdx43957 , _:node189rifeqdx42948 , _:node189rifeqdx44481 , _:node189rifeqdx44821 , _:node189rifeqdx43581 , _:node189rifeqdx43515 , _:node189rifeqdx43548 , _:node189rifeqdx44117 , _:node189rifeqdx44073 , _:node189rifeqdx43924 , _:node189rifeqdx45368 , _:node189rifeqdx45445 , _:node189rifeqdx45444 , _:node189rifeqdx43292 , _:node189rifeqdx42803 , _:node189rifeqdx42914 , _:node189rifeqdx43957 , _:node189rifeqdx42948 , _:node189rifeqdx44481 , _:node189rifeqdx44821 , _:node189rifeqdx43581 , _:node189rifeqdx43515 , _:node189rifeqdx43548 , _:node189rifeqdx44117 , _:node189rifeqdx44073 , _:node189rifeqdx43924 , _:node189rifeqdx45368 , _:node189rifeqdx45445 , _:node189rifeqdx45444 .
+

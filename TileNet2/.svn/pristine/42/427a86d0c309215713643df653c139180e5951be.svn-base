@@ -1,0 +1,32 @@
+package com.putable.tilenet.matrixelement;
+
+import java.util.List;
+
+import com.putable.tilenet.Util.TokenOp;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.ElementFactory;
+
+public class Token extends Element {
+	ElementFactory thisUses;
+	TokenOp op;
+	
+	public Token(ElementFactory thisSpecificfactory) {
+		this.thisUses = thisSpecificfactory;
+		this.op = new TokenOp();
+	}	
+
+	@Override
+	protected void placeParts() {
+		tag = thisUses.addSetTag();
+		type = thisUses.addElemType();
+	}
+	
+	public List<SetTag> doOp(){
+		return op.doOp();
+	}
+	
+	public void setOp(TokenOp op){
+		this.op = op;
+	}
+}

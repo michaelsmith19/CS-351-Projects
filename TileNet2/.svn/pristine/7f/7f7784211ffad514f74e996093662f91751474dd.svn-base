@@ -1,0 +1,66 @@
+package com.putable.tilenet.blueprints;
+
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public abstract class Grid {
+	
+	public enum GridType {
+		HOME,
+		PAIRPANICK,
+		SPLASH;
+	}
+	
+	//Fields
+	private String name;
+	private GridType type;
+	private Connection conn;
+	
+	// Parts of a Grid
+	protected Layout layout;	
+	
+	//Methods for construction
+	protected abstract void placeParts();
+	protected void setType(GridType type){ this.type = type; }	
+	
+	//Public methods
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public GridType getType() { return this.type; }
+	
+	//Replay methods	
+	public JPanel toJPanel(int height, int width){
+		return layout.toJPanel(height, width);
+	}
+	public Layout getLayout(){
+		return this.layout;
+	}	
+	
+	/**Must be called for default population of a grid.<br>
+	 * Otherwise you have to do it, by hand
+	 * 
+	 */
+	public abstract void addDefaultTokens();
+	
+	/*Send a tag to the layout to have it update the JPanel. auto-magically
+	 * @param tag
+	 */
+	public void update(SetTag tag){
+		layout.update(tag);
+	}
+	
+	public void setConnection(Connection conn){
+		this.conn = conn;
+		this.layout.setConnection(conn);
+	}
+	
+	/**Gets the layouts current SetTag for matrix
+	 * @return
+	 */
+	public SetTag getLayoutSetTag(){		
+		return layout.getMatrixTag();
+	}
+}

@@ -1,0 +1,17 @@
+package com.putable.tilenet.factory;
+
+public class SplashMatrixFactory implements MatrixFactory {
+
+	@Override
+	public KeyBindSet addKeyBindSet() {
+		// TODO Auto-generated method stub
+		return new SplashKeyBindSet();
+	}
+
+	@Override
+	public Grid addGrid() {
+		// TODO Auto-generated method stub
+		return new SplashGrid();
+	}
+
+}

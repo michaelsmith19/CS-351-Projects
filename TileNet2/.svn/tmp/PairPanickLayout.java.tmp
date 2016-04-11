@@ -1,0 +1,506 @@
+package com.putable.tilenet.layout;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.ElementOp.OpType;
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.XMLTags.CMDTag;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+<<<<<<< .mine
+=======
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+>>>>>>> .r234
+import com.putable.tilenet.blueprints.Layout;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Token;
+
+@SuppressWarnings("serial")
+public class PairPanickLayout implements Layout {
+	private int matrixWidth = 1;
+	private int matrixHeight = 1;
+	private int defaultTileWidth;
+	private int defaultTileHeight;
+	private SetTag matrixTag;
+	private Connection conn;
+	private final Color defaultFgColor = Color.GREEN;
+<<<<<<< .mine
+	private final Color defaultBgColor = Color.RED;
+	private final JPanel panel;
+	private final ConcurrentHashMap<String, BufferedImage> images;
+	private final ConcurrentHashMap<R2Vect, JButton> buttons;
+	private final ConcurrentHashMap<R2Vect, SetTag> tags;
+=======
+	private final Color defaultBgColor = Color.CYAN;
+	private BufferedImage display;
+	private JPanel panel;
+	
+	private final ConcurrentHashMap<String, BufferedImage> convertedHexData;	
+	private final ConcurrentHashMap<R2Vect, SetTag> tagLocation;
+	private final List<SetTag> allTags;
+	
+>>>>>>> .r234
+	private final ConcurrentHashMap<String, Token> tokens;
+	private final ConcurrentHashMap<String, ElementOp> moveOps;
+
+	public PairPanickLayout() {
+		this.allTags = new ArrayList<SetTag>();
+		this.convertedHexData = new ConcurrentHashMap<String, BufferedImage>();		
+		this.tagLocation = new ConcurrentHashMap<R2Vect, SetTag>();
+		this.tokens = new ConcurrentHashMap<String, Token>();
+		this.moveOps = new ConcurrentHashMap<String, ElementOp>();
+	}	
+
+	private BufferedImage tokenWithImage(SetTag tag, BufferedImage bi) throws IOException {
+		BufferedImage tmp = convertedHexData.get(tag.getImage());
+		if(tmp == null){
+			System.err.println("image not found");
+			tmp = ImageIO.read(new File("resource/Rainbow-Dash.png"));
+		}		
+		//Will scale it to fit This is quite nice if i don't say so myself.
+		AffineTransform at = new AffineTransform();
+		at.scale(bi.getWidth()/(double)tmp.getWidth(), bi.getHeight()/(double)tmp.getHeight());
+		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+		return op.filter(tmp, bi);
+	}
+<<<<<<< .mine
+
+	private R2Vect largetstSetTagSoFar() {
+		R2Vect tmp = new R2Vect();
+		for (R2Vect v : tags.keySet()) {
+			tmp.x = (tmp.x > v.x) ? tmp.x : v.x;
+			tmp.y = (tmp.y > v.y) ? tmp.y : v.y;
+		}
+		return tmp;
+=======
+
+	private void addTextCentered(String text, BufferedImage bi){
+		//TODO ..... yeah
+		Graphics g = bi.getGraphics();
+>>>>>>> .r234
+	}
+
+<<<<<<< .mine
+	private JButton tokenWithImage(SetTag tag, JButton button)
+			throws IOException {
+		// TODO this doesn't go by the rules exactly
+		BufferedImage bi = images.get(tag.getImage());
+		if (bi == null) {
+			bi = ImageIO.read(getClass().getResource("Rainbow-Dash.png"));
+=======
+	private void reset() {
+		allTags.clear();
+		convertedHexData.clear();
+		tagLocation.clear();
+		tokens.clear();
+		moveOps.clear();
+	}
+
+
+	@Override
+	public void update(SetTag tag) {
+		allTags.add(tag);
+		switch (tag.getObjid().charAt(0)){
+		case 't':
+			updateToken(tag);
+			break;
+		case 'm':
+			updateMatrix(tag);
+			break;
+		case 'i':
+			updateImage(tag);
+			break;
+		default:
+			System.err.println("Layout cannot handle tags like this yet: " + tag);
+			tagLocation.remove(new R2Vect(tag.getX(), tag.getY()));
+			break;				
+>>>>>>> .r234
+		}
+<<<<<<< .mine
+		button.setIcon(new ImageIcon(bi));
+		return button;
+=======
+>>>>>>> .r234
+	}
+
+<<<<<<< .mine
+	private void updateToken(SetTag tag) {
+		// See if we are changing or creating
+		Token tok = (Token) Common.toElement(tag);
+		// tok.setOp(sampleOp(tag.getObjid()));
+		tags.put(new R2Vect(tag.getX(), tag.getY()), tag);
+=======
+	private void updateMatrix(SetTag tag) {				
+		//If a reset
+		if(matrixTag != null){
+			reset();			
+		}
+		this.matrixTag = tag;
+		//If not displaying
+		if(display == null){			
+			return;
+		}			
+		
+		matrixWidth = tag.getX();
+		matrixHeight = tag.getY();
+		
+		defaultTileHeight = display.getHeight()/matrixHeight;
+		defaultTileWidth = display.getWidth()/matrixWidth;
+		
+		//TODO matrix background stuff (image)
+		Color fg = tag.getFgColor();
+		Color bg = tag.getBgColor();
+		if(fg == null)
+			fg = defaultFgColor;
+		if(bg == null)
+			bg = defaultBgColor;
+		Graphics g = display.getGraphics();
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, display.getWidth(), display.getHeight());		
+	}
+
+	private void updateImage(SetTag tag) {
+		BufferedImage bi = Common.toBufferedImage(tag.getText());
+		convertedHexData.put(tag.getObjid(), bi);		
+	}
+
+	private void updateToken(SetTag tag) {		
+		//Place new token with cords
+		tagLocation.put(new R2Vect(tag.getX(), tag.getY()), tag);
+		Token tok = (Token) Common.toElement(tag);
+>>>>>>> .r234
+		tokens.put(tag.getObjid(), tok);
+		if(display == null){			
+			return;
+		}		
+<<<<<<< .mine
+
+		if (button == null)
+			button = new JButton(tag.getName());
+
+		// Get default color
+=======
+		
+		BufferedImage bi = new BufferedImage(defaultTileWidth, defaultTileHeight, BufferedImage.TYPE_4BYTE_ABGR);		
+		
+		//Get default color
+>>>>>>> .r234
+		Color fg = tag.getFgColor();
+		Color bg = tag.getBgColor();
+		if (fg == null)
+			fg = defaultFgColor;
+		if (bg == null)
+			bg = defaultBgColor;
+<<<<<<< .mine
+
+		// Size the button
+		button.setPreferredSize(new Dimension(defaultTileWidth,
+				defaultTileHeight));
+		button.setForeground(fg);
+		button.setBackground(bg);
+		button.setOpaque(true);
+		button.setText(tag.getName());
+		button.addActionListener(new TokenClickEvent(tag, conn));
+=======
+		
+		//Color it
+		Graphics g = bi.getGraphics();
+		g.setColor(bg);
+		g.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+		
+		//Color the text
+		g.setColor(fg);
+		//addTextCentered(tag.getText(), bi);
+		if (tag.getName() != null)
+			g.drawString(tag.getName(), 0, bi.getHeight()/2);
+>>>>>>> .r234
+
+		// Do stuff with image if there is one
+		if (tag.getImage() != null)
+			try {
+<<<<<<< .mine
+				// TODO check for validity
+				button = tokenWithImage(tag, button);
+=======
+				bi = tokenWithImage(tag, bi);
+>>>>>>> .r234
+			} catch (IOException e) {
+				System.err.println("Error reading rainbow dash!");
+			}
+
+<<<<<<< .mine
+		JButton tmp = buttons.put(new R2Vect(tag.getX(), tag.getY()), button);
+
+		// Show differential change
+		if (tmp == null) {
+			// System.out.println("Added new button, repainted");
+			// Forces addition of button on view
+			toJPanel(panel.getHeight(), panel.getWidth());
+		} else {
+			// System.out.println("updated button, repainted");
+			button.repaint();
+		}
+	}
+
+	private void updateMatrix(SetTag tag) {
+		if (matrixTag != null)
+			System.out.println("This Grid is now associated to: "
+					+ tag.getObjid() + " " + tag.getName());
+		this.matrixTag = tag;
+		matrixWidth = tag.getX();
+		matrixHeight = tag.getY();
+
+		// Must resize if new
+		if (tags.size() != 0) {
+			for (SetTag old : tags.values()) {
+				updateToken(old);
+			}
+		}
+		// Forces scaling of buttons to new size
+		toJPanel(panel.getHeight(), panel.getWidth());
+	}
+
+	@Override
+	public void update(SetTag tag) {
+		// System.out.println("For the matrix called: " + (matrixTag == null ?
+		// "No matrix yet" : matrixTag) + " Tokens so far: " + tags.size());
+		// System.out.println("layout parsing: " + tag);
+		switch (tag.getObjid().charAt(0)) {
+		case 't':
+			updateToken(tag);
+			break;
+		case 'm':
+			updateMatrix(tag);
+			break;
+		default:
+			System.err.println("Layout cannot handle tags like this yet: "
+					+ tag);
+			tags.remove(new R2Vect(tag.getX(), tag.getY()));
+			break;
+		}
+=======
+		//Now draw directly. this fits nice.
+		g = display.getGraphics();
+		g.drawImage(bi,
+				tag.getX() * defaultTileWidth,
+				tag.getY() * defaultTileHeight,
+				bg,null);		
+		panel.repaint();
+>>>>>>> .r234
+	}
+
+	@Override
+	public JPanel toJPanel(int height, int width) {
+<<<<<<< .mine
+		// Error checking
+
+		for (Component c : panel.getComponents()) {
+			panel.remove(c);
+		}
+
+		// If haven't received the Matrix SetTag. try to get an estimated size
+		if (matrixTag == null) {
+			System.err.println("No matrix SetTag, guessing dimensions");
+			if (tags.size() != 0) {
+				R2Vect guess = largetstSetTagSoFar();
+				matrixWidth = guess.x;
+				matrixHeight = guess.y;
+			}
+		}
+
+		defaultTileHeight = height / matrixHeight;
+		defaultTileWidth = width / matrixWidth;
+
+		// Panel stuff
+		panel.setLayout(new GridBagLayout());
+		panel.setSize(width, height);
+		panel.setPreferredSize(new Dimension(width, height));
+		panel.setBackground(Color.BLACK);
+		GridBagConstraints c = new GridBagConstraints();
+
+		// Represent all Elements
+		for (int x = 0; x < matrixWidth; x++) {
+			for (int y = 0; y < matrixHeight; y++) {
+				c.gridx = x;
+				c.gridy = y;
+				JButton but = buttons.get(new R2Vect(x, y));
+				if (but != null)
+					panel.add(but, c);
+				else {
+					panel.add(Box.createRigidArea(new Dimension(
+							defaultTileHeight, defaultTileWidth)), c);
+=======
+		display = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);		
+		
+		//Panel stuff
+		panel = new JPanel() {
+			@Override
+		    protected void paintComponent(Graphics g){
+				super.paintComponent(g);
+				g.drawImage(display, 0, 0, null);
+		    }
+		};
+		panel.addMouseListener(new MouseListener() {			
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				if(display == null)
+					return;
+				R2Vect v = new R2Vect(e.getX() / defaultTileWidth ,e.getY() / defaultTileHeight);
+				System.out.println("You clicked area " + v);
+				System.out.println("And we found! ---> " + tagLocation.get(v));
+				if (tagLocation.get(v) != null){
+				CMDTag cmd = new CMDTag("click", tagLocation.get(v).getObjid());
+				conn.sendMessage(cmd);
+>>>>>>> .r234
+				}
+			}
+<<<<<<< .mine
+		}
+
+=======
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		panel.setSize(width, height);
+		panel.setPreferredSize(new Dimension(width, height));	
+>>>>>>> .r234
+		panel.revalidate();
+<<<<<<< .mine
+		panel.repaint();
+=======
+		panel.repaint();
+		
+		//This is the place where a panel wasn't displayed, so we need to draw on it
+		//This will also sort the lists, so we get our data in the correct order
+		if(allTags.size() != 0)
+			for(SetTag tag: toSetTags())
+				update(tag);
+		
+>>>>>>> .r234
+		return panel;
+	}
+
+	@Override
+	public void setMoveOp(ElementOp moveOp, String description) {
+		moveOps.put(description, moveOp);
+<<<<<<< .mine
+		for (SetTag s : tags.values()) {
+			if (tokens.get(s.getObjid()).getOp() == null) {
+				tokens.get(s.getObjid()).setOp(moveOp);
+				break;
+=======
+		for (SetTag s : allTags){
+			if(s.getObjid().charAt(0) == 't'){
+				if (s.getName() != null && s.getName().equals(description)){
+					s.setEnergy(100);
+					tokens.get(s.getObjid()).setOp(moveOp);
+					break;
+				}
+>>>>>>> .r234
+			}
+		}
+	}
+	@Override
+	public void addToken(Token tok){
+		tokens.put(tok.getSetTag().getObjid(), tok);
+	}
+	
+
+	@Override
+	public SetTag getMatrixTag() {
+		return this.matrixTag;
+	}
+
+	@Override
+	public List<SetTag> toSetTags() {
+<<<<<<< .mine
+		List<SetTag> list = new ArrayList<SetTag>();
+		for (SetTag tag : tags.values())
+			list.add(tag);
+		return list;
+=======
+		//Sorts list for sending in correct order
+		List<SetTag> tokens = new ArrayList<SetTag>();
+		for(SetTag tag : allTags)			
+			switch (tag.getObjid().charAt(0)){
+			case 't':
+				tokens.add(tag);
+				break;
+			case 'm':
+				tokens.add(0, tag);
+				break;
+			case 'i':
+				tokens.add(1, tag);
+				break;
+			default:
+				System.err.println("Rouge settag in this matrix! " + tag);				
+				break;				
+			}		
+		return tokens;
+>>>>>>> .r234
+	}
+
+	@Override
+	public Token getTokenFromID(String id) {
+		return tokens.get(id);
+	}
+
+	@Override
+	public void setConnection(Connection conn) {
+		this.conn = conn;
+	}
+	
+	private ElementOp sampleOp(final String from){
+		ElementOp sayOp = new ElementOp(OpType.BROADCAST){
+			@Override
+			public ArrayList<XMLTag> doOp(){
+				ArrayList<XMLTag> list = new ArrayList<XMLTag>();
+				HearTag s = new HearTag(matrixTag.getObjid(), from, "oh! you pressed me!");
+				list.add(s);
+				return list;
+			}
+		};
+		return sayOp;
+	}
+	
+}

@@ -1,0 +1,16 @@
+package com.putable.tilenet.Server;
+
+import com.putable.tilenet.Server.ElementFactory.ElemType;
+
+public abstract class Element {
+	private long objid;
+	
+	public Element(ElemType type){
+		this.objid = type.id();
+	}
+	
+	public long getid(){
+		return this.objid;
+	}
+
+}

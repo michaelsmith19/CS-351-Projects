@@ -1,0 +1,176 @@
+package com.putable.tilenet.server;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.AgentManager.AgentManagerImpl;
+import com.putable.tilenet.Util.XMLTags.CMDTag;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.Grid.GridType;
+import com.putable.tilenet.blueprints.GridBuilder;
+import com.putable.tilenet.blueprints.TileNetGridBuilder;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.grid.HomeGrid;
+import com.putable.tilenet.matrixelement.Agent;
+
+public class WorldModelImpl implements WorldModel{
+	
+	private Grid home;	
+	private final AgentManager manager;		
+	private final ModelDispatch dispatch;
+	private final ExecutorService ex;
+
+	
+	public WorldModelImpl(){
+		Thread.currentThread().setName("WORLD_MODEL");
+		GridBuilder makeMatrices = new TileNetGridBuilder();		
+		home = makeMatrices.orderGrid(GridType.HOME);		
+		
+		this.manager = new AgentManagerImpl();
+		this.ex = Executors.newCachedThreadPool();
+		this.dispatch = new ModelDispatch();
+		
+		ex.submit(dispatch);
+	}
+	
+	private final class ModelDispatch implements Callable<Void> {
+		private final LinkedBlockingQueue<XMLTag> queue;
+		private final Map<XMLTag, List<Agent>> whoTheFuckSentThis;
+		
+		public ModelDispatch(){
+			this.queue = new LinkedBlockingQueue<XMLTag>();
+			this.whoTheFuckSentThis = new HashMap<XMLTag, List<Agent>>();
+		}
+
+		@Override
+		public Void call() throws Exception {
+			XMLTag tag = null;			
+			List<Agent> agents;
+			while(true) {
+				tag = queue.take();				
+				agents = whoTheFuckSentThis.get(tag);
+				whoTheFuckSentThis.remove(tag);
+				System.out.println("WorldImpl tag Dispatch: " + tag);
+				switch(tag.getTagType()){
+				case CLIENT:
+					break;
+				case CMD:
+					break;
+				case HEAR:
+					break;
+				case LOGGEDIN:
+					break;
+				case LOGGEDOUT:
+					break;
+				case LOGIN:
+					break;
+				case LOGOUT:
+					break;
+				case SERVER:
+					break;
+				case SET:
+					/*
+					 * ((c8.9)) TAG: set
+					 * ((c8.9.1)) FROM: Server
+					 * 
+					 */
+					for(Agent a: agents){
+						Connection c = manager.getConnection(a);
+						c.sendMessage(tag);
+					}
+					break;
+				case XREQUEST:
+					break;
+				case XRESPONSE:
+					break;
+				default:
+					break;
+				}				
+			}
+			
+		}
+		private void put(XMLTag tag, List<Agent> lst) throws InterruptedException{
+			queue.put(tag);
+			whoTheFuckSentThis.put(tag, lst);
+		}
+		
+	}
+
+	@Override
+	public void processTag(XMLTag tag) {
+		// TODO Auto-generated method stub
+		switch (tag.getTagType()){
+		case CMD: processCmd((CMDTag) tag);
+			break;
+		//TODO when xresponse is made make a case for xresponse
+		}
+	}
+	
+	private void processCmd(CMDTag tag){
+		String cmdtype = tag.getCMDType();
+		if(cmdtype.equals("say")){
+			if (isWhisper (tag.getText())){
+				//TODO the things a whisper does
+			}
+			else{
+				HearTag hear = new HearTag("", tag.getObjid(), tag.getText());
+				
+			}
+			
+		}
+		if(cmdtype.equals("click")){
+			
+		}
+		if(cmdtype.equals("press")){
+			
+		}
+	}
+	
+	
+	private boolean isWhisper(String sayCmd){
+		//TODO determine if a sayCmd's text is a valid whisper
+		return false;
+	}
+
+	@Override
+	public void sendMatrix(Agent agent, Grid g) throws InterruptedException {		
+		List<Agent> junk = new ArrayList<Agent>();
+		junk.add(agent);
+		for(SetTag s : g.getLayout().toSetTags()){
+			dispatch.put(s, junk);						
+		}		
+	}
+
+	@Override
+	public void giveAgent(Agent agent, Connection connection) {
+		System.out.println("From WorldImpl. AGENT: " + agent + " Registered!");		
+		manager.addAgent(agent, connection);
+		manager.agentMove(agent, home);		
+		
+		 try {
+			sendMatrix(agent, home);
+		} catch (InterruptedException e) {
+			System.err.println("Error sending home matrix!");
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void sendHearTag(HearTag tag) {
+		// TODO Auto-generated method stub
+		
+	} 
+	
+
+}

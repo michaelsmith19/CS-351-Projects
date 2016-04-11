@@ -1,0 +1,200 @@
+package com.putable.frobworld;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.Random;
+
+import javax.swing.JPanel;
+
+import com.putable.frobworld.Thing.Type;
+import com.putable.pqueue.PQueue;
+import com.putable.pqueue.PQueueAdvanced;
+
+/**
+ * This is the world itself. It initializes the starting world state then begins
+ * the simulation. It adds all {@link Being} objects from the initial world into
+ * a PQueue and then begins executing them in order.
+ * 
+ * @author michaelsmith
+ * 
+ */
+public class FrobWorld implements ConstantValues {
+
+	private Random rand = new Random();
+
+	public Random getRand() {
+		return rand;
+	}
+
+	public void setRand(Random rand) {
+		this.rand = rand;
+	}
+
+	private Thing[][] worldArray = new Thing[WORLD_WIDTH][WORLD_HEIGHT];
+	private PQueue eventQueue = new PQueueAdvanced();
+
+	public Thing[][] getWorldArray() {
+		return worldArray;
+	}
+
+	public void setWorldArray(Thing[][] worldArray) {
+		this.worldArray = worldArray;
+	}
+
+	public PQueue getEventQueue() {
+		return eventQueue;
+	}
+
+	public void setEventQueue(PQueue eventQueue) {
+		this.eventQueue = eventQueue;
+	}
+
+	/**
+	 * Takes an integer seed and seeds the {@link Random}. It then initializes
+	 * the world with INIT_ROCK amount of {@link Rock} objects and INIT_GRASSES
+	 * amount of {@link Grass} objects.
+	 * 
+	 * @param seed
+	 */
+	public void initWorld(int seed) {
+		rand.setSeed(seed);
+		addInitRocksThenGrassesThenFrobs();
+		fillRestWithNothing();
+	}
+
+	/**
+	 * Fill in all spaces after the inital rocks and grasses with Nothing
+	 * objects.
+	 */
+	private void fillRestWithNothing() {
+		for (int i = 0; i < WORLD_HEIGHT; i++) {
+			for (int j = 0; j < WORLD_WIDTH; j++) {
+				if (worldArray[j][i] == null) {
+					Point p = new Point(j, i);
+					Nothing nothing = new Nothing(Type.NOTHING, p);
+					worldArray[j][i] = nothing;
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Adds the number of INIT_ROCKS and INIT_GRASSES to random areas within the
+	 * world. It also creates a wall of {@link Rock} objects on the outer edge
+	 * of the world.
+	 */
+	private void addInitRocksThenGrassesThenFrobs() {
+		addRockBoundaries();
+		for (int i = 0; i < INIT_ROCKS + INIT_GRASSES + INIT_FROBS; i++) {
+			if (i < INIT_ROCKS) {
+				addRock();
+			} else if (i < INIT_ROCKS + INIT_GRASSES) {
+				addGrass();
+			} else {
+				addFrob();
+			}
+		}
+	}
+
+	/**
+	 * finds a point that is not currently filled.
+	 * 
+	 * @return a point that is not currently filled in the world.
+	 */
+	private Point getValidPoint() {
+		Point p = new Point();
+		while (worldArray[p.x][p.y] != null) {
+			int x = 1 + rand.nextInt(WORLD_WIDTH - 2);
+			int y = 1 + rand.nextInt(WORLD_HEIGHT - 2);
+			p.x = x;
+			p.y = y;
+		}
+		return p;
+	}
+
+	/**
+	 * put rocks on all the border indices of the world.
+	 */
+	private void addRockBoundaries() {
+		for (int i = 0; i < WORLD_HEIGHT; i++) {
+			for (int j = 0; j < WORLD_WIDTH; j++) {
+				if (i == 0 || j == 0 || i == WORLD_HEIGHT - 1
+						|| j == WORLD_WIDTH - 1) {
+					Rock rock = new Rock(Type.ROCK, new Point(j, i));
+					worldArray[j][i] = rock;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Makes a rock with a valid location in the world.
+	 * 
+	 * @return A {@link Rock} to be added to the initial world.
+	 */
+	private void addRock() {
+		Point p = getValidPoint();
+		Rock rock = new Rock(Type.ROCK, p);
+		worldArray[p.x][p.y] = rock;
+	}
+
+	private void addGrass() {
+		Grass grass = new Grass(rand.nextInt(GRASS_INITIAL_UPDATE_PERIOD),
+				Type.GRASS, getValidPoint());
+		worldArray[grass.getPoint().x][grass.getPoint().y] = grass;
+		eventQueue.insert(grass);
+	}
+
+	private void addFrob() {
+		Frob frob = new Frob(new GenoType(rand), 0, rand, 
+				getValidPoint());
+		frob.setMass(FROB_GENESIS_MASS);
+		worldArray[frob.getPoint().x][frob.getPoint().y] = frob;
+		eventQueue.insert(frob);
+	}
+
+	/**
+	 * Runs the world with all of the beings in the initial world PQueue
+	 * 
+	 */
+	public void runSim(JPanel animation) {
+		new Simulator(worldArray, eventQueue, rand, animation);
+	}
+
+	/**
+	 * Runs the world without animation.
+	 */
+	public void runSim() {
+		Simulator sim = new Simulator(worldArray, eventQueue, rand);
+		sim.runSimulation();
+	}
+
+	/**
+	 * Render the frob world at the current time to the Graphics object of the
+	 * FrobWorldPanel.
+	 * 
+	 * @param g
+	 *            The graphics object from the FrobWorldPanel.
+	 */
+	public void renderWorld(Graphics g, int sizeOfASpace) {
+		for (int i = 0; i < WORLD_HEIGHT; i++) {
+			for (int j = 0; j < WORLD_WIDTH; j++) {
+				worldArray[j][i].render(g, sizeOfASpace);
+			}
+		}
+	}
+
+	/**
+	 * uses the toString() method of the internal Things to print out the state
+	 * of the world.
+	 */
+	public void printWorld() {
+		for (int i = 0; i < WORLD_HEIGHT; i++) {
+			for (int j = 0; j < WORLD_WIDTH; j++) {
+				System.out.print(worldArray[j][i].toString());
+			}
+			System.out.println();
+		}
+	}
+}

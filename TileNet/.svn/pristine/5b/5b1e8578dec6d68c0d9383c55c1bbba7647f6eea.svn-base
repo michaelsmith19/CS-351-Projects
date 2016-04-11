@@ -1,0 +1,31 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Point;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import com.putable.tilenet.matrixelement.Token;
+
+import deprecated.XXXAgent;
+
+public class GridImpl implements Grid {
+	
+	private ConcurrentHashMap<Point, Token> layout;
+	private ConcurrentLinkedQueue<XXXAgent> agentsConnected;
+	
+	@Override
+	public String toString(){
+		return "DEFAULT GRID";
+	}
+
+	@Override
+	public ConcurrentHashMap<Point, Token> getLayout() {
+		return layout;
+	}
+
+	@Override
+	public ConcurrentLinkedQueue<XXXAgent> getConnected() {
+		return agentsConnected;
+	}
+
+}

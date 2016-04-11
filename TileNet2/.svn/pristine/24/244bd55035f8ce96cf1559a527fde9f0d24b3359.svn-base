@@ -1,0 +1,257 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.ElementOp.OpType;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Token;
+
+public class PairPanickGrid extends Grid{
+
+	GridFactory factory;
+	private SetTag potentialMatch;
+	private List<SetTag> solved;
+	private boolean isFirst;
+	private int clickTracker, solvedCount;
+	private List<String> listOfHiddenValues;
+	private List<SetTag> lastTwoGuesses;
+	private ConcurrentHashMap<String, String> idsToNames;
+	private ConcurrentHashMap<Agent, Integer> agentsToScores;
+	private ConcurrentHashMap<Agent, SetTag> agentsToTokens;
+	private List<Agent> agents;
+	
+	
+	
+	
+	public PairPanickGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+	
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		//These things here are REQUIRED
+		idsToNames = new ConcurrentHashMap<String, String>();
+		lastTwoGuesses = new ArrayList<SetTag>();
+		clickTracker = 0;
+		solvedCount = 0;
+		listOfHiddenValues = generateListOfValues();
+		agentsToScores = new ConcurrentHashMap<Agent, Integer>();
+		agentsToTokens = new ConcurrentHashMap<Agent, SetTag>();
+		agents = new ArrayList<Agent>();
+		solved = new ArrayList<SetTag>();
+		
+		
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Pair Panick Matrix");
+		matrix.setBgColor(Color.BLUE);
+		matrix.setFgColor(Color.BLACK);
+		matrix.setX(8);
+		matrix.setY(9);	
+		layout.update(matrix);
+		
+		
+		SetTag corner = new SetTag("t" + Common.getID());
+		corner.setX(0);
+		corner.setY(0);
+		corner.setBgColor(Color.BLUE);
+		corner.setFgColor(Color.BLACK);
+		corner.setName("Home");
+		layout.update(corner);
+		
+		Collections.shuffle(listOfHiddenValues);
+		
+		int count = 0;
+		for (int x = 0; x < 8; x++){
+			for (int y = 1; y < 9; y++){
+				Token tok = generateHiddenTokens(listOfHiddenValues.get(count), x , y);
+				layout.update(tok.getSetTag());
+				layout.addToken(tok);
+				count++;
+			}
+		}
+	}
+	
+	@Override
+	public void addAgent(Agent a){
+		if (!(agentsToScores.containsKey(a))){
+			agentsToScores.put(a, 0);
+		}
+		SetTag s;
+		if(agentsToTokens.containsKey(a)){
+			SetTag temp = agentsToTokens.get(a);
+			s = new SetTag(temp.getObjid());
+			s.setEnergy(temp.getEnergy());
+			s.setBgColor(temp.getBgColor());
+			s.setFgColor(temp.getFgColor());
+			s.setX(temp.getX());
+			s.setY(temp.getY());
+			s.setName(temp.getName());
+			agentsToTokens.replace(a, s);
+		}
+		else{
+			s =  new SetTag("t" + Common.getID());
+			s.setEnergy(-1);
+			s.setName(a.getName() + ":" + agentsToScores.get(a));
+			s.setBgColor(Color.GRAY);
+			s.setFgColor(Color.BLACK);
+			s.setX(agentsToTokens.size() + 1);
+			s.setY(0);
+			agentsToTokens.put(a, s);
+		}
+		layout.update(s);
+	}
+	
+	private Token generateHiddenTokens(String hiding, int x, int y){
+		SetTag s = new SetTag("t" + Common.getID());
+		idsToNames.put(s.getObjid(), hiding);
+		s.setBgColor(Color.RED);
+		s.setX(x);
+		s.setY(y);
+		s.setEnergy(100);
+		Token tok = (Token) Common.toElement(s);
+		tok.setOp(displayOp(hiding,s));
+		return tok;
+	}
+	
+	private List<String> generateListOfValues(){
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < 16; i++){
+			for (int j = 0; j < 4; j++){
+				list.add("" + i);
+			}
+		}
+		return list;
+	}
+	
+	private SetTag updateAgentsScore(Agent agent, int score){
+		int scoreTemp = agentsToScores.get(agent);
+		agentsToScores.replace(agent, scoreTemp, scoreTemp + score);
+		SetTag s = agentsToTokens.get(agent);
+		s.setName(agent.getName() + ":" + agentsToScores.get(agent));
+		agentsToTokens.remove(agent);
+		agentsToTokens.put(agent, s);
+		return s;
+	}
+	
+	private List<SetTag> reset(){
+		List<SetTag> list = new ArrayList<SetTag>();
+		for (SetTag s : solved){
+			s.setBgColor(Color.RED);
+			s.setEnergy(100);
+			s.setName("");
+			list.add(s);
+		}
+		solvedCount = 0;
+		clickTracker = 0;
+		lastTwoGuesses.clear();
+		System.out.println("hey!");
+		return list;
+	}
+	
+	private HearTag sayWinner(){
+		int winnerScore = Integer.MIN_VALUE;
+		SetTag winner = new SetTag("fake place holder"); 
+		for (Agent a : agentsToScores.keySet()){
+			if (agentsToScores.get(a) > winnerScore){
+				winnerScore = agentsToScores.get(a);
+				winner.setName(a.getName());
+			}
+		}
+		
+		HearTag ht = new HearTag(this.getLayout().getMatrixTag().getName(),
+				this.getLayout().getMatrixTag().getName(),
+				"Winner is:" + winner.getName() + "! With a score of:" + winnerScore + "!");
+		return ht;
+	}
+	
+	
+	private ElementOp displayOp(final String display, final SetTag tag){
+		ElementOp displayOp = new ElementOp(OpType.BROADCAST){
+			@Override
+			public ArrayList<XMLTag> doOp(Agent agent){
+				clickTracker++;
+				tag.setBgColor(Color.BLUE);
+				tag.setName(display);
+				tag.setEnergy(-1);
+				ArrayList<XMLTag> list = new ArrayList<XMLTag>();
+				if(clickTracker % 2 == 1){
+					if (!(lastTwoGuesses.isEmpty())){
+						lastTwoGuesses.get(0).setBgColor(Color.RED);
+						lastTwoGuesses.get(1).setBgColor(Color.RED);
+						lastTwoGuesses.get(0).setName("");
+						lastTwoGuesses.get(1).setName("");
+						lastTwoGuesses.get(0).setEnergy(100);
+						lastTwoGuesses.get(1).setEnergy(100);
+						list.add(lastTwoGuesses.get(1));
+						list.add(lastTwoGuesses.get(0));
+						lastTwoGuesses.clear();
+					}
+					list.add(tag);
+					potentialMatch = tag;
+				}
+				else {
+					if (display.equals(idsToNames.get(potentialMatch.getObjid()))){
+						solvedCount++;
+						if(solvedCount != 16)
+						tag.setEnergy(-1);
+						potentialMatch.setEnergy(-1);
+						tag.setBgColor(Color.GREEN);
+						potentialMatch.setBgColor(Color.GREEN);
+						tag.setFgColor(Color.BLACK);
+						potentialMatch.setFgColor(Color.BLACK);
+						tag.setName(idsToNames.get(tag.getObjid()));
+						potentialMatch.setName(idsToNames.get(potentialMatch.getObjid()));
+						solved.add(tag);
+						solved.add(potentialMatch);
+						if (solvedCount != 16){
+						list.add(tag);
+						list.add(potentialMatch);
+						}
+						list.add(updateAgentsScore(agent, 10));
+					} else{
+						list.add(tag);
+						list.add(potentialMatch);
+						lastTwoGuesses.add(tag);
+						lastTwoGuesses.add(potentialMatch);
+						list.add(updateAgentsScore(agent, -2));
+					}
+				}
+				if (solvedCount == 16){
+					list.add(sayWinner());
+					for (SetTag s : solved){
+						s.setBgColor(Color.RED);
+						s.setEnergy(100);
+						s.setName("");
+						list.add(s);
+					}
+					solvedCount = 0;
+					clickTracker = 0;
+					lastTwoGuesses.clear();
+					System.out.println("hey!");
+				}
+				
+				
+				return list;
+			}
+		};
+		return displayOp;
+	}
+	
+	
+}

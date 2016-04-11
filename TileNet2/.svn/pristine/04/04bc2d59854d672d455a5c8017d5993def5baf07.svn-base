@@ -1,0 +1,48 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class PairPanickGrid extends Grid{
+
+	GridFactory factory;
+	
+	public PairPanickGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+	
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		//These things here are REQUIRED
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setX(5);
+		matrix.setY(5);	
+		layout.update(matrix);
+		
+		SetTag corner = new SetTag("t" + Common.getID());
+		corner.setX(0);
+		corner.setY(0);
+		corner.setBgColor(Color.BLUE);
+		corner.setFgColor(Color.CYAN);
+		layout.update(corner);
+		
+		//SHOULD be a line....
+		for(int i = 1; i < 5; i++){
+			SetTag s = new SetTag("t" + Common.getID());
+			s.setX(i);
+			s.setY(4);			
+			layout.update(s);
+		}
+		
+	}
+	
+}

@@ -1,0 +1,38 @@
+package com.putable.tilenet.grid;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.ElementBuilder;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+import com.putable.tilenet.blueprints.TileNetElementBuilder;
+
+public class HomeGrid extends Grid {	
+	GridFactory factory;
+	
+	public HomeGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+
+	@Override
+	protected void placeParts() {		
+		this.layout = factory.addLayout();
+		this.m = factory.addMatrix();		
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		//These things here are REQUIRED
+		m.setVect(new R2Vect(10,10));
+		associate(m);
+		
+		//SHOULD be a line....
+		for(int i = 4; i < 8; i++){
+			SetTag s = new SetTag("t" + Common.getID());
+			s.setX(i);
+			s.setY(i);			
+			layout.update(s);
+		}
+	}
+}

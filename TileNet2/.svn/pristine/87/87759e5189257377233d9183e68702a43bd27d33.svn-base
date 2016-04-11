@@ -1,0 +1,51 @@
+package com.putable.tilenet.blueprints;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element.ElemType;
+import com.putable.tilenet.matrixelement.Key;
+
+public class HomeKeyBindSet implements KeyBindSet{
+
+	private final ConcurrentHashMap<String, ElementOp> keysToOps;
+	private final ConcurrentHashMap<String, Key> objidToKey;
+	
+	public HomeKeyBindSet(){
+		this.keysToOps = new ConcurrentHashMap<String, ElementOp>();
+		this.objidToKey = new ConcurrentHashMap<String, Key>();
+	}
+	
+	@Override
+	public List<SetTag> toSetTags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean containsKey(String keyObjid) {
+		return keysToOps.contains(keyObjid);
+	}
+	
+	private void populateKeys(){
+		ElementBuilder kb = new TileNetElementBuilder();
+		Key keyM = (Key)kb.makeElement(ElemType.KEY);
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

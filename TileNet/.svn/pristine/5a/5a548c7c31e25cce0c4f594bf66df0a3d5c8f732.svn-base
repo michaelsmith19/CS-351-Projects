@@ -1,0 +1,18 @@
+package com.putable.tilenet.grid;
+
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class HomeGrid extends Grid {	
+	GridFactory factory;
+	
+	public HomeGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+
+	@Override
+	protected void makeGrid() {		
+		this.layout = factory.addLayout();
+		this.manager = factory.addAgentManager();
+	}
+}

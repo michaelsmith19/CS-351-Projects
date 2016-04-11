@@ -1,0 +1,41 @@
+package com.putable.tilenet.blueprints;
+
+import javax.swing.JPanel;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public abstract class Grid {
+	
+	public enum GridType {
+		HOME,
+		SPLASH;
+	}
+	
+	//Fields
+	private String name;
+	private GridType type;
+	
+	// Parts of a Grid
+	protected Layout layout;
+	protected AgentManager manager;
+	protected Matrix m;
+	
+	//Methods for construction
+	protected void setType(GridType type){ this.type = type; }
+	protected abstract void placeParts();	
+	
+	//Public methods
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public GridType getType() { return this.type; }
+	
+	//Replay methods	
+	public JPanel toJPanel(int height, int width){
+		return layout.toJPanel(height, width, m);
+	}
+	public void addAgent(Agent agent){
+		manager.addAgent(agent);
+	}
+}

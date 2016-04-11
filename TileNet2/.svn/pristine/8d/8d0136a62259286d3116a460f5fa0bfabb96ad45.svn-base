@@ -1,0 +1,339 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.ElementOp.OpType;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Token;
+
+public class PairPanickGrid extends Grid{
+
+	GridFactory factory;
+	private SetTag potentialMatch;
+	private List<SetTag> solved;
+	private int clickTracker, solvedCount;
+	private List<SetTag> lastTwoGuesses;
+	private ConcurrentHashMap<Agent, Integer> agentsToScores;
+	private ConcurrentHashMap<Agent, SetTag> agentsToTokens;
+	private List<SetTag> hiddenImages;
+	private List<Agent> agentsConnected;
+	private ConcurrentHashMap<String, SetTag> idsToImages;
+	private ConcurrentHashMap<String, SetTag> idsToFronts; 
+	private AgentManager manager;
+	
+	
+	public PairPanickGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+	
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+		//this.manager = super.getManager();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		//These things here are REQUIRED
+		lastTwoGuesses = new ArrayList<SetTag>();
+		clickTracker = 0;
+		solvedCount = 0;
+		agentsToScores = new ConcurrentHashMap<Agent, Integer>();
+		agentsToTokens = new ConcurrentHashMap<Agent, SetTag>();
+		solved = new ArrayList<SetTag>();
+		hiddenImages = new ArrayList<SetTag>();
+		hiddenImages = generateImageSetTags();
+		idsToImages = new ConcurrentHashMap<String, SetTag>();
+		idsToFronts = new ConcurrentHashMap<String, SetTag>();
+		agentsConnected = new ArrayList<Agent>();
+
+		
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Pair Panick Matrix");
+		matrix.setBgColor(Color.BLUE);
+		matrix.setFgColor(Color.BLACK);
+		matrix.setX(8);
+		matrix.setY(9);	
+		layout.update(matrix);
+		
+		for(int i = 0; i < hiddenImages.size(); i+=4){
+			idsToImages.put(hiddenImages.get(i).getObjid(), hiddenImages.get(i));
+			layout.update(hiddenImages.get(i));
+		}
+		
+		SetTag corner = new SetTag("t" + Common.getID());
+		corner.setX(0);
+		corner.setY(0);
+		corner.setBgColor(Color.BLUE);
+		corner.setFgColor(Color.BLACK);
+		corner.setName("Home");
+		layout.update(corner);
+		
+		//Collections.shuffle(hiddenImages);
+		
+		int count = 0;
+		for (int x = 0; x < 8; x++){
+			for (int y = 1; y < 9; y++){
+				Token tok = generateHiddenTokens(hiddenImages.get(count).getObjid(), x , y);
+				layout.update(tok.getSetTag());
+				layout.addToken(tok);
+				count++;
+			}
+		}
+	}
+	
+	@Override
+	public void removeAgent(Agent a){
+		agentsConnected.remove(a);
+	}
+	
+	
+	@Override
+	public void addAgent(Agent a){
+		agentsConnected.add(a);
+		
+		if (!(agentsToScores.containsKey(a))){
+			agentsToScores.put(a, 0);
+		}
+		SetTag s;
+		if(agentsToTokens.containsKey(a)){
+			SetTag temp = agentsToTokens.get(a);
+			s = new SetTag(temp.getObjid());
+			s.setEnergy(temp.getEnergy());
+			s.setBgColor(temp.getBgColor());
+			s.setFgColor(temp.getFgColor());
+			s.setX(temp.getX());
+			s.setY(temp.getY());
+			s.setName(temp.getName());
+			agentsToTokens.replace(a, s);
+		}
+		else{
+			s =  new SetTag("t" + Common.getID());
+			s.setEnergy(-1);
+			s.setName(a.getName() + ":" + agentsToScores.get(a));
+			s.setBgColor(Color.GRAY);
+			s.setFgColor(Color.BLACK);
+			s.setX(agentsToTokens.size() + 1);
+			s.setY(0);
+			agentsToTokens.put(a, s);
+		}
+		layout.update(s);
+	}
+	
+	private Token generateHiddenTokens(String hiding, int x, int y){
+		SetTag s = new SetTag("t" + Common.getID());
+		s.setImage(makeFront(s.getObjid()).getObjid());
+		s.setX(x);
+		s.setY(y);
+		s.setEnergy(100);
+		layout.update(idsToFronts.get(s.getObjid()));
+		Token tok = (Token) Common.toElement(s);
+		tok.setOp(displayOp(hiding,s));
+		return tok;
+	}
+	
+	private SetTag updateAgentsScore(Agent agent, int score){
+		int scoreTemp = agentsToScores.get(agent);
+		agentsToScores.replace(agent, scoreTemp + score);
+		SetTag s = agentsToTokens.get(agent);
+		s.setName(agent.getName() + ":" + agentsToScores.get(agent));
+		return s;
+	}
+	
+	
+	private List<SetTag> reset(){
+		List<SetTag> list = new ArrayList<SetTag>();
+		idsToImages.clear();
+		Collections.shuffle(hiddenImages);
+		int i = 0;
+		while(!(solved.isEmpty())){
+				SetTag s = solved.remove(0);
+				changeSetTag(null, idsToFronts.get(s.getObjid()).getObjid(), 100, s);
+				Token tok = (Token) Common.toElement(s);
+				idsToImages.put(s.getObjid(), hiddenImages.get(i));
+				tok.setOp(displayOp(hiddenImages.get(i).getObjid(),s));
+				layout.addToken(tok);
+				layout.update(s);
+				list.add(s);
+				i++;
+			}
+		solvedCount = 0;
+		clickTracker = 0;
+		lastTwoGuesses.clear();
+		return list;
+	}
+	
+	//I'm sorry it's so big!
+	private List<SetTag> generateImageSetTags(){
+		List<SetTag> list = new ArrayList<SetTag>();
+		SetTag i = new SetTag("i" + Common.getID());
+		i.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/businesscat.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i);
+		SetTag i2 = new SetTag("i" + Common.getID());
+		i2.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/cw.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i2);
+		SetTag i3 = new SetTag("i" + Common.getID());
+		i3.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/ff.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i3);
+		SetTag i4 = new SetTag("i" + Common.getID());
+		i4.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/gc.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i4);
+		SetTag i5 = new SetTag("i" + Common.getID());
+		i5.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/iktfb.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i5);
+		SetTag i6 = new SetTag("i" + Common.getID());
+		i6.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/jackie.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i6);
+		SetTag i7 = new SetTag("i" + Common.getID());
+		i7.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/keanu.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i7);
+		SetTag i8 = new SetTag("i" + Common.getID());
+		i8.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/mg.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i8);
+		SetTag i9 = new SetTag("i" + Common.getID());
+		i9.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/mimitw.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i9);
+		SetTag ia = new SetTag("i" + Common.getID());
+		ia.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/notbad.jpg")));
+		for (int j = 0; j < 4; j++) list.add(ia);
+		SetTag ib = new SetTag("i" + Common.getID());
+		ib.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/oagf.jpg")));
+		for (int j = 0; j < 4; j++) list.add(ib);
+		SetTag ic = new SetTag("i" + Common.getID());
+		ic.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/onedns.jpg")));
+		for (int j = 0; j < 4; j++) list.add(ic);
+		SetTag id = new SetTag("i" + Common.getID());
+		id.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/picard.jpg")));
+		for (int j = 0; j < 4; j++) list.add(id);
+		SetTag ie = new SetTag("i" + Common.getID());
+		ie.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/spider.jpg")));
+		for (int j = 0; j < 4; j++) list.add(ie);
+		SetTag i15 = new SetTag("i" + Common.getID());
+		i15.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/ss.jpg")));
+		for (int j = 0; j < 4; j++) list.add(i15);
+		SetTag i16 = new SetTag("i" + Common.getID());
+		i16.setText(Common.toHexData(new File("resource/pairpanick/memes/matching/successkid.jpg")));
+		for (int j = 0; j < 4; j++)list.add(i16);
+		return list;
+	}
+	
+	private void startTimer(final Agent a){
+		new java.util.Timer().schedule( 
+		        new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		            	if (!(lastTwoGuesses.isEmpty())){
+		            		for(int i = 0; i < lastTwoGuesses.size(); i++){
+		            			changeSetTag(null, idsToFronts.get(
+		            					lastTwoGuesses.get(i).getObjid()).getObjid(), 
+		            					100, 
+		            					lastTwoGuesses.get(i));
+		            			
+		            			manager.getConnection(a).sendMessage((lastTwoGuesses.get(i)));
+		            		}
+		            	}
+						lastTwoGuesses.clear();
+		            }
+		        }, 
+		        2000 
+		);
+	}
+	
+	private SetTag makeFront(String id){
+		SetTag s = new SetTag("i" + Common.getID());
+		s.setText(Common.toHexData(new File("resource/pairpanick/front4.jpg")));
+		idsToFronts.put(id, s);
+		return s;
+	}
+	
+	private HearTag sayWinner(){
+		int winnerScore = Integer.MIN_VALUE;
+		SetTag winner = new SetTag("fake place holder"); 
+		for (Agent a : agentsToScores.keySet()){
+			if (agentsToScores.get(a) > winnerScore){
+				winnerScore = agentsToScores.get(a);
+				winner.setName(a.getName());
+			}
+		}
+		
+		HearTag ht = new HearTag(this.getLayout().getMatrixTag().getName(),
+				this.getLayout().getMatrixTag().getName(),
+				"Winner is:" + winner.getName() + "! With a score of:" + winnerScore + "!");
+		return ht;
+	}
+	
+	private void changeSetTag(Color bg, String img, int energy, SetTag tag){
+		if (bg != null) tag.setBgColor(bg);
+		if (img != null) tag.setImage(img);
+		if (energy != 0) tag.setEnergy(energy);
+	}
+	
+	
+	private ElementOp displayOp(final String display, final SetTag tag){
+		ElementOp displayOp = new ElementOp(OpType.BROADCAST){
+			@Override
+			public ArrayList<XMLTag> doOp(Agent agent){
+				clickTracker++;
+				System.out.println("the id of image is : " + display);
+				System.out.println("The token associated with that is : " + tag);
+				changeSetTag(null,idsToImages.get(display).getObjid(),-1,tag);
+				ArrayList<XMLTag> list = new ArrayList<XMLTag>();
+				if(clickTracker % 2 == 1){
+					if (!(lastTwoGuesses.isEmpty())){
+						for(int i = 0; i < lastTwoGuesses.size(); i++){
+						changeSetTag(null, idsToFronts.get(tag.getObjid()).getObjid(), 100, lastTwoGuesses.get(i));
+						list.add(lastTwoGuesses.get(i));
+						}
+						lastTwoGuesses.clear();
+					}
+					list.add(tag);
+					potentialMatch = tag;
+				}
+				else {
+					if (display.equals(potentialMatch.getImage())){
+						solvedCount++;
+						changeSetTag(Color.GREEN,null,-1,tag);
+						changeSetTag(Color.GREEN,null,-1,potentialMatch);
+						solved.add(tag);
+						solved.add(potentialMatch);
+						list.add(updateAgentsScore(agent, 10));
+						if (solvedCount != 32){
+							list.add(tag);
+							list.add(potentialMatch);
+						}
+					} else{
+						list.add(tag);
+						list.add(potentialMatch);
+						lastTwoGuesses.add(tag);
+						lastTwoGuesses.add(potentialMatch);
+						//startTimer(agent);
+						list.add(updateAgentsScore(agent, -2));
+					}
+				}
+				if (solvedCount == 32){
+					list.add(sayWinner());
+					list.addAll(reset());
+				}
+				
+
+				return list;
+			}
+		};
+		return displayOp;
+	}
+	
+	
+}

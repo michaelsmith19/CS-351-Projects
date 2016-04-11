@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="378" key="RevertDialog.location.x"/>
+	<item value="133" key="RevertDialog.location.y"/>
+	<item value="101" key="HistoryTableProvider.revisions.Revision"/>
+	<item value="250" key="HistoryTableProvider.revisions.Date"/>
+	<item value="22" key="UpdateDialogWithConflictHandling.location.y"/>
+	<item value="525" key="RevertDialog.size.x"/>
+	<item value="101" key="HistoryTableProvider.revisionsBlock.Revision"/>
+	<item value="415" key="RevertDialog.size.y"/>
+	<item value="238" key="HistoryTableProvider.SVNHistoryPage.Date"/>
+	<item value="svn+ssh://msmith19@moons.cs.unm.edu/nfs/student/h/harding/svnrepository/branches/Dev_Branch/svnrepository" key="UrlCombo.TileNet2.0"/>
+	<item value="501" key="HistoryTableProvider.MergeWizardUnblockRevisionsPage.Comment"/>
+	<item value="200" key="HistoryTableProvider.revisions.Author"/>
+	<item value="500" key="CommitDialog.weights.0"/>
+	<item value="500" key="CommitDialog.weights.1"/>
+	<item value="477" key="ChooseUrlDialog.size.x"/>
+	<item value="349" key="ChooseUrlDialog.size.y"/>
+	<item value="375" key="MarkResolvedDialog.location.x"/>
+	<item value="124" key="MarkResolvedDialog.location.y"/>
+	<item value="251" key="HistoryTableProvider.MergeWizardUnblockRevisionsPage.Date"/>
+	<item value="128" key="CommitDialog.location.y"/>
+	<item value="703" key="UpdateDialogWithConflictHandling.size.y"/>
+	<item value="104" key="CommitDialog.location.x"/>
+	<item value="22" key="passwordStores.location.y"/>
+	<item value="525" key="UpdateDialogWithConflictHandling.size.x"/>
+	<item value="362" key="passwordStores.location.x"/>
+	<item value="530" key="MarkResolvedDialog.size.x"/>
+	<item value="428" key="MarkResolvedDialog.size.y"/>
+	<item value="856" key="TreeConflictsView.col.Description"/>
+	<item value="svn+ssh://msmith19@moons.cs.unm.edu/nfs/student/h/harding/svnrepository/branches/Dev_Branch/svnrepository" key="UrlCombo.TileNet.0"/>
+	<item value="564" key="passwordStores.size.y"/>
+	<item value="556" key="passwordStores.size.x"/>
+	<item value="200" key="HistoryTableProvider.revisionsBlock.Author"/>
+	<item value="6" key="ResolveConflictDialog.lastChoice"/>
+	<item value="402" key="ChooseUrlDialog.location.x"/>
+	<item value="475" key="HistoryTableProvider.SVNHistoryPage.Comment"/>
+	<item value="169" key="ChooseUrlDialog.location.y"/>
+	<item value="101" key="HistoryTableProvider.MergeWizardUnblockRevisionsPage.Revision"/>
+	<item value="true" key="TreeConflictsView.container"/>
+	<item value="143" key="TreeConflictsView.col.Resource"/>
+	<item value="96" key="HistoryTableProvider.SVNHistoryPage.Revision"/>
+	<item value="200" key="HistoryTableProvider.MergeWizardUnblockRevisionsPage.Author"/>
+	<item value="190" key="HistoryTableProvider.SVNHistoryPage.Author"/>
+	<item value="759" key="SwitchDialogWithConflictHandling.size.y"/>
+	<item value="590" key="SwitchDialogWithConflictHandling.size.x"/>
+	<item value="345" key="SwitchDialogWithConflictHandling.location.x"/>
+	<item value="22" key="SwitchDialogWithConflictHandling.location.y"/>
+	<item value="250" key="HistoryTableProvider.revisionsBlock.Date"/>
+	<item value="/Users/michaelsmith/Documents/workspace/TileNet" key="TreeConflictsView.resource"/>
+	<item value="500" key="HistoryTableProvider.revisions.Comment"/>
+	<item value="1127" key="CommitDialog.size.x"/>
+	<item value="378" key="UpdateDialogWithConflictHandling.location.x"/>
+	<item value="449" key="CommitDialog.size.y"/>
+	<item value="500" key="HistoryTableProvider.revisionsBlock.Comment"/>
+	<section name="CommitWizard">
+		<item value="false" key="ShowCompare"/>
+		<item value="500" key="VWeight2"/>
+		<item value="500" key="VWeight1"/>
+	</section>
+	<section name="IgnoreResourcesDialog">
+	</section>
+	<section name="NewLocationWizard">
+		<list key="ConfigurationWizardMainPage.STORE_URL_ID">
+			<item value="svn+ssh://msmith19@moons.cs.unm.edu/nfs/student/h/harding/svnrepository/branches/TileNetBranch/svnrepository"/>
+			<item value="svn+ssh://msmith19@moons.cs.unm.edu/nfs/student/h/harding/svnrepository"/>
+		</list>
+	</section>
+</section>

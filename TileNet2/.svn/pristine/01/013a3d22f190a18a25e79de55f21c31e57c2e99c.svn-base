@@ -1,0 +1,222 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.ElementOp.OpType;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Token;
+import com.putable.tilenet.tripleTriad.TTCard;
+import com.putable.tilenet.tripleTriad.TTDeckBuilder;
+
+public class TripleTriadGrid extends Grid {
+
+	GridFactory factory;
+	private LinkedList<TTCard> deck;
+	private TTCard[] redHand;
+	private TTCard[] blueHand;
+	private TTCard[][] board;
+	private boolean gameInSession;
+	private Agent redPlayer;
+	private Agent bluePlayer;
+	private Agent currentPlayer;
+	private ConcurrentHashMap<Agent, Integer> agentsToScores;
+	private List<Agent> agentsConnected;
+	private AgentManager manager;
+
+	public TripleTriadGrid(GridFactory thisSpecificfactory) {
+		this.redHand = new TTCard[5];
+		this.blueHand = new TTCard[5];
+		this.board = new TTCard[3][3];
+		this.deck = TTDeckBuilder.buildDeck();
+		this.factory = thisSpecificfactory;
+		this.agentsToScores = new ConcurrentHashMap<Agent, Integer>();
+		this.agentsConnected = new ArrayList<Agent>();
+		this.gameInSession = false;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		sendMatrixTag();
+		sendMatrix();
+	}
+	
+	@Override
+	public void addAgent(Agent a){
+		agentsConnected.add(a);
+		
+		if (!(agentsToScores.containsKey(a))){
+			agentsToScores.put(a, 0);
+		}
+	
+	}	
+	
+	@Override
+	public void giveManager(AgentManager manager){
+		this.manager = manager;
+	}
+	
+	
+	@Override
+	public void removeAgent(Agent a){
+		agentsConnected.remove(a);
+	}
+	
+	
+	
+	
+	
+	private void sendMatrixTag() {
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Triple Triad");
+		matrix.setX(5);
+		matrix.setY(5);
+		layout.update(matrix);
+	}
+
+	private void sendImages() {
+		SetTag ackleyPic = new SetTag("i" + Common.getID());
+
+		ackleyPic.setText(Common.toHexData(new File(
+				"resource/tripleTriad/CARDS/ACKLEY.png")));
+
+
+		layout.update(ackleyPic);
+	}
+
+	private void sendMatrix() {
+		sendImages();
+		sendUtilities();
+		deal();
+		sendBoard();
+	}
+
+	private void sendBoard() {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				SetTag st;
+				if (board[i][j] == null) {
+					st = new SetTag("t" + Common.getID());
+					st.setBgColor(Color.GRAY);
+				} else {
+					st = board[i][j].getCardSetTag();
+				}
+				st.setX(i + 1);
+				st.setY(j + 1);
+				layout.update(st);
+
+			}
+		}
+	}
+
+	private void sendUtilities() {
+		sendReadyToken();
+		sendHomeToken();
+	}
+	
+	private void sendReadyToken(){
+		SetTag readyToken = new SetTag("t" + Common.getID());
+		readyToken.setName("Ready");
+		readyToken.setText("Ready");
+		readyToken.setX(4);
+		readyToken.setY(0);
+		readyToken.setBgColor(Color.PINK);
+		layout.update(readyToken);
+	}
+	
+	private void sendHomeToken(){
+		SetTag toHome = new SetTag("t" + Common.getID());
+		toHome.setX(0);
+		toHome.setY(0);
+		toHome.setBgColor(Color.BLUE);
+		toHome.setFgColor(Color.BLACK);
+		toHome.setName("Home");
+		layout.update(toHome);
+		
+	}
+
+	private void sendHand() {
+		for (int i = 0; i < 5; i++) {
+			SetTag st;
+			if (redHand[i] == null) {
+				st = new SetTag("t" + Common.getID());
+				st.setName("Card" + i);
+				st.setBgColor(Color.BLUE);
+			} else {
+				st = redHand[i].getCardSetTag();
+			}
+			
+			st.setX(i);
+			st.setY(4);
+			
+			Token tok = (Token) Common.toElement(st);
+			tok.setOp(cardOp(st));
+			layout.update(st);
+		}
+	}
+	
+	private ElementOp cardOp(final SetTag tag){
+		ElementOp displayOp = new ElementOp(OpType.BROADCAST){
+			
+			@Override
+			public ArrayList<XMLTag> doOp(Agent agent){
+
+				System.out.println("The token associated with that is : " + tag);
+
+				ArrayList<XMLTag> list = new ArrayList<XMLTag>();
+				list.addAll(activateBoard());
+				return list;
+			}
+		};
+		return displayOp;
+	}
+	
+	private ArrayList<XMLTag> activateBoard(){
+		ArrayList<XMLTag> activated = new ArrayList<XMLTag>();
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				SetTag st;
+				if (board[i][j] == null) {
+					st = new SetTag("t" + Common.getID());
+					st.setBgColor(Color.GREEN);
+				} else {
+					st = board[i][j].getCardSetTag();
+				}
+				st.setX(i + 1);
+				st.setY(j + 1);
+				activated.add(st);
+				layout.update(st);
+
+			}
+			
+		}
+		return activated;
+	}
+
+	private void deal() {
+		for (int i = 0; i < 5; i++) {
+			redHand[i] = deck.remove();
+		}
+		sendHand();
+	}
+	
+	
+
+
+}

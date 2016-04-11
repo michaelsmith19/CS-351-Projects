@@ -1,0 +1,57 @@
+package com.putable.tilenet.Util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.putable.tilenet.Client.Agent;
+import com.putable.tilenet.Client.AutoAgent;
+import com.putable.tilenet.Server.ServerModel;
+import com.putable.tilenet.matrix.MatrixElementFactory;
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+public class Driver {
+	//((c4.1.1.3)) A port can have the range 44456-44459
+	private static final int PORT = 44457;
+	private static final int MAX_CONNECTIONS = 5;
+	private static final int THIN_CLIENTS = 2;
+	
+	public static void main(String[] args) throws Exception{
+		//Start server
+		ServerModel serverModel = new ServerModel(PORT, MAX_CONNECTIONS);
+		ExecutorService servEx = Executors.newSingleThreadExecutor();
+		servEx.submit(serverModel);
+		
+		//After Test suite is in place, we can use this for that
+		List<String> botCommands = new ArrayList<String>();
+		botCommands.add("ROBOT");
+		botCommands.add(String.valueOf(PORT));
+		botCommands.add("WAIT_RESPONCE");
+		botCommands.add("SEND:Bot XML Stuff");
+		botCommands.add("SEND:FIN");
+		botCommands.add("EXPECT:FIN");
+		botCommands.add("DISCONNECT");
+		
+		//Make some clients, They timeout after 60 seconds of inactivity
+		ExecutorService clientEx = Executors.newCachedThreadPool();
+		for(int i = 0; i < THIN_CLIENTS; i++){
+			//Its OK to cast from here. We made the factory
+			clientEx.submit((AutoAgent) MatrixElementFactory.produce(ElemType.AUTOAGENT, botCommands.toArray(new String[botCommands.size()])));
+		}
+		
+		//Make an agent for us to see and use
+		Agent doubleOhZero = (Agent) MatrixElementFactory.produce(ElemType.AGENT, "BOND", String.valueOf(PORT));
+		clientEx.submit(doubleOhZero);
+		
+		doubleOhZero.show();
+		
+		
+		
+		//Proper shutdown
+		clientEx.shutdown();
+		while(!clientEx.isShutdown()) { }
+		//Shuts down when there are no more clients, Because we told it to HERE, not on the server code
+		servEx.shutdown();
+	}
+}

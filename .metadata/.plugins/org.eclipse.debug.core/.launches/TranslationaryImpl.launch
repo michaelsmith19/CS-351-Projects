@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/CS-351_Lab/src/labs/lab2/TranslationaryImpl.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="labs.lab2.TranslationaryImpl"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="hey boy girl what the happy computer screen mom dad backyard sky airplane duh doorknob google door implementation occupy requirements inbox calendar broken interface usage cellular scanner cs science hey university of new mexico"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CS-351_Lab"/>
+</launchConfiguration>

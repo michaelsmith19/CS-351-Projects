@@ -1,0 +1,18 @@
+package com.putable.tilenet.blueprints;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.AgentManager.AgentManagerImpl;
+import com.putable.tilenet.layout.PairPanickLayout;
+
+public class PairPanickGridFactory implements GridFactory {
+
+	@Override
+	public Layout addLayout() {
+		return new PairPanickLayout();
+	}
+
+	
+	public AgentManager addAgentManager() {
+		return new AgentManagerImpl();
+	}	
+}

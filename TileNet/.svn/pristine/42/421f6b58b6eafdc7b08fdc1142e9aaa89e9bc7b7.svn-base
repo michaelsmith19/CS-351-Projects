@@ -1,0 +1,14 @@
+package com.putable.tilenet.factory;
+
+
+public class ImageSetTag extends SetTagImpl implements SetTag{
+
+	/*
+	 * 
+	 * Custom Image handling of set tag?
+	 * 
+	 * 
+	 */
+
+
+}

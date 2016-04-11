@@ -1,0 +1,60 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class HomeGrid extends Grid {
+	GridFactory factory;
+
+	public HomeGrid(GridFactory thisSpecificfactory) {
+		this.factory = thisSpecificfactory;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		// These things here are REQUIRED
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Home Matrix");
+		matrix.setX(4);
+		matrix.setY(4);
+		layout.update(matrix);
+
+		// SHOULD be a line....
+		for (int i = 2; i < 4; i++) {
+			SetTag s = new SetTag("t" + Common.getID());
+			s.setX(i);
+			s.setY(i);
+			s.setEnergy(-1);
+			layout.update(s);
+		}
+
+		// Add 1 to top just to see the corner
+		SetTag corner = new SetTag("t" + Common.getID());
+		corner.setX(0);
+		corner.setY(0);
+		corner.setFgColor(Color.BLACK);
+		corner.setBgColor(Color.GREEN);
+		corner.setName("PairPanick");
+		layout.update(corner);
+
+		// Add another for tripletriad
+		SetTag tripleTriad = new SetTag("t" + Common.getID());
+		tripleTriad.setX(3);
+		tripleTriad.setY(0);
+		tripleTriad.setFgColor(Color.BLACK);
+		tripleTriad.setBgColor(Color.GREEN);
+		tripleTriad.setEnergy(50);
+		tripleTriad.setName("Triple Triad");
+		layout.update(tripleTriad);
+	}
+
+}

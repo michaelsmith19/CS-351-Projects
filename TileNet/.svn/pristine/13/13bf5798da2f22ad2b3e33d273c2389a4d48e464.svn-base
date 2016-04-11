@@ -1,0 +1,11 @@
+package com.putable.tilenet.settag;
+
+
+public class AgentSetTag extends SetTagImpl implements SetTag  {
+
+	/*
+	 * Non-generic handling goes here
+	 *  
+	 */
+
+}

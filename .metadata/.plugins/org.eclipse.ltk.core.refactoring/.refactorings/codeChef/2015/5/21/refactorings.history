@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;AEHash.java&apos; to &apos;codeChef/src/problems&apos;&#x0A;- Original project: &apos;codeChef&apos;&#x0A;- Destination element: &apos;codeChef/src/problems&apos;&#x0A;- Original element: &apos;AEHash.java&apos;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;problems" element1="/src&lt;{AEHash.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1432424600977" units="1" version="1.0"/>
+</session>

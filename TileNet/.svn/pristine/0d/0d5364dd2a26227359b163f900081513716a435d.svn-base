@@ -1,0 +1,107 @@
+package com.putable.tilenet.layout;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.R2Vect;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.Element.ElemType;
+import com.putable.tilenet.blueprints.ElementBuilder;
+import com.putable.tilenet.blueprints.Layout;
+import com.putable.tilenet.blueprints.TileNetElementBuilder;
+import com.putable.tilenet.matrixelement.Matrix;
+import com.putable.tilenet.matrixelement.Token;
+
+public class HomeLayout implements Layout {
+	private int rows;
+	private int columns;
+	private ConcurrentHashMap<R2Vect, Element> cordinates;
+	
+	@Override
+	public JPanel toJPanel(int height, int width, Matrix m) {
+		if(cordinates == null || m == null)
+			System.err.println(m + "-NOTHING TO SHOW / NOT INITILIZED");
+		
+		rows = m.tag.getY();
+		columns = m.tag.getX();
+						
+		if(height < rows || width < columns)
+			System.err.println("Not large enough for a panel");	
+
+		//Panel stuff	
+		JPanel panel = new JPanel();		
+		panel.setSize(width, height);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		
+		//Get all Elements
+		for(R2Vect p: cordinates.keySet()){			
+			Element e = cordinates.get(p);			
+			BufferedImage bi = new BufferedImage(width/columns, height/rows, BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics g = bi.getGraphics();			
+			switch(e.type){
+			case AGENT:
+				break;
+			case IMAGE:
+				break;
+			case KEY:
+				break;
+			case MATRIX:
+				break;
+			case TOKEN:
+				g.setColor(e.tag.getBgColor());
+				g.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+				//TODO make these buttons?
+				break;
+			default:
+				break;			
+			}
+			c.gridx = p.x;
+			c.gridy = p.y;
+			JLabel lbl = new JLabel(new ImageIcon(bi));
+			panel.add(lbl,c);			
+		}
+		
+		return panel;
+	}
+
+	@Override
+	public List<SetTag> toSetTags() {
+		List<SetTag> tags = new ArrayList<SetTag>();		
+		for(Element ele: cordinates.values()){			
+			tags.add(ele.tag);
+		}		
+		return tags;
+	}
+
+	@Override
+	public void put(Element ele) {
+		cordinates.put(ele.getVect(), ele);	
+	}
+
+	@Override
+	public void init() {		
+		cordinates = new ConcurrentHashMap<R2Vect, Element>();
+		ElementBuilder makeElements = new TileNetElementBuilder();
+		for(int i = 0; i < 4 ; i++){
+			Token token = (Token) makeElements.orderElement(ElemType.TOKEN);
+			token.tag.setBgColor(Color.BLUE);
+			token.tag.setX(i);
+			token.tag.setY(0);
+			put(token);
+		}
+				
+	}	
+}

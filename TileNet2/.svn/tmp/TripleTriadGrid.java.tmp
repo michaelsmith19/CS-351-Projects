@@ -1,0 +1,94 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+
+public class TripleTriadGrid extends Grid {
+	GridFactory factory;
+
+	public TripleTriadGrid(GridFactory thisSpecificfactory) {
+		this.factory = thisSpecificfactory;
+	}
+
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	private void sendMatrixTag() {
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Triple Triad");
+		matrix.setX(5);
+		matrix.setY(5);
+		layout.update(matrix);
+<<<<<<< .mine
+
+	}
+
+	private void sendMatrix() {
+		sendUtilities();
+		sendHand();
+		sendBoard();
+
+	}
+
+	private void sendBoard() {
+		for (int i = 1; i < 4; i++) {
+			for (int j = 1; i < 4; i++) {
+				SetTag st = new SetTag("t" + Common.getID());
+				st.setX(i);
+				st.setY(j);
+				st.setBgColor(Color.GREEN);
+				layout.update(st);
+
+			}
+		}
+
+	}
+
+	private void sendUtilities() {
+		SetTag readyToken = new SetTag("t" + Common.getID());
+		readyToken.setName("Ready");
+		readyToken.setText("Ready");
+		readyToken.setX(4);
+		readyToken.setY(0);
+		readyToken.setBgColor(Color.PINK);
+		layout.update(readyToken);
+	}
+
+	private void sendHand() {
+		for (int i = 0; i < 5; i++) {
+			SetTag st = new SetTag("t" + Common.getID());
+			st.setName("Card" + i);
+			st.setX(i);
+			st.setY(4);
+			st.setBgColor(Color.BLUE);
+			layout.update(st);
+		}
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		// TODO Auto-generated method stub
+		sendMatrixTag();
+		sendMatrix();
+=======
+		
+		SetTag toHome = new SetTag("t" + Common.getID());
+		toHome.setX(0);
+		toHome.setY(0);
+		toHome.setBgColor(Color.BLUE);
+		toHome.setFgColor(Color.BLACK);
+		toHome.setName("Home");
+		layout.update(toHome);
+		
+		
+		
+>>>>>>> .r241
+	}
+
+}

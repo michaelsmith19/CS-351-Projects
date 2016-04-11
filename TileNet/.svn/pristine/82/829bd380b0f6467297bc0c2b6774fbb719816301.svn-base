@@ -1,0 +1,83 @@
+package com.putable.tilenet.matrix;
+
+import java.io.IOException;
+import java.net.UnknownHostException;
+
+import com.putable.tilenet.Client.Agent;
+
+public class MatrixElementFactory{	
+
+	private MatrixElementFactory(){
+	}
+
+	public static MatrixElement produce(ElemType type){
+		//TODO Add extra values for production of specific elements
+		try {
+			return type.get();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;		
+	}
+
+	public enum ElemType {
+		AGENT {
+			@Override
+			MatrixElement get() throws UnknownHostException, IOException {
+				return new Agent("FACTORY MADE", 0);
+			}			
+		},
+		KEY {
+			@Override
+			MatrixElement get() {
+				return new Key();
+			}
+		},
+		TOKEN {
+			@Override
+			MatrixElement get() {
+				return new Token();
+			}
+		},
+		IMAGE {
+			@Override
+			MatrixElement get() {				
+				return new Image();
+			}
+		},
+		MATRIX {
+			@Override
+			MatrixElement get() {
+				return new Matrix();
+			}
+		};
+
+		static private long uniqueId = 0;
+		private long objid;
+
+		private ElemType(){
+			this.objid = acquireID();
+		}
+
+		private long acquireID(){
+			ElemType.uniqueId++;
+			return ElemType.uniqueId;
+		}
+
+		public long id(){
+			return objid;
+		}
+
+		abstract MatrixElement get() throws UnknownHostException, IOException;
+	}
+}
+
+
+
+
+
+

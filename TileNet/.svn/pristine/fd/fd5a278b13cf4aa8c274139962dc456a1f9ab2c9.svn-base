@@ -1,0 +1,93 @@
+package com.putable.tilenet.layout;
+
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.blueprints.Element;
+import com.putable.tilenet.blueprints.Layout;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public class HomeLayout implements Layout {	
+	private Matrix m;
+	private int rows;
+	private int columns;
+	private ConcurrentHashMap<Point, Element> grid;
+	private ConcurrentLinkedQueue<Agent> agents;
+	
+	@Override
+	public JPanel toJPanel(int height, int width) {
+		if(grid == null)
+			System.err.println("NOTHING TO SHOW");
+		if(height > rows || width > columns)
+			System.err.println("Not large enough for a panel");	
+
+		//Panel stuff	
+		JPanel panel = new JPanel();		
+		panel.setSize(width, height);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		
+		//Get all Elements
+		for(Point p: grid.keySet()){			
+			Element e = grid.get(p);			
+			BufferedImage bi = new BufferedImage(width/columns, height/rows, BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics g = bi.getGraphics();			
+			switch(e.type){
+			case AGENT:
+				break;
+			case IMAGE:
+				break;
+			case KEY:
+				break;
+			case MATRIX:
+				break;
+			case TOKEN:
+				g.setColor(e.getBg());
+				g.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+				//TODO something with FGcolor
+				break;
+			default:
+				break;			
+			}
+			c.gridx = p.x;
+			c.gridy = p.y;
+			JLabel lbl = new JLabel(new ImageIcon(bi));
+			panel.add(lbl,c);			
+		}
+		
+		return panel;
+	}
+
+	@Override
+	public List<SetTag> toSetTags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void put(SetTag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void associate(Matrix m) {
+		this.m = m;
+		this.rows = m.getPoint().y;
+		this.columns = m.getPoint().x;
+	}
+
+}

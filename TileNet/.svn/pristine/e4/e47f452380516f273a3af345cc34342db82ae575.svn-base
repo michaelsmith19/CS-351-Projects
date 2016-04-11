@@ -1,0 +1,9 @@
+package com.putable.tilenet.factory;
+
+public class SplashKeyBindSet implements KeyBindSet {
+	
+	public String toString(){
+		return "SPLASH Keybinds";
+	}
+
+}

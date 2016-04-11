@@ -1,0 +1,182 @@
+package com.putable.tilenet.matrix;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.grid.Grid;
+import com.putable.tilenet.keybindset.KeyBindSet;
+import com.putable.tilenet.matrixelement.MatrixElementBuilder;
+import com.putable.tilenet.matrixelement.TileNetMatrixElementBuilder;
+import com.putable.tilenet.matrixelement.Token;
+
+public abstract class Matrix {
+	private String name;
+	private String objid;
+	private String text;
+	private String image;
+	//Automatically set each matrix to a 1 x 1 so that when drawing an
+	//empty matrix no divide by zero errors occur
+	private int x=1,y=1;
+	private Color fgColor, bgColor;
+	private SetTag tag;
+	
+	//the JPanel of the matrix should never exceed these dimensions
+	//this is just dummy integers as of right now
+	private final int panelWidth = 500, panelHeight = 500;
+	private int tileWidth, tileHeight;
+	//Parts of the a matrix
+	
+
+	KeyBindSet keyBindSet;
+	Grid grid;
+	
+	
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public Color getFgColor() {
+		return fgColor;
+	}
+	public void setFgColor(Color fgColor) {
+		this.fgColor = fgColor;
+	}
+	public Color getBgColor() {
+		return bgColor;
+	}
+	public void setBgColor(Color bgColor) {
+		this.bgColor = bgColor;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public SetTag getTag() {
+		return tag;
+	}
+	public void setTag(SetTag tag) {
+		this.tag = tag;
+	}
+	
+	
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public String getObjid(){ return objid; }
+	
+	
+	abstract void makeMatrix();	
+	
+	//Example things we now get for free
+	
+	//Defines every matrix toString here	
+	public String toString(){
+		return name;
+	}
+	
+	public void setId(){		
+		this.objid = "m" + Common.getID();
+	}	
+	
+	public void receiveLatestTag(SetTag tag){
+		switch(tag.getObjid().charAt(0)){
+		case 'm' : receiveMatrixSetTag(tag);
+		case 't' : receiveTokenSetTag(tag);
+		default : System.out.println("Gave Matrix something it can't handle right now");
+		}
+	}
+	
+	/**
+	 * @param tag receives a tag that defines the server's matrix
+	 * then sets the matrix's values to the values in the tag received
+	 */
+	private void receiveMatrixSetTag(SetTag tag){
+		setName(tag.getName());
+		setX(tag.getX());
+		setY(tag.getY());
+		resize();
+		setText(tag.getText());
+		setImage(tag.getImage());
+		setBgColor(tag.getBgColor());
+		setFgColor(tag.getFgColor());
+		setTag(tag);
+	}
+	
+
+	/**
+	 * @param tag receives the tag that defines a token, and adds this
+	 * token to the grid
+	 */
+	private void receiveTokenSetTag(SetTag tag){
+		MatrixElementBuilder makeTokens = new TileNetMatrixElementBuilder();	
+		com.putable.tilenet.matrixelement.MatrixElement t = makeTokens.orderElement("TOKEN");
+		t.setSetTag(tag);
+		grid.getLayout().put(new Point(tag.getX(), tag.getY()), (Token) t);
+	}
+	
+	
+	public SetTag sendMatrixSetTag(){
+		return this.tag;
+	}
+	
+	public SetTag sendTokenTag(int x, int y){
+		return grid.getLayout().get(new Point(x,y)).getSetTag();
+	}
+	
+	protected void resize(){
+		tileWidth = panelWidth/getX();
+		tileHeight = panelHeight/getY();
+	}
+	
+	
+	/**Will draw each grid placement of the matrix, will leave blank
+	 * if null
+	 * @return the JPanel representation of the matrix
+	 */
+	public JPanel draw(){
+		JPanel drawingPane = new JPanel();
+		drawingPane.setLayout(new GridLayout(getX(), getY()));
+		drawingPane.setSize(new Dimension(panelWidth,panelHeight));
+		for (int x = 0; x < getX(); x++){
+			for(int y = 0; y < getY(); y++){
+				ImageIcon ic = new ImageIcon((new BufferedImage(tileWidth,
+						tileHeight, BufferedImage.TYPE_4BYTE_ABGR)));
+				if (grid.getLayout().get(new Point(x,y)) != null)
+					ic = grid.getLayout().get(new Point(x,y)).draw(tileWidth,tileHeight);
+				JLabel temp = new JLabel();
+				if (grid.getLayout().get(new Point(x,y)) != null)
+					temp.setToolTipText(grid.getLayout().get(new Point(x,y)).getSetTag().getText());
+				temp.setIcon(ic);
+				drawingPane.add(temp);
+			}
+		}
+		return drawingPane;
+	}
+	//Etc....
+
+}

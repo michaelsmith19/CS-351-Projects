@@ -1,0 +1,16 @@
+package com.putable.tilenet.matrix;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+public abstract class MatrixElement {
+	private long objid;
+	
+	public MatrixElement(ElemType type){
+		this.objid = type.id();
+	}
+	
+	public long getid(){
+		return this.objid;
+	}
+
+}

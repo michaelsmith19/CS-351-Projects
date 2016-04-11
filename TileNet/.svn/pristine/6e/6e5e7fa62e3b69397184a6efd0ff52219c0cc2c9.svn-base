@@ -1,0 +1,16 @@
+package com.putable.tilenet.factory;
+
+public class Image extends MatrixElement{
+		MatrixElementFactory thisUses;
+	
+	public Image(MatrixElementFactory thisSpecificFactory){
+		thisUses = thisSpecificFactory;
+	}
+		
+	@Override
+	void makeElement() {
+		// TODO Auto-generated method stub
+		tag = thisUses.addSetTag();
+	}
+
+}

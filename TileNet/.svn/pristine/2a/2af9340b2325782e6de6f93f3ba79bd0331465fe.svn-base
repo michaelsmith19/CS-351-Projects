@@ -1,0 +1,70 @@
+package com.putable.tilenet.Client;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
+
+import com.putable.tilenet.Server.Element;
+import com.putable.tilenet.Server.ElementFactory.ElemType;
+import com.putable.tilenet.Util.Common;
+
+public final class Agent extends Element implements Callable<Void>{
+	private final String clientAddress = "127.0.0.1";
+	private final String nameOfAgent;
+	private final Socket sock;
+	private PrintWriter outgoing;
+	private BufferedReader incoming;
+	
+	
+	public Agent(String agentName, int port) throws UnknownHostException, IOException {
+		super(ElemType.AGENT);
+		this.nameOfAgent = agentName;
+		this.sock = new Socket(clientAddress, port);
+		this.outgoing = Common.getWriterFromSock(sock);
+		this.incoming = Common.getReaderFromSock(sock);
+	}
+	
+	@Override
+	public Void call() throws Exception {		
+		String message;
+		
+		//Get Identification from server
+		message = getServerResponce();
+		System.out.println("From Server: " + message);
+		
+		//Send some XML
+		sendMessage("AGENT XML");
+		
+		//Tell server connections finished
+		sendMessage("FIN");
+		
+		//Wait for confirmation
+		while((message = getServerResponce()).compareTo("FIN") != 0){
+			System.out.println("From Server: " + message);
+		}
+		
+		System.out.println("Agent " + nameOfAgent + " comunication established, Closed the connection\n\n");
+		disconnect();
+		return null;
+	}
+	
+	private String getServerResponce() throws IOException{
+		//wait for response??
+		while(!incoming.ready()){ }
+		return incoming.readLine();		
+	}
+	
+	private void sendMessage(String s){
+		outgoing.println(s);
+	}
+	
+	private void disconnect() throws IOException{
+		incoming.close();
+		outgoing.close();
+		sock.close();
+	}
+
+}

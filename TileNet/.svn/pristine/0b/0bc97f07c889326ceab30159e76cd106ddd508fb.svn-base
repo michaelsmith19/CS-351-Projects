@@ -1,0 +1,28 @@
+package com.putable.tilenet.factory;
+
+
+public abstract class Matrix {
+	private String name;
+	
+	//Parts of the a matrix
+	
+	KeyBindSet keyBindSet;
+	Grid grid;
+	
+	
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	
+	abstract void makeMatrix();	
+	
+	//Example things we now get for free
+	
+	//Defines every matrix toString here	
+	public String toString(){
+		return name;
+	}
+	
+	
+	//Etc....
+
+}

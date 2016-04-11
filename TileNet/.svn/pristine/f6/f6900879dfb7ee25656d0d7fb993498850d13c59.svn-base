@@ -1,0 +1,22 @@
+package com.putable.tilenet.blueprints;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.layout.Layout;
+
+
+public class SplashGridFactory implements GridFactory {
+
+	@Override
+	public Layout addLayout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AgentManager addAgentManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+}

@@ -1,0 +1,19 @@
+package com.putable.tilenet.factory;
+
+public class Agent extends MatrixElement {
+	MatrixElementFactory thisUses;
+	
+	public Agent(MatrixElementFactory thisSpecificfactory){
+		
+		this.thisUses = thisSpecificfactory;
+		
+	}
+
+	@Override
+	void makeElement() {
+		
+		tag = thisUses.addSetTag();
+		
+		
+	}
+}

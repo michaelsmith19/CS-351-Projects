@@ -1,0 +1,62 @@
+package com.putable.tilenet.Controller;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+
+import com.putable.tilenet.Server.ServerModel;
+import com.putable.tilenet.Util.Common;
+
+
+/**Runs in the ThreadPool of {@link ServerModel}. Each instance of {@link Controller} represents a singular connection to 
+ * the Server.
+ * @author ClassCastExceptions
+ */
+public class Controller implements Callable<Void>{
+	private final ServerModel serverModel;
+	private final int controllNumber;
+	private final Socket sock;
+	private final BufferedReader incoming;
+
+	/** The individual instance of an agent
+	 * @param serverModel
+	 * 		The Model it will manipulate 
+	 * @param agentNumber
+	 * 		Unique agent number that identifies this agent
+	 * @param sock
+	 * 		The socket associated with the connection to the Agent
+	 * @throws IOException 
+	 */
+	public Controller(ServerModel serverModel, int agentNumber, Socket sock) throws IOException{
+		this.serverModel = serverModel;
+		this.controllNumber = agentNumber;
+		this.sock = sock;
+		this.incoming = Common.getReaderFromSock(sock);
+	}
+
+	@Override
+	public Void call() throws Exception {
+		String message = null;
+		
+		//Requests server information for new Agent
+		serverModel.sendLoginFor(this, sock);		
+		
+		//Continue (parsing) messages until XXX
+		while((message = getAgentMessage()).compareTo("FIN") != 0){	
+			//XXX Put parser here
+		}				
+		
+		//Terminate this connection
+		serverModel.terminateConnection(this, sock);
+		
+		return null;
+	}
+	
+	private String getAgentMessage() throws IOException{
+		//Can add a timeout here
+		while(!incoming.ready()){ }		
+		return incoming.readLine();
+	}
+}

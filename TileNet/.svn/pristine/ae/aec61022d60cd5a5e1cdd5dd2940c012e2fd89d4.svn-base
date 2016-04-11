@@ -1,0 +1,25 @@
+package com.putable.tilenet.factory;
+
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.ElemType;
+import com.putable.tilenet.settag.ImageSetTag;
+import com.putable.tilenet.settag.SetTag;
+
+public class ImageFactory implements MatrixElementFactory{
+
+	@Override
+	public SetTag addSetTag() {
+		return new ImageSetTag();
+	}
+
+	@Override
+	public ElemType addElemType() {		
+		return ElemType.IMAGE;
+	}
+
+	@Override
+	public Connection addConnection() {
+		return null;
+	}
+
+}

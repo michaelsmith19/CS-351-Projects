@@ -1,0 +1,66 @@
+package com.putable.tilenet.blueprints;
+
+import javax.swing.JPanel;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public abstract class Grid {
+	
+	public enum GridType {
+		HOME,
+		SPLASH;
+	}
+	
+	//Fields
+	private String name;
+	private GridType type;
+	
+	// Parts of a Grid
+	protected Layout layout;
+	protected Matrix m;
+	
+	//Methods for construction
+	protected abstract void placeParts();
+	protected void setType(GridType type){ this.type = type; }	
+	
+	//Public methods
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public GridType getType() { return this.type; }
+	
+	//Replay methods	
+	public JPanel toJPanel(int height, int width){
+		return layout.toJPanel(height, width, m);
+	}
+	public Layout getLayout(){
+		return this.layout;
+	}
+	public Matrix getMatrix(){
+		return this.m;
+	}
+	
+	
+	/**Must be called for default population of a grid.<br>
+	 * Otherwise you have to do it, by hand
+	 * 
+	 */
+	public abstract void addDefaultTokens();
+	
+	//TODO somehow i've managed to convert this tag about 3 times now
+	//This needs to not happen
+	/**Updates the view
+	 * @param tag
+	 */
+	public void update(SetTag tag){
+		layout.update(tag);
+	}
+	/**Redefines the matrix of this grid. Including the dimensions.
+	 * This is required
+	 * @param m
+	 */
+	public void associate(Matrix m){
+		this.m = m;
+		layout.setMatrix(m);
+	}
+}

@@ -1,0 +1,20 @@
+package com.putable.tilenet.matrix;
+
+import javax.swing.ImageIcon;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+
+public class Image extends MatrixElement {
+
+	public Image() {
+		super(ElemType.IMAGE);
+	}
+
+	@Override
+	public ImageIcon getDisplay(int tileSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

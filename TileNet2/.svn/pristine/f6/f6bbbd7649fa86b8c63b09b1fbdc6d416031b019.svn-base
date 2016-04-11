@@ -1,0 +1,45 @@
+package com.putable.tilenet.blueprints;
+
+import java.lang.annotation.ElementType;
+
+import com.putable.tilenet.blueprints.Element.ElemType;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Image;
+import com.putable.tilenet.matrixelement.Key;
+import com.putable.tilenet.matrixelement.Matrix;
+import com.putable.tilenet.matrixelement.Token;
+
+
+public class TileNetElementBuilder extends ElementBuilder {
+
+	@Override
+	protected Element makeElement(ElemType type) {
+		Element ele = null;
+
+		if(type == ElemType.AGENT){
+			ElementFactory elementFactory = new AgentFactory();
+			ele = new Agent(elementFactory);
+
+		} else if (type == ElemType.IMAGE){
+			ElementFactory elementFactory = new ImageFactory();
+			ele = new Image(elementFactory);
+
+		} else if (type == ElemType.TOKEN){
+			ElementFactory elementFactory = new TokenFactory();
+			ele = new Token(elementFactory);
+
+		} else if (type == ElemType.MATRIX){
+			ElementFactory elementFactory = new MatrixFactory();
+			ele = new Matrix(elementFactory);
+			
+		} else if (type == ElemType.KEY){
+			ElementFactory elementFactory = new KeyFactory();
+			ele = new Key(elementFactory);
+		}
+		
+		return ele;
+	}
+
+
+
+}

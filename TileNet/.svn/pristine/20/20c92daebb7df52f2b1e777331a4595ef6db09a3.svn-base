@@ -1,0 +1,49 @@
+package com.putable.tilenet.factory;
+
+public class TileNetMatrixElementBuilder extends MatrixElementBuilder {
+
+	@Override
+	protected MatrixElement makeElement(String type) {
+		MatrixElement ele = null;
+
+		if(type.compareTo("AGENT") == 0){
+
+			MatrixElementFactory matrixElementFactory = new AgentFactory();
+			ele = new Agent(matrixElementFactory);
+			ele.setName("AGENT MADE!");
+
+		} else if (type.compareTo("IMAGE") == 0){
+			
+			/*
+
+			MatrixElementFactory matrixElementFactory = new ImageFactory();
+			ele = new Image(matrixElementFactory);
+			ele.setName("IMAGE MADE!");
+			 */
+
+
+		} else if (type.compareTo("TOKEN") == 0){
+			
+
+			MatrixElementFactory matrixElementFactory = new TokenFactory();
+			ele = new Token(matrixElementFactory);
+			ele.setName("TOKEN MADE!");
+			
+
+
+		} else if (type.compareTo("AUTOBOT") == 0){
+			
+
+			MatrixElementFactory matrixElementFactory = new AutoBotFactory();
+			ele = new AutoBot(matrixElementFactory);
+			ele.setName("AUTOBOT MADE!");
+			
+
+
+		}		
+		return ele;
+	}
+
+
+
+}

@@ -1,0 +1,107 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import java.awt.Color;
+
+import org.xml.sax.Attributes;
+
+public class SetTag extends XMLTag {
+	private Integer x;
+	private Integer y;
+	private Integer energy;
+	private String name;
+	private String text;
+	private Color bgColor;
+	private Color fgColor;
+	private String objid;
+	private String image;
+
+	public SetTag(Attributes atts) {
+		super(TagType.SET);
+
+		this.x = (atts.getValue("x") != null) ? Integer.parseInt(atts
+				.getValue("x")) : null;
+		this.y = (atts.getValue("y") != null) ? Integer.parseInt(atts
+				.getValue("y")) : null;
+		this.energy = (atts.getValue("energy") != null) ? Integer.parseInt(atts
+				.getValue("energy")) : null;
+
+		this.name = atts.getValue("name");
+		this.text = atts.getValue("text");
+		this.bgColor = hex2Color(atts.getValue("bgColor"));
+		this.fgColor = hex2Color(atts.getValue("fgColor"));
+		this.objid = atts.getValue("objid");
+		this.image = atts.getValue("image");
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public Color getBgColor() {
+		return bgColor;
+	}
+
+	public Color getFgColor() {
+		return fgColor;
+	}
+
+	public String getObjid() {
+		return objid;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<set ");
+		sb.append("objid=\"" + objid + "\"");
+		if (x != null)
+			sb.append(" x=\"" + x + "\"");
+		if (y != null)
+			sb.append(" y=\"" + y + "\"");
+		if (energy != null)
+			sb.append(" energy=\"" + energy + "\"");
+		if (bgColor != null)
+			sb.append(" bgcolor=\"" + bgColor + "\"");
+		if (fgColor != null)
+			sb.append(" fgcolor=\"" + fgColor + "\"");
+		if (image != null)
+			sb.append(" image=\"" + image + "\"");
+		if (text != null)
+			sb.append(" text=\"" + text + "\"");
+		if (name != null)
+			sb.append(" name=\"" + name + "\"");
+		sb.append("/>");
+		return sb.toString();
+	}
+
+	private Color hex2Color(String hexColor) {
+		if (hexColor == null)
+			return null;
+		int alpha = Integer.valueOf(hexColor.substring(0, 2), 16);
+		String colorHex = hexColor.substring(2);
+		Color noalpha = Color.decode("0x" + colorHex);
+		return new Color(noalpha.getRed(), noalpha.getGreen(),
+				noalpha.getBlue(), alpha);
+
+	}
+
+}

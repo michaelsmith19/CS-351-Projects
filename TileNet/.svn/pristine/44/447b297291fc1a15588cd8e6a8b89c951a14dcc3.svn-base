@@ -1,0 +1,265 @@
+package com.putable.tilenet.server;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import com.putable.tilenet.AgentManager.AgentManager;
+import com.putable.tilenet.AgentManager.AgentManagerImpl;
+import com.putable.tilenet.Util.XMLTags.CMDTag;
+import com.putable.tilenet.Util.XMLTags.HearTag;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.Grid.GridType;
+import com.putable.tilenet.blueprints.GridBuilder;
+import com.putable.tilenet.blueprints.TileNetGridBuilder;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Agent;
+
+public class WorldModelImpl implements WorldModel {
+
+	private Grid home;
+	private final AgentManager manager;
+	private final ModelDispatch dispatch;
+	private final ExecutorService ex;
+
+	public WorldModelImpl() {
+		Thread.currentThread().setName("WORLD_MODEL");
+		GridBuilder makeMatrices = new TileNetGridBuilder();
+		home = makeMatrices.orderGrid(GridType.HOME);
+
+		this.manager = new AgentManagerImpl();
+		this.ex = Executors.newCachedThreadPool();
+		this.dispatch = new ModelDispatch();
+
+		ex.submit(dispatch);
+	}
+
+	@Override
+	public void processTag(XMLTag tag) {
+		// TODO Auto-generated method stub
+		switch (tag.getTagType()) {
+		case CMD:
+			processCmd((CMDTag) tag);
+			break;
+		// TODO when xresponse is made make a case for xresponse
+		}
+	}
+
+	private void processCmd(CMDTag tag) {
+		String cmdtype = tag.getCMDType();
+		if (cmdtype.equals("say")) {
+			sendHearTag(say2Hear(tag, isWhisper(tag.getText())));
+		}
+		if (cmdtype.equals("click")) {
+
+		}
+		if (cmdtype.equals("press")) {
+
+		}
+	}
+
+	private boolean isWhisper(String sayCmd) {
+		// TODO determine if a sayCmd's text is a valid whisper
+		// First you should trim the whitespace from the beginning and end of
+		// the text.
+		String cmdLessWhitespace = sayCmd.trim();
+		// If it is empty after the trim it should be disregarded.
+		if (cmdLessWhitespace == "")
+			return false;
+
+		// If the first letter is ( and the last letter is ) return true.
+		if (cmdLessWhitespace.charAt(0) == '('
+				&& cmdLessWhitespace.charAt(cmdLessWhitespace.length() - 1) == ')')
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Converts SayTags to HearTags to be sent see (c8.2.6.1.3.7.2.2) for more
+	 * details
+	 * 
+	 * @param tag
+	 *            the CMDTag being turned into a HearTag
+	 * @param agent
+	 *            the Agent the CMDTag is from
+	 * @param isWhisper
+	 *            If the CMDTag say is in the form of a whipser
+	 * @return the HearTag converted from a sayTag
+	 */
+	private HearTag say2Hear(CMDTag tag, boolean isWhisper) {
+		HearTag ht;
+		Agent agent = dispatch.getAgentFromTag(tag);
+		// If it is a whipser, the "to" part of the HearTag is to that specific
+		// Agent's ID
+		if (isWhisper(tag.getText()))
+			ht = new HearTag(tag.getObjid(), agent.getObjid(), tag.getText());
+		// else then the "to" part of the HearTag is to the Matrix the Agent
+		// sending the
+		// Say tag is in
+		else
+			ht = new HearTag(manager.getGridOf(agent).getMatrix().getObjid(),
+					agent.getObjid(), tag.getText());
+		return ht;
+	}
+
+	@Override
+	public void sendMatrix(Agent agent, Grid g) throws InterruptedException {
+		List<Agent> junk = new ArrayList<Agent>();
+		junk.add(agent);
+		for (SetTag s : g.getLayout().toSetTags()) {
+			dispatch.put(s, junk);
+		}
+		dispatch.put(g.getMatrix().getSetTag(), junk);
+	}
+
+	@Override
+	public void giveAgent(Agent agent, Connection connection) {
+		System.out.println("From WorldImpl. AGENT: " + agent + " Registered!");
+		manager.addAgent(agent, connection);
+		manager.agentMove(agent, home);
+
+		try {
+			sendMatrix(agent, home);
+		} catch (InterruptedException e) {
+			System.err.println("Error sending home matrix!");
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void sendHearTag(HearTag tag) {
+
+		List<Agent> junk = new ArrayList<Agent>();
+
+		if (tag.getTo().charAt(0) == 'm') {
+			for (Agent a : manager.getAgentsInsideFromMatrixID(tag.getTo())) {
+				junk.add(a);
+			}
+		} else
+			junk.add(manager.getAgentFromID(tag.getFrom()));
+		try {
+			dispatch.put(tag, junk);
+		} catch (InterruptedException e) {
+			System.err.println("Error sending HearTag!");
+			e.printStackTrace();
+		}
+
+	}
+
+	private final class ModelDispatch implements Callable<Void> {
+		private final LinkedBlockingQueue<XMLTag> queue;
+		private final Map<XMLTag, List<Agent>> whoIsBeingSentThis;
+		private final Map<XMLTag, Agent> whoSentThis;
+
+		public ModelDispatch() {
+			this.queue = new LinkedBlockingQueue<XMLTag>();
+			this.whoIsBeingSentThis = new HashMap<XMLTag, List<Agent>>();
+			this.whoSentThis = new HashMap<XMLTag, Agent>();
+		}
+
+		@Override
+		public Void call() throws Exception {
+			XMLTag tag = null;
+			List<Agent> agents = null;
+			while (true) {
+				tag = queue.take();
+				if (isFromModel(tag)) {
+					agents = whoIsBeingSentThis.get(tag);
+					whoIsBeingSentThis.remove(tag);
+				}
+				if (isFromAgent(tag)) {
+					// TODO find a way to see who sent the tag
+					// from the client
+				}
+
+				System.out.println("WorldImpl tag Dispatch: " + tag);
+				switch (tag.getTagType()) {
+				case CLIENT:
+					break;
+				case CMD:
+					break;
+				case HEAR:
+					break;
+				case LOGGEDIN:
+					break;
+				case LOGGEDOUT:
+					break;
+				case LOGIN:
+					break;
+				case LOGOUT:
+					break;
+				case SERVER:
+					break;
+				case SET:
+					/*
+					 * ((c8.9)) TAG: set ((c8.9.1)) FROM: Server
+					 */
+					for (Agent a : agents) {
+						Connection c = manager.getConnection(a);
+						c.sendMessage(tag);
+					}
+					break;
+				case XREQUEST:
+					break;
+				case XRESPONSE:
+					break;
+				default:
+					break;
+				}
+			}
+
+		}
+
+		private void put(XMLTag tag, List<Agent> lst)
+				throws InterruptedException {
+			queue.put(tag);
+			whoIsBeingSentThis.put(tag, lst);
+		}
+
+		public Agent getAgentFromTag(XMLTag tag) {
+			return this.whoSentThis.get(tag);
+		}
+
+		private boolean isFromAgent(XMLTag tag) {
+			switch (tag.getTagType()) {
+			case CMD:
+				return true;
+			case XREQUEST:
+				return true;
+			case LOGIN:
+				return true;
+			case LOGOUT:
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		private boolean isFromModel(XMLTag tag) {
+			switch (tag.getTagType()) {
+			case SET:
+				return true;
+			case LOGGEDIN:
+				return true;
+			case LOGGEDOUT:
+				return true;
+			case HEAR:
+				return true;
+			case XRESPONSE:
+				return true;
+			default:
+				return false;
+			}
+		}
+
+	}
+
+}

@@ -1,0 +1,10 @@
+package com.putable.tilenet.factory;
+
+
+public class HomeGrid extends GridImpl implements Grid {
+	
+	public String toString(){
+		return "HOME Grid!";
+	}
+
+}

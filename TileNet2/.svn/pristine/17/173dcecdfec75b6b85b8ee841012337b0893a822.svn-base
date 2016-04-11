@@ -1,0 +1,50 @@
+package com.putable.tilenet.AgentManager;
+
+import java.util.List;
+
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Matrix;
+
+public interface AgentManager {
+
+	/**Notifies thats this agent has this {@link Connection}
+	 * @param agent
+	 * @param g
+	 */
+	public void addAgent(Agent agent, Connection conn);
+
+	/**
+	 * @param agent
+	 * @return
+	 */
+	public Grid getGridOf(Agent agent);
+	
+	/**Iterates over the mapping to find agents
+	 * @param g
+	 * 	Where to search
+	 * @return
+	 * a {@link List}
+	 */
+	public List<Agent> getAgentsInside(Grid g);
+	
+	/**Notifies of an {@link Agent} move
+	 * @param a
+	 * @param g
+	 */
+	public void agentMove(Agent a, Grid g);
+	
+	/**Get an {@link Agent}'s {@link Connection}
+	 * @param a
+	 * @return
+	 */
+	public Connection getConnection(Agent a);
+
+	public Agent getAgentFromID(String objid);
+
+	public List<Agent> getAgentsInsideFromMatrixID(String objid);
+
+	public Agent getAgentFromName(String name);
+	
+}

@@ -1,0 +1,158 @@
+package com.putable.tilenet.grid;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.Util.Common;
+import com.putable.tilenet.Util.ElementOp;
+import com.putable.tilenet.Util.ElementOp.OpType;
+import com.putable.tilenet.Util.XMLTags.SetTag;
+import com.putable.tilenet.Util.XMLTags.XMLTag;
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.blueprints.GridFactory;
+import com.putable.tilenet.matrixelement.Token;
+
+public class PairPanickGrid extends Grid{
+
+	GridFactory factory;
+	private SetTag potentialMatch;
+	private List<SetTag> solved;
+	private boolean isFirst;
+	private int clickTracker;
+	private List<String> listOfHiddenValues;
+	private List<SetTag> lastTwoGuesses;
+	private ConcurrentHashMap<String, String> idsToNames;
+	
+	
+	public PairPanickGrid(GridFactory thisSpecificfactory){		
+		this.factory = thisSpecificfactory;		
+	}
+	
+	@Override
+	protected void placeParts() {
+		this.layout = factory.addLayout();
+	}
+
+	@Override
+	public void addDefaultTokens() {
+		//These things here are REQUIRED
+		idsToNames = new ConcurrentHashMap<String, String>();
+		lastTwoGuesses = new ArrayList<SetTag>();
+		clickTracker = 0;
+		listOfHiddenValues = generateListOfValues();
+		
+		SetTag matrix = new SetTag("m" + Common.getID());
+		matrix.setName("Pair Panick Matrix");
+		matrix.setBgColor(Color.BLUE);
+		matrix.setFgColor(Color.BLACK);
+		matrix.setX(8);
+		matrix.setY(9);	
+		layout.update(matrix);
+		
+		SetTag corner = new SetTag("t" + Common.getID());
+		corner.setX(0);
+		corner.setY(0);
+		corner.setBgColor(Color.BLUE);
+		corner.setFgColor(Color.BLACK);
+		corner.setName("Home");
+		layout.update(corner);
+		
+		Collections.shuffle(listOfHiddenValues);
+		
+		int count = 0;
+		for (int x = 0; x < 8; x++){
+			for (int y = 1; y < 9; y++){
+				count++;
+				Token tok = generateHiddenTokens(listOfHiddenValues.get(count), x , y);
+				layout.update(tok.getSetTag());
+				layout.addToken(tok);
+			}
+		}
+		
+	}
+	
+	private Token generateHiddenTokens(String hiding, int x, int y){
+		SetTag s = new SetTag("t" + Common.getID());
+		idsToNames.put(s.getObjid(), hiding);
+		s.setBgColor(Color.RED);
+		s.setX(x);
+		s.setY(y);
+		s.setEnergy(100);
+		Token tok = (Token) Common.toElement(s);
+		tok.setOp(displayOp(hiding,s));
+		return tok;
+	}
+	
+	private List<String> generateListOfValues(){
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i <= 16; i++){
+			for (int j = 0; j < 4; j++){
+				list.add("" + i);
+			}
+		}
+		return list;
+	}
+	
+	
+	private Token generateShowingTokens(String hiding){
+		
+		
+		return null;
+	}
+	
+	private ElementOp displayOp(final String display, final SetTag tag){
+		ElementOp displayOp = new ElementOp(OpType.BROADCAST){
+			@Override
+			public ArrayList<XMLTag> doOp(){
+				clickTracker++;
+				tag.setBgColor(Color.BLUE);
+				tag.setName(display);
+				tag.setEnergy(-1);
+				ArrayList<XMLTag> list = new ArrayList<XMLTag>();
+				if(clickTracker % 2 == 1){
+					if (!(lastTwoGuesses.isEmpty())){
+						lastTwoGuesses.get(0).setBgColor(Color.RED);
+						lastTwoGuesses.get(1).setBgColor(Color.RED);
+						lastTwoGuesses.get(0).setName("");
+						lastTwoGuesses.get(1).setName("");
+						lastTwoGuesses.get(0).setEnergy(100);
+						lastTwoGuesses.get(1).setEnergy(100);
+						list.add(lastTwoGuesses.get(1));
+						list.add(lastTwoGuesses.get(0));
+						lastTwoGuesses.clear();
+					}
+					list.add(tag);
+					potentialMatch = tag;
+				}
+				else {
+					if (display.equals(idsToNames.get(potentialMatch.getObjid()))){
+						tag.setEnergy(-1);
+						potentialMatch.setEnergy(-1);
+						tag.setBgColor(Color.GREEN);
+						potentialMatch.setBgColor(Color.GREEN);
+						tag.setFgColor(Color.BLACK);
+						potentialMatch.setFgColor(Color.BLACK);
+						tag.setName(idsToNames.get(tag.getObjid()));
+						potentialMatch.setName(idsToNames.get(potentialMatch.getObjid()));
+						//solved.add(tag);
+						list.add(tag);
+						list.add(potentialMatch);
+					} else{
+						list.add(tag);
+						list.add(potentialMatch);
+						lastTwoGuesses.add(tag);
+						lastTwoGuesses.add(potentialMatch);
+					}
+				}
+				return list;
+			}
+		};
+		return displayOp;
+	}
+	
+	
+}

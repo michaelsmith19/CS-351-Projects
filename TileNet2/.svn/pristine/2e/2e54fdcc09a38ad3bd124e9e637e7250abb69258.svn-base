@@ -1,0 +1,87 @@
+package com.putable.tilenet.AgentManager;
+
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.putable.tilenet.blueprints.Grid;
+import com.putable.tilenet.connection.Connection;
+import com.putable.tilenet.matrixelement.Agent;
+import com.putable.tilenet.matrixelement.Matrix;
+
+
+public class AgentManagerImpl implements AgentManager {
+
+	private final ConcurrentHashMap<Agent, Grid> agentToGrid;
+	private final ConcurrentHashMap<Agent, Connection> agentToConnection;
+	
+	public AgentManagerImpl(){
+		this.agentToGrid = new ConcurrentHashMap<Agent, Grid>();
+		this.agentToConnection = new ConcurrentHashMap<Agent, Connection>();
+	}
+	
+	@Override
+	public Agent getAgentFromID(String objid){
+		for(Agent a : agentToGrid.keySet()){
+			if (a.getObjid().equals(objid)) return a;
+		}
+		return null; //no agent from this ID
+	}
+	
+	@Override 
+	public ArrayList<Agent> getAgentsInsideFromMatrixID(String objid){
+		ArrayList<Agent> agentList = new ArrayList<Agent>();
+		for (Agent a : agentToGrid.keySet()){
+			if (agentToGrid.get(a).getLayoutSetTag().getObjid().equals(objid))
+				agentList.add(a);
+		}
+		return agentList; //no Matrix from this ID
+	}
+	
+	@Override
+	public void addAgent(Agent agent, Connection conn) {
+		agentToConnection.put(agent, conn);		
+	}
+
+	@Override
+	public Grid getGridOf(Agent agent) {
+		return agentToGrid.get(agent);
+	}
+
+	@Override
+	public ArrayList<Agent> getAgentsInside(Grid g) {
+		ArrayList<Agent> agentList = new ArrayList<Agent>();		
+		for (Agent a : agentToGrid.keySet()){
+			if(g == agentToGrid.get(a)){
+				agentList.add(a);
+				System.out.println("Agent: " + a.getObjid() + " Is now in : " + g);
+			}
+		}
+		return agentList;
+		
+	}
+	
+	@Override
+	public Agent getAgentFromName(String name){
+		for (Agent a : agentToGrid.keySet()){
+			if (a.getName().equals(name)){
+				return a;
+			}
+		}
+		return null;
+	}
+	
+
+
+	@Override
+	public void agentMove(Agent a, Grid g) {
+		if (agentToGrid.contains(a)){
+			agentToGrid.remove(a);
+		}
+		agentToGrid.put(a, g);
+	}
+
+	@Override
+	public Connection getConnection(Agent a) {
+		return agentToConnection.get(a);
+	}
+}

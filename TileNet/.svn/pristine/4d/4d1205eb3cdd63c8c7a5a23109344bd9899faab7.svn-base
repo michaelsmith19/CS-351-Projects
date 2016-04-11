@@ -1,0 +1,38 @@
+package com.putable.tilenet.Util.XMLTags;
+
+import org.xml.sax.Attributes;
+
+public class ServerTag extends XMLTag {
+    private String version;
+    private String group;
+    private String name;
+    private String status;
+
+    public ServerTag(Attributes atts) {
+	super(TagType.SERVER);
+	this.version = atts.getValue("version");
+	this.group = atts.getValue("group");
+	this.name = atts.getValue("name");
+	this.status = atts.getValue("status");
+    }
+
+    @Override
+    public String toString() {
+	StringBuilder sb = new StringBuilder("<server ");
+
+	if (version != null)
+	    sb.append("version=\"" + this.version + "\"");
+	if (group != null)
+	    sb.append(" group=\"" + this.group + "\"");
+	if (name != null)
+	    sb.append(" name=\"" + this.name + "\"");
+	if (status != null)
+	    sb.append(" status=\"" + this.status + "\"");
+
+	sb.append("/>");
+
+	return sb.toString();
+
+    }
+
+}

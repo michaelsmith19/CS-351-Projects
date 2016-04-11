@@ -1,0 +1,13 @@
+package com.putable.tilenet.matrix;
+
+
+public interface Matrixable {
+
+	public Matrix sendInitialState();
+	
+	public void updateState();
+	
+	public void sendStateUpdates();
+	
+}
+

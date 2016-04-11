@@ -1,0 +1,19 @@
+package com.putable.tilenet.matrixelement;
+
+import com.putable.tilenet.factory.MatrixElementFactory;
+import com.putable.tilenet.settag.TokenSetTag;
+
+public class Token extends MatrixElement {
+	MatrixElementFactory thisUses;
+	
+	public Token(MatrixElementFactory thisSpecificfactory){		
+		this.thisUses = thisSpecificfactory;		
+	}
+
+	@Override
+	void makeElement() {		
+		tag = thisUses.addSetTag();
+		type = thisUses.addElemType();
+		conn = thisUses.addConnection();
+	}
+}

@@ -1,0 +1,67 @@
+package com.putable.tilenet.matrix;
+
+import com.putable.tilenet.matrix.MatrixElementFactory.ElemType;
+
+
+public class Token extends MatrixElement {
+
+	private String textInside;
+	private Image image;
+	private boolean clickable;
+	private int x,y;
+	
+	public Token() {
+		super(ElemType.TOKEN);
+	};
+	
+	public void setString(String textInside) {
+		this.textInside = textInside;
+	}
+	
+	public void setClickable(boolean clickable){
+		this.clickable = clickable;
+	}
+	
+	public void setImage(Image image){
+		this.image = image;
+	}
+	
+	public Token constructToken(){
+		Token token = new Token();
+		if(clickable){
+			//TODO Sets the what is needed when it can be clicked
+		}
+		else;
+		if(textInside != null){
+			//TODO sets what shall be dispayed inside the token.
+		}
+		else;
+		return token;
+	}
+	
+	public void setPosition(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Token setAsTextBox(String inside, boolean clickable, int x, int y){
+		Token token = new Token();
+		token.setString(inside);
+		token.setPosition(x, y);
+		token.setClickable(clickable);
+		token = token.constructToken();
+		return token;
+	}
+	
+	public Token setAsImage(Image image, boolean clickable, int x, int y){
+		Token token = new Token();
+		token.setImage(image);
+		token.setClickable(clickable);
+		token.setPosition(x,y);
+		token = token.constructToken();
+		return token;
+	}
+
+	
+	
+}

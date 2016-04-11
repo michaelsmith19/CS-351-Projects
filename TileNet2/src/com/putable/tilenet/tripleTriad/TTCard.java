@@ -1,0 +1,57 @@
+package com.putable.tilenet.tripleTriad;
+
+import java.awt.Color;
+
+import com.putable.tilenet.Util.XMLTags.SetTag;
+
+public class TTCard {
+	//private int northValue, southValue, eastValue, westValue;
+	private String name;
+	private String imageName;
+	private String objid;
+	//private boolean redTblueF;
+
+	/**
+	 * Constructs a TTCard.
+	 * 
+	 * @param name
+	 *            the String name for this card.
+	 * @param imageName
+	 *            the name of an image (objid) associated with this card.
+	 * @param north
+	 *            The cards north point value.
+	 * @param south
+	 *            The cards south point value.
+	 * @param east
+	 *            The cards east point value.
+	 * @param west
+	 *            The cards west point value.
+	 * @param objid
+	 *            The cards unique objid, that will be shown in its setTags.
+	 */
+	public TTCard(String name, String imageName, int north, int south,
+			int east, int west, String objid) {
+		this.name = name;
+//		this.northValue = north;
+//		this.southValue = south;
+//		this.eastValue = east;
+//		this.westValue = west;
+		this.imageName = imageName;
+		this.objid = objid;
+	}
+
+	/**
+	 * Constructs and returns a setTag that represents the current state of this
+	 * TTCard.
+	 * 
+	 * @return This TTCards setTag representation.
+	 */
+	public SetTag getCardSetTag() {
+		SetTag newTag = new SetTag(objid);
+		newTag.setName(name);
+		newTag.setImage(imageName);
+		newTag.setBgColor(Color.CYAN);
+
+		return newTag;
+	}
+}
