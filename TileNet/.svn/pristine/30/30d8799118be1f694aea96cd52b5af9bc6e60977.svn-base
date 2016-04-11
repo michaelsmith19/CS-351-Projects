@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE server SYSTEM "http://putable.com/TileNet/TileNet1.0.dtd">
-<server version="1.0" group="Class Cast Exceptions" name="wizz" status="open">
-  <logged-in objid="a12" message=""/>
-  <logged-out message=""/>
-</server>

@@ -1,7 +1,0 @@
-package com.putable.tilenet.blueprints;
-
-import com.putable.tilenet.AgentManager.AgentManager;
-
-public class HomeAgentManager implements AgentManager {
-
-}

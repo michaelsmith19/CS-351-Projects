@@ -1,8 +1,0 @@
-package com.putable.tilenet.factory;
-
-public class HomeKeyBindSet implements KeyBindSet {
-	
-	public String toString(){
-		return "HOME key bindings";
-	}
-}

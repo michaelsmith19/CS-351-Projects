@@ -1,9 +1,0 @@
-package com.putable.tilenet.factory;
-
-
-public class TokenSetTag extends SetTagImpl implements SetTag {
-
-	/*
-	 * Non-generic handling goes here
-	 */
-}

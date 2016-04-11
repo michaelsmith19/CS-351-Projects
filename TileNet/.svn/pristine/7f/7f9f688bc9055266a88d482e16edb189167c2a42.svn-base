@@ -1,6 +1,0 @@
-package com.putable.tilenet.AgentManager;
-
-
-public class HomeAgentManager implements AgentManager {
-
-}

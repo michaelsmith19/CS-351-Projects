@@ -1,9 +1,0 @@
-package com.putable.tilenet.factory;
-
-
-public class SplashGrid extends GridImpl implements Grid {
-	
-	public String toString(){
-		return "SPLASH Grid";
-	}
-}

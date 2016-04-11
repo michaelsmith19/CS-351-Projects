@@ -1,7 +1,0 @@
-package com.putable.tilenet.factory;
-
-public interface KeyBindSet {
-	
-	public String toString();
-
-}

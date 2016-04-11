@@ -1,7 +1,0 @@
-package com.putable.tilenet.factory;
-
-public interface Grid {
-	
-	public String toString();
-
-}

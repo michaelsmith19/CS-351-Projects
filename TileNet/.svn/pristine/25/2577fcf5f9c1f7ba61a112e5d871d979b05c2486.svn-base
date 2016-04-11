@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE client SYSTEM "http://putable.com/TileNet/TileNet1.0.dtd">
-<client version="1.0">
-<login user="bob" password="bobspassword"/>
-<cmd type="click" objid="t1"/>
-<cmd type="say" objid="t2" modifiers="1"/>
-<cmd type="press" objid="t3" modifiers="0" text="lol"/>
-<logout message=""/>
-</client>

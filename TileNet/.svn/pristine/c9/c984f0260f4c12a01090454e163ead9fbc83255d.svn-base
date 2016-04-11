@@ -1,5 +1,0 @@
-package com.putable.tilenet.AgentManager;
-
-public interface AgentManager {
-
-}
